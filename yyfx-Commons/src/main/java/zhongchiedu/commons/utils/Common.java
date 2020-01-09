@@ -946,49 +946,39 @@ public class Common {
     	return  d2.toEpochDay() - d.toEpochDay();
     }
     
+    /**
+     * 
+     * <p>Title: subStringEndOf</p>  
+     * <p>Description: </p>  
+     * @param split    匹配的字符串
+     * @param strings  需要截取的字符串
+     * @return
+     */
+    public static String subStringEndOf(String split,String strings) {
+    	return strings.substring(strings.lastIndexOf(split)+1, strings.length());
+    	
+    }
     
+    /**
+     * 
+     * <p>Title: subStringEndOf</p>  
+     * <p>Description: </p>  
+     * @param split    匹配的字符串
+     * @param strings  需要截取的字符串
+     * @return
+     */
+    public static String subStringBeforeOf(String split,String strings) {
+    	return strings.substring(0,strings.lastIndexOf(split));
+    	
+    }
     
-    
-	
-    
-//    public static void main(String[] args) {
-//    	
-//    	String date = "2018-07-07";
-//    	String date2 = "2018-07-10";
-//    	
-//    	DateTimeFormatter  formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//
-//    	LocalDate local = LocalDate.parse(date, formatter);
-//    	LocalDate local2 = LocalDate.parse(date2, formatter);
-//    	
-//    	LocalDate d = LocalDate.of(local.getYear(), local.getMonth(), local.getDayOfMonth());
-//    	LocalDate d2 = LocalDate.of(local2.getYear(), local2.getMonth(), local2.getDayOfMonth());
-//    	
-//    	long dd = d2.toEpochDay() - d.toEpochDay();
-//    	
-//    	System.out.println(dd);
-//    	
-//    	
-//
-//	}
-	
-//	public static void main(String[] args) {
-//		String a ="1,2,3,4,5,6,7,8,7,8,4,3";
-//		String[] strids = a.split(",");
-//		TreeSet<Object> s = toRepeat(strids);
-//		Iterator i = s.iterator();
-//		while(i.hasNext()){
-//			System.out.println(i.next());
-//		}
-//		
-//
-//	}
+  
 	
     public static void main(String[] args) {
 		
-    	String d = Common.fromDateYM();
-    	System.out.println(d);
-    	
+    String aa="bt_xjilakceijjkserxxx";
+    String bb = aa.substring(0, aa.lastIndexOf("_"));
+    	System.out.println(bb);
     	
 	}
 	

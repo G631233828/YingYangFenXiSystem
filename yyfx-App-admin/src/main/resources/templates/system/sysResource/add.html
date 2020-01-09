@@ -69,16 +69,19 @@ canvas#canvas4 {
 									<!-- edit form column -->
 									<div class="col-md-12 personal-info">
 										<form class="form-horizontal" enctype="multipart/form-data"
-											id="sysResourceForm" th:action="@{/admin/sysResource}" method="post">
+											id="sysResourceForm" th:action="@{/admin/sysResource}"
+											method="post">
 											<input type="hidden" name="_method" value="put"
-												th:if="${sysResource!=null}" /> <input type="hidden" name="id"
-												th:if="${sysResource!=null}" th:value="${sysResource.id}">
+												th:if="${sysResource!=null}" /> <input type="hidden"
+												name="id" th:if="${sysResource!=null}"
+												th:value="${sysResource.id}">
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">菜单名称：</label>
 												<div class="col-lg-6">
 													<input class="form-control" id="name" placeholder="请输入菜单名称"
-														name="name" th:value="${sysResource!=null}?${sysResource.name}"
+														name="name"
+														th:value="${sysResource!=null}?${sysResource.name}"
 														required="required">
 												</div>
 											</div>
@@ -123,21 +126,35 @@ canvas#canvas4 {
 
 
 											<div class="form-group" id="parent"
-												th:style="${resourssupmenuId} !=null?'display:block;':'display:none;'">
+												th:style="${sysResource?.parentId!='0'}?'display:block;':'display:none;'">
 												<label class="col-lg-1 control-label">所属目录：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
-														<select name="parentId" id="parentId" class="form-control"
-															onchange="return getparentmenu();" required>
+														<select name="parentId" id="parentId" class="form-control" required>
 															<option value="">----选择目录----</option>
-															<option th:if="${resList !=null && res.id!=sysResource.id}" th:value="${res.id}"
-																th:each="res:${resList}"
-																th:selected="${res.id == resourssupmenuId}"
+															<option
+																th:if="${resList !=null && res?.id!=sysResource?.id}"
+																th:value="${res.id}" th:each="res:${resList}"
+																th:selected="${res.id == sysResource?.parentId}"
 																th:text="${res.name}">
 														</select>
 													</div>
 												</div>
 											</div>
+
+
+											<div class="form-group" id="button"  th:style="${sysResource?.parentId!='0'}?'display:block;':'display:none;'">
+												<label class="col-lg-1 control-label">功能：</label>
+												<div class="col-lg-6">
+													<div class="ui-select" style="margin-top: 5px;">
+														<th:block th:each="oper:${operationlist}">
+															<input type="checkbox" name="operation"   th:value="${oper.id}" th:id="${oper.id}">[[${oper.name}]]
+														</th:block>
+													</div>
+												</div>
+											</div>
+
+
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">使用状态：</label>
@@ -158,10 +175,13 @@ canvas#canvas4 {
 												<label class="col-lg-1 control-label">菜单图标：</label>
 												<div class="col-lg-6">
 													<input class="form-control" id="icon" placeholder="请选择菜单图标"
-														name="icon" th:value="${sysResource!=null}?${sysResource.icon}"
+														name="icon"
+														th:value="${sysResource!=null}?${sysResource.icon}"
 														onclick="return selectIcon();">
 												</div>
 											</div>
+
+
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">描述：</label>
@@ -217,6 +237,30 @@ canvas#canvas4 {
 	<script type="text/javascript" th:inline="javascript"
 		th:src="@{/js/system/sysResource/sysResource.js}"></script>
 	<div th:replace="public/public_js::validator"></div>
-</body>
+	
 
+	
+	
+	
+	
+	
+	
+</body>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function(){
+			var menu = /*[[${sysResource.sysMenuAuthority}]]*/;
+			if(menu != null){
+				 for (var i in menu){
+					 var id_ ="#"+menu[i].sysOperationAuthority.id;
+					$(id_).prop("checked", true);
+				 }
+			}	
+					
+		})
+	/*]]>*/
+
+	
+	</script>
+	
 </html>

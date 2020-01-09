@@ -3,12 +3,14 @@
  */
 package zhongchiedu.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,11 @@ import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
+import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
+import zhongchiedu.system.service.SysMenuAuthorityService;
+import zhongchiedu.system.service.SysOperationAuthorityService;
 import zhongchiedu.system.service.SysResourceService;
 
 /**  
@@ -30,8 +35,15 @@ import zhongchiedu.system.service.SysResourceService;
 */
 @Service
 @Slf4j
-public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> implements SysResourceService  {/* 
-	 * <p>Title: findPagination</p>  
+public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> implements SysResourceService  {
+
+	@Autowired
+	private SysOperationAuthorityService sysOperationAuthorityService;
+	@Autowired
+	private SysMenuAuthorityService sysMenuAuthorityService;
+
+
+	/* <p>Title: findPagination</p>  
 	 * <p>Description: </p>  
 	 * @param pageNo
 	 * @param pageSize
@@ -68,6 +80,7 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 		Query query= new Query();
 		query.addCriteria(Criteria.where("parentId").is(parentId));
 		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("isDelete").is(false));
 		List<SysResource> list = this.find(query,SysResource.class);
 		return list;
 	}
@@ -83,6 +96,7 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 	public SysResource findSysResourceByName(String name) {
 		Query  query = new Query();
 		query.addCriteria(Criteria.where("name").is(name));
+		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.findOneByQuery(query, SysResource.class);
 		
 		
@@ -97,12 +111,32 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 	 * @see zhongchiedu.system.service.SysResourceService#saveOrUpdate(zhongchiedu.system.pojo.SysResource)  
 	 */
 	@Override
-	public void saveOrUpdate(SysResource sysResource) {
+	public void saveOrUpdate(SysResource sysResource,String[] operation) {
+		
 		if(Common.isNotEmpty(sysResource)) {
 			if(sysResource.getType() == 0) {
 				sysResource.setParentId("0");
 			}
-			
+			if(sysResource.getType() == 1) {
+				//拥有按钮权限
+				String parentId = sysResource.getParentId();
+				//获取当前添加菜单的父菜单
+				SysResource sr = this.findOneById(parentId, SysResource.class);
+				
+				List<SysMenuAuthority> list = new  ArrayList<SysMenuAuthority>();
+				for (String op : operation) {
+					SysOperationAuthority sysop = 	this.sysOperationAuthorityService.findOneById(op, SysOperationAuthority.class);
+					SysMenuAuthority sm = new SysMenuAuthority();
+					sm.setSysOperationAuthority(sysop);
+					sm.setParentResource(sr);
+					this.sysMenuAuthorityService.saveOrUpdate(sm);
+//					//sm.setResKey(sr.getResKey()+":"+sysResource.getResKey()+":"+sysop.getKey());
+					SysMenuAuthority sys = this.sysMenuAuthorityService.findSysMenuAuthority(sysop, sr);
+					list.add(sys);
+				}
+				sysResource.setSysMenuAuthority(list);
+			}
+			   
 			if(Common.isNotEmpty(sysResource.getId())) {
 				//update
 				SysResource ed = this.findOneById(sysResource.getId(), SysResource.class);
@@ -182,6 +216,23 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 			lock.unlock();
 		}
 		return "error";
+	}
+
+
+
+	/* 
+	 * <p>Title: findAllSysResources</p>  
+	 * <p>Description: </p>  
+	 * @return  
+	 * @see zhongchiedu.system.service.SysResourceService#findAllSysResources()  
+	 */
+	@Override
+	public List<SysResource> findAllSysResources() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		return this.find(query, SysResource.class);
+		
 	}
 
 }

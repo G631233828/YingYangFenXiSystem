@@ -4,10 +4,20 @@ function changeType() {
 	var type = $("#type").val();
 	if (type == 1) {
 		$("#parent").show();
+		$("#button").show();
 		$("#parentId").attr("disabled", false);
 	}  else if (type == 0) {
 		$("#parent").css("display", "none");
+		$("#button").css("display", "none");
 		$("#parentId").attr("disabled", "disabled");
+		$("[name=operationAuthority]:checkbox").prop("checked", false);
+		
+		
+		
+		   
+		
+		
+		
 	}
 }
 

@@ -55,24 +55,24 @@ canvas#canvas4 {
 							<div class="title-alt">
 								<div>
 									<!-- <shiro:hasPermission name="admin:sysResource:add"> -->
-										<button class="btn btn-default btn-sm"
-											th:onclick="|window.location.href='@{/admin/sysResource}'|">
-											<i class="glyphicon glyphicon-plus"> </i> 添加
-										</button>
+									<button class="btn btn-default btn-sm"
+										th:onclick="|window.location.href='@{/admin/sysResource}'|">
+										<i class="glyphicon glyphicon-plus"> </i> 添加
+									</button>
 									<!-- </shiro:hasPermission> -->
 
 									<!-- <shiro:hasPermission name="admin:sysResource:edit"> -->
-										<button class="btn btn-primary btn-sm"
-											onclick="return toeditPage('','sysResource')">
-											<i class="fa fa-edit"> </i>编辑
-										</button>
+									<button class="btn btn-primary btn-sm"
+										onclick="return toeditPage('','sysResource')">
+										<i class="fa fa-edit"> </i>编辑
+									</button>
 									<!-- </shiro:hasPermission> -->
 
 									<!-- <shiro:hasPermission name="admin:sysResource:delete"> -->
-										<button class="btn btn-danger btn-sm"
-											th:onclick="|return del('','@{sysResource}')|">
-											<i class="fa fa-trash-o"> </i>删除
-										</button>
+									<button class="btn btn-danger btn-sm"
+										th:onclick="|return del('','@{sysResource}')|">
+										<i class="fa fa-trash-o"> </i>删除
+									</button>
 									<!-- </shiro:hasPermission> -->
 
 								</div>
@@ -110,6 +110,9 @@ canvas#canvas4 {
 												<th class="numeric">类别</th>
 												<th class="numeric">图标</th>
 												<th class="numeric">使用状态</th>
+												<th:block th:each="oper:${operationlist}">
+													<th class="numeric" th:text="${oper.name}"></th>
+												</th:block>
 												<th class="numeric">描述</th>
 												<th class="numeric">操作</th>
 											</tr>
@@ -135,23 +138,30 @@ canvas#canvas4 {
 
 													<td class="numeric"><i th:class="${res.icon}"></i></td>
 													<td class="numeric" th:id="disBtn+${res.id}"
-														th:utext="${res.isDisable eq true }?|<button type='button' onclick=toDisable('${res.id}','sysResource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res.id}','sysResource') class='btn btn-success'>启用</button>|"></td>
+														th:utext="${res.isDisable eq true }?|<button type='button' onclick=toDisable('${res.id}','admin/sysResource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res.id}','admin/sysResource') class='btn btn-success'>启用</button>|"></td>
+													<th:block th:each="oper:${operationlist}">
+														<td class="numeric">
+															<div class="checkbox checkbox-inline"
+																style="margin-top: 0px;">
+																<!-- <input type="checkbox" th:id="|${res.id}_${oper.id}|"
+																	name="checkOperator" class="checkOperator"
+																	style="zoom: 100%;" /> -->
+															</div>
+														</td>
+													</th:block>
+
 													<td class="numeric">[[${res.description }]]</td>
 													<td class="numeric">
-													<!-- <shiro:hasPermission name="sysResource:edit"> -->
-															<button class="btn btn-primary btn-xs"
-																th:onclick="|return toeditPage('${res.id}','sysResource')|">
-																<i class="fa fa-edit"> </i>编辑
-															</button>
-
-														<!-- </shiro:hasPermission>  -->
-														<!-- <shiro:hasPermission name="sysResource:delete"> -->
-															<button class="btn btn-danger btn-xs"
-																th:onclick="|return del('@{/sysResource/}${res.id}','')|">
-																<i class="fa fa-trash-o"> </i>删除
-															</button>
-														<!-- </shiro:hasPermission> -->
-														</td>
+														<!-- <shiro:hasPermission name="sysResource:edit"> -->
+														<button class="btn btn-primary btn-xs"
+															th:onclick="|return toeditPage('${res.id}','sysResource')|">
+															<i class="fa fa-edit"> </i>编辑
+														</button> <!-- </shiro:hasPermission>  --> <!-- <shiro:hasPermission name="sysResource:delete"> -->
+														<button class="btn btn-danger btn-xs"
+															th:onclick="|return del('@{/sysResource/}${res.id}','')|">
+															<i class="fa fa-trash-o"> </i>删除
+														</button> <!-- </shiro:hasPermission> -->
+													</td>
 												</tr>
 												<!-- 菜单 -->
 												<th:block th:each="res2:${pageList.datas}"
@@ -173,22 +183,29 @@ canvas#canvas4 {
 
 														<td class="numeric"><i th:class="${res2.icon}"></i></td>
 														<td class="numeric" th:id="disBtn+${res2.id}"
-															th:utext="${res2.isDisable eq true }?|<button type='button' onclick=toDisable('${res2.id}','sysResource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res2.id}','sysResource') class='btn btn-success'>启用</button>|"></td>
+															th:utext="${res2.isDisable eq true }?|<button type='button' onclick=toDisable('${res2.id}','admin/sysResource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res2.id}','admin/sysResource') class='btn btn-success'>启用</button>|"></td>
+
+														<th:block th:each="oper:${operationlist}">
+															<td class="numeric">
+																<div class="checkbox checkbox-inline"
+																	style="margin-top: 0px;">
+																	<input type="checkbox" th:id="|${res2.id}_${oper.id}|"  disabled="disabled"
+																		th:name="|${res2.id}_${oper.id}|" style="zoom: 100%;" />
+																</div>
+															</td>
+														</th:block>
 														<td class="numeric">[[${res2.description }]]</td>
 														<td class="numeric">
-														<!-- <shiro:hasPermission name="sysResource:edit"> -->
-																<button class="btn btn-primary btn-xs"
-																	th:onclick="|return toeditPage('${res2.id}','sysResource')|">
-																	<i class="fa fa-edit"> </i>编辑
-																</button>
-															<!-- </shiro:hasPermission> -->
-															<!--  <shiro:hasPermission name="sysResource:delete"> -->
-																<button class="btn btn-danger btn-xs"
-																	th:onclick="|return del('@{sysResource/}${res2.id}','')|">
-																	<i class="fa fa-trash-o"> </i>删除
-																</button>
-															<!-- </shiro:hasPermission> -->
-															</td>
+															<!-- <shiro:hasPermission name="sysResource:edit"> -->
+															<button class="btn btn-primary btn-xs"
+																th:onclick="|return toeditPage('${res2.id}','sysResource')|">
+																<i class="fa fa-edit"> </i>编辑
+															</button> <!-- </shiro:hasPermission> --> <!--  <shiro:hasPermission name="sysResource:delete"> -->
+															<button class="btn btn-danger btn-xs"
+																th:onclick="|return del('@{sysResource/}${res2.id}','')|">
+																<i class="fa fa-trash-o"> </i>删除
+															</button> <!-- </shiro:hasPermission> -->
+														</td>
 													</tr>
 												</th:block>
 											</th:block>
@@ -260,6 +277,48 @@ canvas#canvas4 {
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
 	<div th:replace="public/public_js::validator"></div>
 
+	<script type="text/javascript">
+/* 	$(".checkOperator").click(function() {
+		var selectId = $(this).attr("id");
+		var flag = $("[name="+selectId+"]:checkbox").is(':checked');
+		alert(flag)
+		$("[name="+selectId+"]:checkbox").each(function() {
+			$(this).prop("checked", flag);
+		})
+	}) */
+
+	$(".checkOperator").click(function() {
+		var flag = $("[name="+this.id+"]:checkbox").is(':checked');
+		flag = flag == false ? true : false;
+		$("[name="+this.id+"]:checkbox").prop("checked", flag);
+
+	})
+	
+	</script>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function(){
+			var menu = /*[[${pageList.datas}]]*/;
+			if(menu != null){
+				for (var i in menu){
+
+					var items = menu[i].sysMenuAuthority;
+					for(var j in items){
+					 	var id_ ="#"+menu[i].id+"_"+items[j].sysOperationAuthority.id;
+						$(id_).prop("checked", true);  
+					}
+					}
+					
+				}
+
+	
+					
+		})
+	/*]]>*/
+
+	
+	</script>
 
 
 </body>

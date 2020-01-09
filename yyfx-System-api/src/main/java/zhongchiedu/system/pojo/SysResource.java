@@ -3,6 +3,10 @@
  */
 package zhongchiedu.system.pojo;
 
+import java.util.List;
+
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,5 +31,10 @@ public class SysResource extends GeneralBean<Resource>{
 	private String resKey; // 资源key
 	private int type; // type = 0  根菜单   type = 1 子菜单
 	private String resUrl; // 资源链接
-	private String icon; // 资源图标
+	private String icon; // 资源图标 
+	@DBRef
+	private List<SysMenuAuthority> sysMenuAuthority;//如果type=1可以设置拥有的按钮权限
+	
+	
+	
 }

@@ -43,6 +43,7 @@ public class SysOperationAuthorityServiceImpl  extends GeneralServiceImpl<SysOpe
 	public SysOperationAuthority findSysOperationAuthorityByName(String name) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("name").is(name));
+		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.findOneByQuery(query, SysOperationAuthority.class);
 
 	}
@@ -57,6 +58,7 @@ public class SysOperationAuthorityServiceImpl  extends GeneralServiceImpl<SysOpe
 	public List<SysOperationAuthority> findAllSysOperationAuthorityByIsDisable() {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.find(query, SysOperationAuthority.class);
 	}
 
@@ -68,7 +70,9 @@ public class SysOperationAuthorityServiceImpl  extends GeneralServiceImpl<SysOpe
 	 */
 	@Override
 	public List<SysOperationAuthority> findAllSysOperationAuthority() {
-		return this.find(new Query(), SysOperationAuthority.class);
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		return this.find(query, SysOperationAuthority.class);
 	}
 
 	/* (non-Javadoc)  

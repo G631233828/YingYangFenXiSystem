@@ -27,6 +27,7 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
+import zhongchiedu.system.service.SysOperationAuthorityService;
 import zhongchiedu.system.service.SysResourceService;
 
 /**
@@ -47,6 +48,8 @@ public class SysResourceController {
 
 	@Autowired
 	private SysResourceService sysResourceService;
+	@Autowired
+	private SysOperationAuthorityService sysOperationAuthorityService;
 
 	@GetMapping("sysResources")
 	// @RequiresPermissions(value = "admin:sysResource:list")
@@ -57,6 +60,10 @@ public class SysResourceController {
 		log.info("查询所有资源");
 		Pagination<SysResource> pagination = this.sysResourceService.findPagination(pageNo, pageSize);
 		model.addAttribute("pageList", pagination);
+
+		List<SysOperationAuthority> operationlist = this.sysOperationAuthorityService.findAllSysOperationAuthorityByIsDisable();
+		model.addAttribute("operationlist", operationlist);
+		
 		return "system/sysResource/list";
 	}
 
@@ -68,6 +75,8 @@ public class SysResourceController {
 		// 获取所有的启用的资源目录
 		List<SysResource> list = this.sysResourceService.findSysResourceMenu("0");
 		model.addAttribute("resList", list);
+		List<SysOperationAuthority> operationlist = this.sysOperationAuthorityService.findAllSysOperationAuthorityByIsDisable();
+		model.addAttribute("operationlist", operationlist);
 		return "system/sysResource/add";
 	}
 	
@@ -87,6 +96,8 @@ public class SysResourceController {
 		model.addAttribute("resList", list);
 		SysResource sysResource = this.sysResourceService.findOneById(id, SysResource.class);
 		model.addAttribute("sysResource", sysResource);
+		List<SysOperationAuthority> operationlist = this.sysOperationAuthorityService.findAllSysOperationAuthorityByIsDisable();
+		model.addAttribute("operationlist", operationlist);
 		return "system/sysResource/add";
 
 	}
@@ -104,16 +115,16 @@ public class SysResourceController {
 	@PostMapping("/sysResource")
 	// @RequiresPermissions(value = "admin:sysResource:add")
 	@SystemControllerLog(description = "添加资源")
-	public String addSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
-		this.sysResourceService.saveOrUpdate(sysResource);
+	public String addSysResource(@ModelAttribute("sysResource") SysResource sysResource,String[] operation) {
+		this.sysResourceService.saveOrUpdate(sysResource,operation);
 		return "redirect:/admin/sysResources";
 	}
 
 	@PutMapping("/sysResource")
 //	@RequiresPermissions(value = "admin:sysResource:edit")
 	@SystemControllerLog(description = "修改资源")
-	public String editSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
-		this.sysResourceService.saveOrUpdate(sysResource);
+	public String editSysResource(@ModelAttribute("sysResource") SysResource sysResource,String[] operation) {
+		this.sysResourceService.saveOrUpdate(sysResource,operation);
 		return "redirect:/admin/sysResources";
 	}
 	
