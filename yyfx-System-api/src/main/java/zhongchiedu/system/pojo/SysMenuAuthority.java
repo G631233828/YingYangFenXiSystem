@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import zhongchiedu.framework.pojo.GeneralBean;
 
@@ -19,6 +20,7 @@ import zhongchiedu.framework.pojo.GeneralBean;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=true)
 public class SysMenuAuthority extends GeneralBean<SysMenuAuthority> {
 	
 	
@@ -28,8 +30,7 @@ public class SysMenuAuthority extends GeneralBean<SysMenuAuthority> {
 	
 	@DBRef
 	private SysOperationAuthority sysOperationAuthority;
-	@DBRef
-	private SysResource parentResource;
+	private String parentResourceId;
 //	private String resKey;//目录key+":"+菜单key+":"+按钮key
 //	private String resUrl;
 

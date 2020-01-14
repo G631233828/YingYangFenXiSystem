@@ -117,26 +117,7 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 			if(sysResource.getType() == 0) {
 				sysResource.setParentId("0");
 			}
-			if(sysResource.getType() == 1) {
-				//拥有按钮权限
-				String parentId = sysResource.getParentId();
-				//获取当前添加菜单的父菜单
-				SysResource sr = this.findOneById(parentId, SysResource.class);
-				
-				List<SysMenuAuthority> list = new  ArrayList<SysMenuAuthority>();
-				for (String op : operation) {
-					SysOperationAuthority sysop = 	this.sysOperationAuthorityService.findOneById(op, SysOperationAuthority.class);
-					SysMenuAuthority sm = new SysMenuAuthority();
-					sm.setSysOperationAuthority(sysop);
-					sm.setParentResource(sr);
-					this.sysMenuAuthorityService.saveOrUpdate(sm);
-//					//sm.setResKey(sr.getResKey()+":"+sysResource.getResKey()+":"+sysop.getKey());
-					SysMenuAuthority sys = this.sysMenuAuthorityService.findSysMenuAuthority(sysop, sr);
-					list.add(sys);
-				}
-				sysResource.setSysMenuAuthority(list);
-			}
-			   
+			
 			if(Common.isNotEmpty(sysResource.getId())) {
 				//update
 				SysResource ed = this.findOneById(sysResource.getId(), SysResource.class);
@@ -145,10 +126,13 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 				log.info("资源修改成功{}",sysResource.getId());
 			}else {
 				//insert
+				sysResource.setSysMenuAuthority(new ArrayList<SysMenuAuthority>());
 				this.insert(sysResource);
 				log.info("添加资源按钮{}",sysResource);
 			}
 		}
+			
+	
 	}
 
 	/* 
@@ -235,4 +219,82 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 		
 	}
 
+
+
+	/* 
+	 * <p>Title: createSysOperationAuthority</p>  
+	 * <p>Description: </p>  
+	 * @param param
+	 * @return  
+	 * @see zhongchiedu.system.service.SysResourceService#createSysOperationAuthority(java.lang.String)  
+	 */
+	@Override
+	public BasicDataResult createSysOperationAuthority(String param) {
+		String id = Common.subStringBeforeOf("_", param);//当前编辑id
+		String operId = Common.subStringEndOf("_", param);
+		SysOperationAuthority so = this.sysOperationAuthorityService.findOneById(operId, SysOperationAuthority.class);
+		
+  		SysResource sr = this.findOneById(id, SysResource.class);
+  		
+		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
+		
+		if(Common.isEmpty(sm)) {
+			//创建
+			 sm= new SysMenuAuthority();
+			 sm.setParentResourceId(sr.getId());
+			 sm.setSysOperationAuthority(so);
+			this.sysMenuAuthorityService.insert(sm);
+		}
+		//更新操作权限
+		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority();
+		List<SysMenuAuthority> newsm = new ArrayList<>();
+		
+		if(listsm.size() == 0) {
+			listsm.add(sm);
+			sr.setSysMenuAuthority(listsm);
+			this.save(sr);
+			return BasicDataResult.build(200, "操作成功",null);
+		}else {
+			//判断是否存在，存在则去除
+			boolean flag = this.contain(listsm, sm.getId());
+			if(flag) {
+				//删除
+				for(SysMenuAuthority sys:listsm) {
+					if(!sys.getId().equals(sm.getId())) {
+						newsm.add(sys);
+					}
+				}
+				sr.setSysMenuAuthority(newsm);
+				this.save(sr);
+				return BasicDataResult.build(200, "操作成功",null);
+			}else {
+				//添加
+				listsm.add(sm);
+				sr.setSysMenuAuthority(listsm);
+				this.save(sr);
+				return BasicDataResult.build(200, "操作成功",null);
+			}
+		}
+		
+	}
+
+
+	public boolean contain(List<SysMenuAuthority> listsm,String containId) {
+		for(SysMenuAuthority sys:listsm) {
+			if(sys.getId().equals(containId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

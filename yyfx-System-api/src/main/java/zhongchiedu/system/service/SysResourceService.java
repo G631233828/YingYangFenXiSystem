@@ -39,5 +39,10 @@ public interface SysResourceService  extends GeneralService<SysResource>{
 	
 	String delete(String id);
 	
+	BasicDataResult createSysOperationAuthority(String param);
+	
+	
+	
+	
 	
 }

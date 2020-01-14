@@ -139,5 +139,11 @@ public class SysResourceController {
 	public BasicDataResult toDisable(@RequestParam(value = "id", defaultValue = "") String id) {
 		return this.sysResourceService.toDisable(id);
 	}
+	
+	@RequestMapping(value = "/sysResource/setOperationAuthority", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public BasicDataResult setOperationAuthority(@RequestParam(value = "param", defaultValue = "") String param) {
+	return this.sysResourceService.createSysOperationAuthority(param);
+	}
 
 }

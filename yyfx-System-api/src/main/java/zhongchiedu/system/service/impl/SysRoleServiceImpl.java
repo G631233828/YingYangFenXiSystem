@@ -22,8 +22,6 @@ import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
-import zhongchiedu.system.pojo.Resource;
-import zhongchiedu.system.pojo.Role;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysRole;
@@ -254,12 +252,11 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 				String getid = i.next().toString();
 				if (getid.contains(st)) {
 					String bid = Common.subStringEndOf(st, getid);
-//					String pid = Common.subStringBeforeOf(st, getid);
+					String pid = Common.subStringBeforeOf(st, getid);
 					SysMenuAuthority menu = this.sysMenuAuthorityService.findOneById(bid, SysMenuAuthority.class);
 					listmenu.add(menu);
 				} else {
 					SysResource res = this.sysResourceService.findOneById(getid, SysResource.class);
-					res.setSysMenuAuthority(null);
 					listres.add(res);
 				}
 			}
@@ -267,7 +264,7 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 			role.setSysMenuAuthority(new ArrayList<SysMenuAuthority>());
 			this.save(role);
 			// 更新
-			role.setSysMenuAuthority(listmenu);
+			 role.setSysMenuAuthority(listmenu);
 			role.setSysresource(listres);
 			this.save(role);
 			uploadRoleVersion(id);
@@ -319,7 +316,7 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 			return BasicDataResult.build(400, "未能找到角色的相关信息", null);
 		}
 		SysRole role = this.findOneById(id, SysRole.class);
-		
+
 		if (role != null) {
 
 //			List<SysResource> list = role.getSysresource();

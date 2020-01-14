@@ -169,8 +169,8 @@ public class SysRoleController {
 	 */
 	@RequestMapping(value = "/sysRole/ajaxgetRepletes", method = RequestMethod.POST)
 	@ResponseBody
-	public BasicDataResult ajaxgetRepletes(@RequestParam(value = "name", defaultValue = "") String name) {
-		return this.sysRoleService.ajaxgetRepletes(name);
+	public BasicDataResult ajaxgetRepletes(@RequestParam(value = "roleName", defaultValue = "") String roleName) {
+		return this.sysRoleService.ajaxgetRepletes(roleName);
 	}
 
 	@RequestMapping(value = "/sysRole/disable", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")

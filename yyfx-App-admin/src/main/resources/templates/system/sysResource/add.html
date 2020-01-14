@@ -143,18 +143,6 @@ canvas#canvas4 {
 											</div>
 
 
-											<div class="form-group" id="button"  th:style="${sysResource?.parentId!='0'}?'display:block;':'display:none;'">
-												<label class="col-lg-1 control-label">功能：</label>
-												<div class="col-lg-6">
-													<div class="ui-select" style="margin-top: 5px;">
-														<th:block th:each="oper:${operationlist}">
-															<input type="checkbox" name="operation"   th:value="${oper.id}" th:id="${oper.id}">[[${oper.name}]]
-														</th:block>
-													</div>
-												</div>
-											</div>
-
-
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">使用状态：</label>
@@ -248,16 +236,7 @@ canvas#canvas4 {
 </body>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		$(function(){
-			var menu = /*[[${sysResource.sysMenuAuthority}]]*/;
-			if(menu != null){
-				 for (var i in menu){
-					 var id_ ="#"+menu[i].sysOperationAuthority.id;
-					$(id_).prop("checked", true);
-				 }
-			}	
-					
-		})
+		
 	/*]]>*/
 
 	

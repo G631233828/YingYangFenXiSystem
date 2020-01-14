@@ -56,7 +56,7 @@
 											<td style="width: 20%;"><div
 													class="checkbox checkbox-inline" style="margin-top: 0px;">
 													<input type="checkbox" name="authorIds" th:id="${res.id}"
-														class="numeric" th:value="${res.id}"> <label
+														th:class="|numeric parentcheckbox  ${res2.id}|" th:value="${res.id}"> <label
 														th:for="${res.id}"></label>
 												</div>[[${res.name}]]
 											</td>
@@ -65,21 +65,21 @@
 											<td style="width: 20%;"><div
 													class="checkbox checkbox-inline" style="margin-top: 0px;">
 													<input type="checkbox" name="authorIds" th:id="${res2.id}"
-														class="numeric" th:value="${res2.id}"> <label
+														th:class="|numeric menucheckbox ${res.id}|" th:value="${res2.id}"> <label
 														th:for="${res2.id}"></label>
 												</div>[[${res2.name}]]</td>
 											<td>
-												<div th:each="res3:${res2.sysMenuAuthority}" >
+												<div th:each="res3:${res2.sysMenuAuthority}"  >
 
 													<ul style="list-style-type:none;float: left;">
 														<li>
-															<div class="checkbox checkbox-inline"
-																style="margin-top: 0px;margin-left: 5px;" >
+		 													<div class="checkbox checkbox-inline"
+																style="margin-top: 0px;margin-left: 5px;" th:if="${res3.sysOperationAuthority.isDisable == false && res3.sysOperationAuthority.isDelete == false}">
 																<input type="checkbox" name="authorIds"
-																	th:id="${res3.id}" class="numeric"
+																	th:id="${res3.id}" th:class="|numeric ${res2.id}|"
 																	th:value="|${res2.id}_${res3.id}|"> <label
 																	th:for="${res3.sysOperationAuthority.id}"></label>
-															</div> [[${res3.sysOperationAuthority.name}]]
+															 [[${res3.sysOperationAuthority.name}]]</div>
 														</li>
 													</ul>
 

@@ -9,7 +9,12 @@
 	th:href="@{/assets/js/progress-bar/number-pb.css}">
 <link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
 
-<!-- <link rel="shortcut icon" href="@{/assets/ico/minus.png}"> -->
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -49,26 +54,27 @@
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-								<!-- 	<shiro:hasPermission name="admin:sysRole:add"> -->
+									<!-- <shiro:hasPermission name="admin:user:add"> -->
 										<button class="btn btn-default btn-sm"
-											th:onclick="|window.location.href='@{/admin/sysRole}'|">
+											th:onclick="|window.location.href='@{/admin/sysUser}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									<!-- </shiro:hasPermission> -->
 
-								<!-- 	<shiro:hasPermission name="admin:sysRole:edit"> -->
+									<!-- <shiro:hasPermission name="admin:user:edit"> -->
 										<button class="btn btn-primary btn-sm"
-											onclick="return toeditPage('','sysRole')">
+											onclick="return toeditPage('','sysUser')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									<!-- </shiro:hasPermission> -->
 
-									<!-- <shiro:hasPermission name="admin:sysRole:delete"> -->
+									<!-- <shiro:hasPermission name="admin:user:delete"> -->
 										<button class="btn btn-danger btn-sm"
-											th:onclick="|return del('','@{sysRole}')|">
-											<i class="fa fa-trash-o"> </i>删除
+											th:onclick="|return del('','@{sysUser}')|">
+											<i class="glyphicon glyphicon-user"> </i>删除
 										</button>
 									<!-- </shiro:hasPermission> -->
+
 								</div>
 
 								<div class="titleClose">
@@ -98,54 +104,54 @@
 															for="checkall"></label>
 													</div>
 												</th>
-												<th class="numeric">角色名称</th>
-												<th class="numeric">角色key</th>
+												<th class="numeric">用户姓名</th>
+												<th class="numeric">帐号所属</th>
+												<th class="numeric">角色</th>
 												<th class="numeric">使用状态</th>
-												<th class="numeric">描述</th>
+												<th class="numeric">上次登陆时间</th>
+												<th class="numeric">上次登陆Ip</th>
 												<th class="numeric">操作</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="role:${pageList.datas}">
+											<tr th:each="user:${pageList.datas}">
 												<td class="numeric">
 													<div class="checkbox checkbox-inline"
 														style="margin-top: 0px;">
-														<input type="checkbox" name="ids" th:id="${role.id}"
-															class="numeric" th:value="${role.id}"> <label
-															th:for="${role.id}"></label>
+														<input type="checkbox" name="ids" th:id="${user.id}"
+															class="numeric" th:value="${user.id}"> <label
+															th:for="${user.id}"></label>
 													</div>
 												</td>
-												<td class="numeric">[[${role.roleName }]]</td>
-												<td class="numeric">[[${role.roleKey }]]</td>
-												<td class="numeric" th:id="disBtn+${role.id}"
-													th:utext="${role.isDisable eq true }?|<button type='button' onclick=toDisable('${role.id}','admin/sysRole') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${role.id}','admin/sysRole') class='btn btn-success'>启用</button>|"></td>
-												<td class="numeric">[[${role.description }]]</td>
+												<td class="numeric">[[${user.userName }]]</td>
+												<td class="numeric">[[${user.accountName }]]</td>
+												<td class="numeric"
+													th:text="${user.role!=null?user.role.roleName:''}">[[${user.role.roleName
+													}]]</td>
+												<td class="numeric" th:id="disBtn+${user.id}"
+													th:utext="${user.isDisable eq true }?|<button type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-success'>启用</button>|"></td>
+												<td class="numeric">[[${user.lastLoginTime }]]</td>
+												<td class="numeric">[[${user.lastLoginIp }]]</td>
 												<td class="numeric">
-												<!-- <shiro:hasPermission name="admin:role:edit"> -->
+												<!-- <shiro:hasPermission name="admin:user:edit"> -->
 														<button class="btn btn-primary btn-xs"
-															th:onclick="|return toeditPage('${role.id}','sysRole')|">
+															th:onclick="|return toeditPage('${user.id}','sysUser')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:role:delete"> -->
+
+													<!-- </shiro:hasPermission>  -->
+													<!-- <shiro:hasPermission name="admin:user:delete"> -->
 														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{sysRole/}${role.id}','')|">
+															th:onclick="|return del('@{sysUser/}${user.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
-														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:role:author"> -->
-														<button class="btn btn-white btn-xs"
-															th:onclick="|return author('${role.id}')|">
-															<i class="fa fa-wrench"> </i>权限管理
 														</button>
 													<!-- </shiro:hasPermission> -->
 													</td>
 											</tr>
 
+
+
 										</tbody>
-										
-										
-										
 									</table>
 
 									<form method="post" id="deleteForm">
@@ -166,16 +172,16 @@
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/sysRoles?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/sysUsers?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/sysRoles?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/sysUsers?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/sysRoles?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/sysUsers?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>
@@ -195,12 +201,10 @@
 
 				</div>
 			</div>
-			<div th:replace="system/sysRole/author::authorModal"></div>
 			<div th:replace="public/public::myModal"></div>
 
 		</div>
 	</div>
-
 	<!--  END OF PAPER WRAP -->
 	<!-- 右侧隐藏菜单start -->
 	<div th:replace="public/public::right"></div>
@@ -213,104 +217,8 @@
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
 	<div th:replace="public/public_js::validator"></div>
 
-<script type="text/javascript">
-
-$("#allAuthor").click(function() {
-	//		var flag = $("[name=authorIds]:checkbox").is(':checked');
-	var flag = $("[name=allAuthor]:checkbox").is(':checked');
-
-	//		flag = flag == false ? true : false;
-	$("[name=authorIds]:checkbox").each(function() {
-		$(this).prop("checked", flag);
-	})
-})
 
 
-$(".menucheckbox").click(function(){
-	var id=$(this).attr("id");
-	var flag = $("#"+id).is(':checked');
-	$("."+id+":checkbox").each(function() {
-		$(this).prop("checked", flag);
-	})
-})
-$(".parentcheckbox").click(function(){
-	var id=$(this).attr("id");
-	var flag = $("#"+id).is(':checked');
-	$("."+id+":checkbox").each(function() {
-		$(this).prop("checked", flag);
-	})
-})
-
-
-
-function author(o) {
-
-	$("input[name='authorIds']").attr("checked", false);
-	$("input[name='allAuthor']").attr("checked", false);
-	$("#id").val(o);
-
-	$.ajax({
-		type : 'POST',
-		url : "sysRole/getAuthor",
-		data : "id=" + o,
-		dataType : "json",
-		success : function(data) {
-			$.each(data.data.sysresource, function(index, item) {
-					$(":checkbox[id='" + item.id + "']").prop("checked",true); 
-			});
-			$.each(data.data.sysMenuAuthority, function(index, item) {
-					$(":checkbox[id='" + item.id + "']").prop("checked",true); 
-			});
-
-		}
-	});
-
-	$("#authorModal").modal('show');
-
-}
-
-
-function toAuthor() {
-	 var id = $("#id").val();
-
-	//获取所有选中的权限
-
-	var authorIds = $("input[name='authorIds']:checked");
-	//获取所有的id执行删除操作，使用ajax
-	var str = "";
-	$(authorIds).each(function() {
-		str += this.value + ",";
-	});
-	var checkallPermission = str.substring(0, str.length - 1);
-	
-	
-	 // 需要通过ajax加载对应的菜单列表
-	$
-			.ajax({
-				type : 'POST',
-				url : "sysRole/author",
-				data : "checkallPermission=" + checkallPermission
-						+ "&id=" + id,
-				dataType : "json",
-				success : function(data) {
-					 jqueryAlert({
-						    'icon'    : getRootPath() +'/plugs/alert/img/right.png',
-						    'content' : data.msg,
-						    'closeTime' : 2000,
-						})
-			
-				}
-			});  
-
-}
-
-
-
-
-
-
-
-</script>
 
 </body>
 

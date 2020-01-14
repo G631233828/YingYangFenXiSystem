@@ -9,6 +9,11 @@ import java.io.File;
  */
 public class Contents {
     
+	/**
+	 * 系统用户session
+	 */
+	public static final String SYSUSER_SESSION = "sysuser_session";//后台用户session
+	
 
 	public static final String USER_REDIS_SESSION = "user-redis-session";//api session
 	public static final String USER_SESSION = "user_session";//后台用户session

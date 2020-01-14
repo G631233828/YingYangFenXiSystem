@@ -10,7 +10,6 @@ import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysOperationAuthority;
-import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.service.SysMenuAuthorityService;
 
 /**
@@ -39,7 +38,7 @@ public class SysMenuAuthorityServiceImpl extends GeneralServiceImpl<SysMenuAutho
 	public void saveOrUpdate(SysMenuAuthority sysMenuAuthority) {
 		if (Common.isNotEmpty(sysMenuAuthority)) {
 			SysMenuAuthority sysmenu = this.findSysMenuAuthority(sysMenuAuthority.getSysOperationAuthority(),
-					sysMenuAuthority.getParentResource());
+					sysMenuAuthority.getParentResourceId());
 			if(Common.isEmpty(sysmenu)) {
 				this.save(sysMenuAuthority);
 			}
@@ -56,10 +55,10 @@ public class SysMenuAuthorityServiceImpl extends GeneralServiceImpl<SysMenuAutho
 	 * zhongchiedu.system.pojo.SysResource)
 	 */
 	@Override
-	public SysMenuAuthority findSysMenuAuthority(SysOperationAuthority sop, SysResource sr) {
+	public SysMenuAuthority findSysMenuAuthority(SysOperationAuthority sop, String sysResourceId) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("sysOperationAuthority.$id").is(new ObjectId(sop.getId())));
-		query.addCriteria(Criteria.where("parentResource.$id").is(new ObjectId(sr.getId())));
+		query.addCriteria(Criteria.where("parentResourceId").is(sysResourceId));
 		return this.findOneByQuery(query, SysMenuAuthority.class);
 
 	}
@@ -76,7 +75,7 @@ public class SysMenuAuthorityServiceImpl extends GeneralServiceImpl<SysMenuAutho
 	public SysMenuAuthority findSysMenuAuthority(String sysOperationAuthorityId, String sysResourceId) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("sysOperationAuthority.$id").is(new ObjectId(sysOperationAuthorityId)));
-		query.addCriteria(Criteria.where("parentResource.$id").is(new ObjectId(sysResourceId)));
+		query.addCriteria(Criteria.where("parentResourceId").is(sysResourceId));
 		return this.findOneByQuery(query, SysMenuAuthority.class);
 	}
 

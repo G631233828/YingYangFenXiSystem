@@ -20,7 +20,7 @@ public interface SysMenuAuthorityService extends GeneralService<SysMenuAuthority
 	void saveOrUpdate(SysMenuAuthority sysMenuAuthority);
 	
 	
-	SysMenuAuthority findSysMenuAuthority(SysOperationAuthority sop,SysResource sr);	
+	SysMenuAuthority findSysMenuAuthority(SysOperationAuthority sop,String sysResourceId);	
 	
 	SysMenuAuthority findSysMenuAuthority(String sysOperationAuthorityId,String sysResourceId);	
 }

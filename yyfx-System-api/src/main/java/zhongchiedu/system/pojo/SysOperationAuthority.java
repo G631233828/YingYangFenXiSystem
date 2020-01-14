@@ -5,6 +5,7 @@ package zhongchiedu.system.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import zhongchiedu.framework.pojo.GeneralBean;
 
@@ -17,6 +18,7 @@ import zhongchiedu.framework.pojo.GeneralBean;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=true)
 public class SysOperationAuthority extends GeneralBean<SysOperationAuthority> {
 
 	/** serialVersionUID*/  

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import zhongchiedu.framework.pojo.GeneralBean;
 
@@ -21,6 +22,7 @@ import zhongchiedu.framework.pojo.GeneralBean;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=true)
 public class SysResource extends GeneralBean<Resource>{
 	
 
@@ -29,12 +31,13 @@ public class SysResource extends GeneralBean<Resource>{
 	private String name; // 资源名称
 	private String parentId; // 父目录id 没有父目录则为0
 	private String resKey; // 资源key
-	private int type; // type = 0  根菜单   type = 1 子菜单
+	private int type; // type = 0  根菜单   type = 1 子菜单 type =2 按钮
 	private String resUrl; // 资源链接
 	private String icon; // 资源图标 
-	@DBRef
-	private List<SysMenuAuthority> sysMenuAuthority;//如果type=1可以设置拥有的按钮权限
 	
+	 @DBRef
+	 private List<SysMenuAuthority> sysMenuAuthority;//如果type=1可以设置拥有的按钮权限
+	 
 	
 	
 }

@@ -11,15 +11,14 @@ function changeType() {
 		$("#button").css("display", "none");
 		$("#parentId").attr("disabled", "disabled");
 		$("[name=operationAuthority]:checkbox").prop("checked", false);
-		
-		
-		
-		   
-		
-		
-		
 	}
 }
+
+
+
+
+
+
 
 
 function selectIcon(){

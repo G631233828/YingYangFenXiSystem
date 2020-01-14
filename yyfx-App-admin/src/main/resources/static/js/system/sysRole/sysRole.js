@@ -1,4 +1,4 @@
-
+$().ready(function() {
 	$("#commentForm").validate();
 	var a = "<i class='fa fa-times-circle'></i> ";
 	$("#sysRoleForm").validate({
@@ -7,23 +7,24 @@
 				required : true,
 				minlength : 2,
 				remote : {
-					url :"sysRole/ajaxgetRepletes",
+					url : "sysRole/ajaxgetRepletes",
 					type : "POST",
 					data : {
 						roleName : function() {
-								return  $("#roleName").val() ;
+							return $("#roleName").val();
 						}
 					},
 					dataType : "json",
 					dataFilter : function(data, type) {
-						
+
 						var hidroleName = $("#hidroleName").val();
 						var roleName = $("#roleName").val();
-						if(roleName == hidroleName){
+						if (roleName == hidroleName) {
 							return true;
 						}
-						
+
 						var jsondata = $.parseJSON(data);
+						
 						if (jsondata.status == 200) {
 							return true;
 						}
@@ -36,13 +37,10 @@
 		messages : {
 			roleName : {
 				required : a + "请输入角色名称",
-				minlength : a + "用户名必须两个字符以上",
-				remote   : a + "不能添加重复的角色"
+				minlength : a + "角色名必须两个字符以上",
+				remote : a + "不能添加重复的角色"
 			},
 		}
 	});
 
-	
-	
-	
-	
+});
