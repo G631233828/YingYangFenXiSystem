@@ -1,7 +1,8 @@
+/**
+ * 
+ */
 package zhongchiedu.app.controller.system;
 
-
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -19,35 +20,38 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
-import zhongchiedu.commons.utils.UserType;
-import zhongchiedu.shiro.token.LoginToken;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
-import zhongchiedu.system.pojo.User;
-import zhongchiedu.system.service.UserService;
+import zhongchiedu.system.pojo.SysUser;
+import zhongchiedu.system.service.SysUserService;
 
+/**  
+* <p>Title: SysLoginController</p>  
+* <p>Description: </p>  
+* @author 郭建波  
+* @date 2020年1月16日  
+*/
 @Controller
-//@RequestMapping("/admin")
-public class LoginController {
-	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-
+@RequestMapping("/system")
+@Slf4j
+public class SysLoginController {
+	
 	@Autowired
-	private UserService userService;
-
+	private SysUserService sysUserService;
+	
 	@RequestMapping("/tologin")
-	@SystemControllerLog(description = "用户申请登陆")
-	public String login(User user,boolean rememberMe, HttpServletRequest request, Map<String, Object> map, HttpSession session,Model model)
+	@SystemControllerLog(description = "系统用户申请登陆")
+	public String login(SysUser user,boolean rememberMe, HttpServletRequest request, Map<String, Object> map, HttpSession session,Model model)
 			throws Exception {
 		if(Common.isEmpty(user.getAccountName())||Common.isEmpty(user.getPassWord())){
-			return "login";
+			return "system/sysLogin";
 		}
 		String msg = "";
 			/*
@@ -57,14 +61,14 @@ public class LoginController {
 			String accountName = user.getAccountName();
 			String password = user.getPassWord();
 			if (accountName != "" && password != "") {
-				//UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
-				LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
+				UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
+				//LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
 				// token.setRememberMe(rememberMe);
 				Subject subject = SecurityUtils.getSubject();// 获得主体
 				try {
 					subject.login(token);
 					if (subject.isAuthenticated()) {
-						return "redirect:/toindex";
+						return "redirect:/system/toindex";
 					} else {
 						msg = "登录失败";
 					}
@@ -85,19 +89,20 @@ public class LoginController {
 				} finally {
 					model.addAttribute("msg", msg);
 				}
-				return "login";
+				return "system/sysLogin";
 			}
 
-		return "redirect:/toindex";
+		return "redirect:/system/toindex";
 	}
-
+	
+	
 	/**
 	 * 登出
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/loginOut")
-	@SystemControllerLog(description = "用户退出")
+	@SystemControllerLog(description = "系统用户退出")
 	public String loginOut(HttpSession session,HttpServletResponse resp) {
 		Subject subject = SecurityUtils.getSubject();// 获得主体
 		session.removeAttribute(Contents.USER_SESSION);//删除cookie
@@ -106,7 +111,7 @@ public class LoginController {
 		co.setPath("/");// 根目录，整个网站有效
 		resp.addCookie(co);
 		subject.logout();
-		return "login";
+		return "/system/sysLogin";
 	}
 
 	
@@ -114,11 +119,17 @@ public class LoginController {
 	
 	
 	@RequestMapping(value="/toindex")
-	@SystemControllerLog(description = "用户登陆成功")
+	@SystemControllerLog(description = "系统用户登陆成功")
 	public String toindex(Model model){
-	
 		return "index";
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

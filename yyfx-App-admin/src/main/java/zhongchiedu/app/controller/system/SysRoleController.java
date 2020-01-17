@@ -109,7 +109,7 @@ public class SysRoleController {
 		log.info("删除角色" + id);
 		this.sysRoleService.delete(id);
 		log.info("删除角色" + id + "成功");
-		return "redirect:/admin/sysRoles  ";
+		return "redirect:/admin/sysRoles";
 	}
 	
 
@@ -131,7 +131,7 @@ public class SysRoleController {
 	public String addsysRole(
 			@ModelAttribute("sysRole") SysRole sysRole) {
 		this.sysRoleService.saveOrUpdate(sysRole);
-		return "redirect:sysRoles";
+		return "redirect:/admin/sysRoles";
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class SysRoleController {
 	public String editSysRole(
 			@ModelAttribute("sysRole") SysRole sysRole) {
 		this.sysRoleService.saveOrUpdate(sysRole);
-		return "redirect:sysRoles";
+		return "redirect:/admin/sysRoles";
 	}
 
 	/**

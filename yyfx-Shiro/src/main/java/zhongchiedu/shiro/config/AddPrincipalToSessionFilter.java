@@ -15,13 +15,13 @@ import org.apache.shiro.web.servlet.OncePerRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import zhongchiedu.commons.utils.Contents;
-import zhongchiedu.system.pojo.User;
-import zhongchiedu.system.service.impl.UserServiceImpl;
+import zhongchiedu.system.pojo.SysUser;
+import zhongchiedu.system.service.SysUserService;
 
 public class AddPrincipalToSessionFilter extends OncePerRequestFilter {
 	
 	@Autowired
-	private UserServiceImpl userService;
+	private SysUserService sysUserService;
 
 	@Override
 	protected void doFilterInternal(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -29,7 +29,8 @@ public class AddPrincipalToSessionFilter extends OncePerRequestFilter {
 		
 		 Subject subject = SecurityUtils.getSubject();
 	        if (subject.isRemembered()) {
-	        	User user = this.userService.findUserByAccountName(subject.getPrincipal().toString());
+	        	System.out.println("通过记住我登陆");
+	        	SysUser user = this.sysUserService.findSysUserByAccountName(subject.getPrincipal().toString());
 	            //将用户信息存入session
 	        	//对密码进行验证
 				UsernamePasswordToken token = new UsernamePasswordToken(user.getAccountName(), user.getPassWord(),subject.isRemembered());

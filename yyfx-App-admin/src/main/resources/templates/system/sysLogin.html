@@ -23,7 +23,7 @@
 			<div class="row">
 				<div class="col-md-5 col-md-offset-4">
 					<div id="logo-login">
-						<h1>中赤信息技术 (管理后台)</h1>
+						<h1>中赤信息技术 (系统管理员)</h1>
 					</div>
 				</div>
 
@@ -32,7 +32,7 @@
 			<div class="row">
 				<div class="col-md-5 col-md-offset-4">
 					<div class="account-box">
-						<form role="form" th:action="@{/tologin}" method="post">
+						<form role="form" th:action="@{/system/tologin}" method="post">
 
 							<div class="alert alert-danger" th:if="${msg != null}">
 								<button data-dismiss="alert" class="close" type="button">×</button>
@@ -60,6 +60,7 @@
 							<button class="btn btn btn-primary pull-right" type="submit">
 								登 录</button>
 						</form>
+						<a class="forgotLnk" href="index.html"></a>
 
 						<div class="row-block">
 							<div class="row"></div>
@@ -81,79 +82,6 @@
 	<!-- MAIN EFFECT -->
 	<!-- 底部js -->
 	<div th:replace="public/public_js::pub_js"></div>
-
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"
-		type="text/javascript"></script>
-	<script type="text/javascript" src="assets/js/map/gmap3.js"></script>
-	<script type="text/javascript">
-		$(function() {
-
-			$("#test1")
-					.gmap3(
-							{
-								marker : {
-									latLng : [ -7.782893, 110.402645 ],
-									options : {
-										draggable : true
-									},
-									events : {
-										dragend : function(marker) {
-											$(this)
-													.gmap3(
-															{
-																getaddress : {
-																	latLng : marker
-																			.getPosition(),
-																	callback : function(
-																			results) {
-																		var map = $(
-																				this)
-																				.gmap3(
-																						"get"), infowindow = $(
-																				this)
-																				.gmap3(
-																						{
-																							get : "infowindow"
-																						}), content = results
-																				&& results[1] ? results
-																				&& results[1].formatted_address
-																				: "no address";
-																		if (infowindow) {
-																			infowindow
-																					.open(
-																							map,
-																							marker);
-																			infowindow
-																					.setContent(content);
-																		} else {
-																			$(
-																					this)
-																					.gmap3(
-																							{
-																								infowindow : {
-																									anchor : marker,
-																									options : {
-																										content : content
-																									}
-																								}
-																							});
-																		}
-																	}
-																}
-															});
-										}
-									}
-								},
-								map : {
-									options : {
-										zoom : 15
-									}
-								}
-							});
-
-		});
-	</script>
-
 
 
 

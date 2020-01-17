@@ -17,6 +17,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.system.pojo.Resource;
 import zhongchiedu.system.pojo.User;
 import zhongchiedu.system.service.impl.UserServiceImpl;
@@ -26,9 +27,24 @@ public class MongoDBRealm extends AuthorizingRealm {
 	// LoggerFactory.getLogger(MongoDBRealm.class);
 	@Autowired
 	private UserServiceImpl userService;
+	
+	/*
+	 * <p>Title: getName</p> <p>Description: </p>
+	 * 
+	 * @return
+	 * 
+	 * @see org.apache.shiro.realm.CachingRealm#getName()
+	 */
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return UserType.SCHOOL;
+	}
+	
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		 if (!principals.getRealmNames().contains(getName())) return null;
 		// 获取登录的用户名
 		String accountName = SecurityUtils.getSubject().getPrincipal().toString();
 		// 获取shirosession
@@ -60,7 +76,7 @@ public class MongoDBRealm extends AuthorizingRealm {
 
 						info.addStringPermission(r.getResKey());
 
-						session.setAttribute(Contents.RESOURCES_LIST, rs);
+//						session.setAttribute(Contents.RESOURCES_LIST, rs);
 
 						// log.info("当前登录用户访问资源权限：" + info);
 					}
@@ -94,15 +110,15 @@ public class MongoDBRealm extends AuthorizingRealm {
 			if (u.getIsDisable()) {
 				throw new DisabledAccountException();
 			}
-
+			System.out.println("user :"+getName());
 			if (u != null) {
 				// 通过集合获取资源
 				List<Resource> rs = u.getRole().getResource();
 				// List<Resource> rs = u.getResource();
 				session.setAttribute(Contents.USER_SESSION, user);
-				session.setAttribute(Contents.USER_SESSION_ID, user.getId());
+				//session.setAttribute(Contents.USER_SESSION_ID, user.getId());
 				session.setAttribute(Contents.RESOURCES_LIST, rs);
-				return new SimpleAuthenticationInfo(user.getAccountName(), user.getPassWord(), Contents.REALMNAME);
+				return new SimpleAuthenticationInfo(user.getAccountName(), user.getPassWord(), getName());
 			}
 		} else {
 			return null;

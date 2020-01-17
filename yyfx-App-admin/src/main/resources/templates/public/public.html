@@ -15,7 +15,7 @@
 					data-toggle="collapse" class="navbar-toggle" type="button">
 					<span class="entypo-menu"></span>
 				</button>
-		<!-- 		<button class="navbar-toggle toggle-menu-mobile toggle-left"
+				<!-- 		<button class="navbar-toggle toggle-menu-mobile toggle-left"
 					type="button">
 					<span class="entypo-list-add"></span> -->
 
@@ -37,7 +37,7 @@
 				<ul style="margin-right: 0;" class="nav navbar-nav navbar-right">
 					<li><a data-toggle="dropdown" class="dropdown-toggle" href="#">
 							<img alt="" class="admin-pic img-circle"
-							th:src="${session.user_session?.photograph}!=null?${session.user_session?.photograph?.savePath }+'/'+${session.user_session?.photograph?.generateName }:'http://api.randomuser.me/portraits/thumb/men/10.jpg'">Hi,[[${session.user_session.userName}]]
+							th:src="${session.user_session?.photograph}!=null?${session.user_session?.photograph?.savePath }+'/'+${session.user_session?.photograph?.generateName }:'http://api.randomuser.me/portraits/thumb/men/10.jpg'">Hi,[[${session.user_session?.userName}]]
 							<b class="caret"></b>
 					</a>
 						<ul style="margin-top: 14px;" role="menu"
@@ -92,40 +92,48 @@
 				<div id="tree-wrap">
 					<div class="side-bar">
 						<ul class="topnav menu-left-nest">
-							
-							<li th:each="res:${session.resourceslist}"
-								th:if="${res.type} eq '0'"><a class="tooltip-tip ajax-load"
-								href="#" th:title="${res.name}"> <i th:class="${res.icon}"></i>
-									<span>[[${res.name}]]</span>
 
-									<!-- <h4 style="display: inline-block; float: none;">
+							<th:block th:if="${session.sysResource_session != ''}">
+							<li th:each="res:${session.sysResource_session}"
+									th:if="${res?.type} eq '0'"><a
+									class="tooltip-tip ajax-load" href="#" th:title="${res.name}">
+										<i th:class="${res?.icon}"></i> <span>[[${res?.name}]]</span>
+
+										<!-- <h4 style="display: inline-block; float: none;">
 										<img
 											th:src="${activeUri}==${res.resUrl}?'../assets/img/minus.png':'../assets/img/plus.png'"/>
 									</h4> -->
-							</a>
-								<ul
-									th:style="${activeUri}==${res.resUrl}?'display: block;':'display: none;'">
-									<li th:each="res2:${session.resourceslist}"
-										th:if="${res2.parentId eq res.id}"><a
-										class="tooltip-tip2 ajax-load"
-										th:href="|@{/}${res2.resUrl}?urlid=${res2.id}|"
-										th:title="${res2.name}"><i th:class="${res2.icon}"></i><span>[[${res2.name}]]</span></a>
-									</li>
-									
-									
-								</ul>
-								</li>
-			<li ><a class="tooltip-tip2 ajax-load" th:href="@{/admin/sysOperations}" ><span>操作权限功能</span></a> </li>
-			<li ><a class="tooltip-tip2 ajax-load" th:href="@{/admin/sysResources}" ><span>菜单资源配置</span></a> </li>
-			<li ><a class="tooltip-tip2 ajax-load" th:href="@{/admin/sysRoles}" ><span>角色管理</span></a> </li>
-			<li ><a class="tooltip-tip2 ajax-load" th:href="@{/admin/sysUsers}" ><span>用户管理</span></a> </li>
+								</a>
+									<ul
+										th:style="${activeUri}==${res.resUrl}?'display: block;':'display: none;'">
+										<li th:each="res2:${session.sysResource_session}"
+											th:if="${res2.parentId eq res.id}"><a
+											class="tooltip-tip2 ajax-load"
+											th:href="|@{/}${res2.resUrl}?urlid=${res2.id}|"
+											th:title="${res2.name}"><i th:class="${res2.icon}"></i><span>[[${res2.name}]]</span></a>
+										</li>
+
+
+									</ul></li>
+
+							</th:block>
+							<li><a class="tooltip-tip2 ajax-load"
+								th:href="@{/admin/sysOperations}"><span>操作权限功能</span></a></li>
+							<li><a class="tooltip-tip2 ajax-load"
+								th:href="@{/admin/sysResources}"><span>菜单资源配置</span></a></li>
+							<li><a class="tooltip-tip2 ajax-load"
+								th:href="@{/admin/sysRoles}"><span>角色管理</span></a></li>
+							<li><a class="tooltip-tip2 ajax-load"
+								th:href="@{/admin/sysUsers}"><span>用户管理</span></a></li>
+							<li><a class="tooltip-tip2 ajax-load"
+								th:href="@{/admin/sysRegins}"><span>区域管理</span></a></li>
 						</ul>
 
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 	<!-- END OF SIDE MENU -->
 
@@ -171,51 +179,51 @@
 							<!-- edit form column -->
 							<div class="col-md-12 personal-info">
 
-								<form class="form-horizontal" enctype="multipart/form-data" id="editPasswordForm">
-									
+								<form class="form-horizontal" enctype="multipart/form-data"
+									id="editPasswordForm">
+
 									<div class="form-group">
-												<label class="col-lg-2 control-label">当前账号：</label>
-												<div class="col-lg-6">
-													<input class="form-control" readonly="readonly"
-														th:value="${session.user_session.accountName}">
-												</div>
-												<input type="hidden" id="id" name="id" th:value="${session.user_session.id}">
+										<label class="col-lg-2 control-label">当前账号：</label>
+										<div class="col-lg-6">
+											<input class="form-control" readonly="readonly"
+												th:value="${session.user_session?.accountName}">
+										</div>
+										<input type="hidden" id="id" name="id"
+											th:value="${session.user_session?.id}">
 									</div>
-									
+
 									<div class="form-group">
-												<label class="col-lg-2 control-label">旧密码：</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="oldpassword"
-														placeholder="请输入旧密码" name="oldpassword" required="required">
-												</div>
+										<label class="col-lg-2 control-label">旧密码：</label>
+										<div class="col-lg-6">
+											<input class="form-control" id="oldpassword"
+												placeholder="请输入旧密码" name="oldpassword" required="required">
+										</div>
 									</div>
-									
+
 									<div class="form-group">
-												<label class="col-lg-2 control-label">新密码：</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="password1"
-														placeholder="请输入新密码" name="password1"
-														 required="required">
-												</div>
+										<label class="col-lg-2 control-label">新密码：</label>
+										<div class="col-lg-6">
+											<input class="form-control" id="password1"
+												placeholder="请输入新密码" name="password1" required="required">
+										</div>
 									</div>
-									
+
 									<div class="form-group">
-												<label class="col-lg-2 control-label">确认密码：</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="password2"
-														placeholder="请确认密码" name="password2"
-														 required="required">
-												</div>
+										<label class="col-lg-2 control-label">确认密码：</label>
+										<div class="col-lg-6">
+											<input class="form-control" id="password2"
+												placeholder="请确认密码" name="password2" required="required">
+										</div>
 									</div>
-									
-									
-									
-									
-									
-									
-									
-									
-									
+
+
+
+
+
+
+
+
+
 
 									<div class="form-group">
 										<label class="col-lg-1 control-label"></label>

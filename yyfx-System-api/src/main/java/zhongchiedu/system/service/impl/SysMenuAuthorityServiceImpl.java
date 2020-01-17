@@ -1,6 +1,7 @@
 package zhongchiedu.system.service.impl;
 
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysOperationAuthority;
+import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.service.SysMenuAuthorityService;
+import zhongchiedu.system.service.SysResourceService;
 
 /**
  * <p>
@@ -27,6 +30,8 @@ import zhongchiedu.system.service.SysMenuAuthorityService;
 @Service
 public class SysMenuAuthorityServiceImpl extends GeneralServiceImpl<SysMenuAuthority>
 		implements SysMenuAuthorityService {
+	
+	
 	/*
 	 * <p>Title: saveOrUpdate</p> <p>Description: </p>
 	 * @param sysMenuAuthority
@@ -37,8 +42,16 @@ public class SysMenuAuthorityServiceImpl extends GeneralServiceImpl<SysMenuAutho
 	@Override
 	public void saveOrUpdate(SysMenuAuthority sysMenuAuthority) {
 		if (Common.isNotEmpty(sysMenuAuthority)) {
+			//通过当前添加按钮所属的菜单查找根的key 
+			String parentId = sysMenuAuthority.getParentResourceId();
+			//通过parentId获取根id
+			//SysResource sysResource = this.sysResourceService.findOneById(parentId, SysResource.class);
+			
+			//sysMenuAuthority.setResKey(sysResource.getResKey()+":"+sysMenuAuthority.getResKey());
 			SysMenuAuthority sysmenu = this.findSysMenuAuthority(sysMenuAuthority.getSysOperationAuthority(),
 					sysMenuAuthority.getParentResourceId());
+			
+			
 			if(Common.isEmpty(sysmenu)) {
 				this.save(sysMenuAuthority);
 			}

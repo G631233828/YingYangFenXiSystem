@@ -115,16 +115,16 @@ public class SysResourceController {
 	@PostMapping("/sysResource")
 	// @RequiresPermissions(value = "admin:sysResource:add")
 	@SystemControllerLog(description = "添加资源")
-	public String addSysResource(@ModelAttribute("sysResource") SysResource sysResource,String[] operation) {
-		this.sysResourceService.saveOrUpdate(sysResource,operation);
+	public String addSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
+		this.sysResourceService.saveOrUpdate(sysResource);
 		return "redirect:/admin/sysResources";
 	}
 
 	@PutMapping("/sysResource")
 //	@RequiresPermissions(value = "admin:sysResource:edit")
 	@SystemControllerLog(description = "修改资源")
-	public String editSysResource(@ModelAttribute("sysResource") SysResource sysResource,String[] operation) {
-		this.sysResourceService.saveOrUpdate(sysResource,operation);
+	public String editSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
+		this.sysResourceService.saveOrUpdate(sysResource);
 		return "redirect:/admin/sysResources";
 	}
 	

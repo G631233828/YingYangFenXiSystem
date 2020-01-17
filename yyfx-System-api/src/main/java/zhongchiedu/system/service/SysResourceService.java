@@ -31,7 +31,7 @@ public interface SysResourceService  extends GeneralService<SysResource>{
 	
 	SysResource findSysResourceByName(String name);
 	
-	void saveOrUpdate(SysResource sysResource,String[] operation);
+	void saveOrUpdate(SysResource sysResource);
 	
 	BasicDataResult toDisable(String id);
 	

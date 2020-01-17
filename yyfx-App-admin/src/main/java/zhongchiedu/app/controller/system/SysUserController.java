@@ -120,7 +120,7 @@ public class SysUserController {
 		SysUser suser = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 		this.sysUserService.delete(id,suser);
 		log.info("删除用户" + id + "成功");
-		return "redirect:sysUsers";
+		return "redirect:/admin/sysUsers";
 	}
 	
 	
@@ -144,7 +144,7 @@ public class SysUserController {
 			@RequestParam(value = "oldheadImg", defaultValue = "") String oldheadImg) {
 		this.sysUserService.saveOrUpdate(sysUser, roleId, file, imgPath, dir, oldheadImg);
 
-		return "redirect:sysUsers";
+		return "redirect:/admin/sysUsers";
 	}
 
 	
@@ -162,7 +162,7 @@ public class SysUserController {
 			@RequestParam(value = "oldheadImg", defaultValue = "") String oldheadImg) {
 		this.sysUserService.saveOrUpdate(sysUser, roleId, file, imgPath, dir, oldheadImg);
 
-		return "redirect:sysUsers";
+		return "redirect:/admin/sysUsers";
 	}
 
 	

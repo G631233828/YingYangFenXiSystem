@@ -111,11 +111,18 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 	 * @see zhongchiedu.system.service.SysResourceService#saveOrUpdate(zhongchiedu.system.pojo.SysResource)  
 	 */
 	@Override
-	public void saveOrUpdate(SysResource sysResource,String[] operation) {
+	public void saveOrUpdate(SysResource sysResource) {
 		
 		if(Common.isNotEmpty(sysResource)) {
+			SysResource parent = null;
 			if(sysResource.getType() == 0) {
 				sysResource.setParentId("0");
+			}else {
+				//type =1  添加的是菜单
+				parent = this.findOneById(sysResource.getId(), SysResource.class);
+				if(Common.isNotEmpty(parent)) {
+					sysResource.setResKey(parent.getResKey()+":"+ sysResource.getResKey());
+				}
 			}
 			
 			if(Common.isNotEmpty(sysResource.getId())) {
@@ -238,12 +245,19 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
   		
 		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
 		
+		SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
+		
+		String reskey = parent.getResKey()+":"+so.getKey();
 		if(Common.isEmpty(sm)) {
 			//创建
 			 sm= new SysMenuAuthority();
 			 sm.setParentResourceId(sr.getId());
+			 sm.setResKey(reskey);
 			 sm.setSysOperationAuthority(so);
 			this.sysMenuAuthorityService.insert(sm);
+		}else {
+			sm.setResKey(reskey);
+			this.sysMenuAuthorityService.save(sm);
 		}
 		//更新操作权限
 		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority();

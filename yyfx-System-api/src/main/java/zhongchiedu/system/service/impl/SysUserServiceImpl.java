@@ -197,7 +197,7 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 		try {
 			lock.lock();
 			List<String> ids = Arrays.asList(id.split(","));
-			String loginid = suser.getId();
+			String loginid = Common.isNotEmpty(suser)?suser.getId():"";
 			for (String edid : ids) {
 				//不能删除自己的账号
 				if(edid!=loginid) {

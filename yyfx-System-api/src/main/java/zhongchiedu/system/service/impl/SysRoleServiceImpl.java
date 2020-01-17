@@ -252,7 +252,7 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 				String getid = i.next().toString();
 				if (getid.contains(st)) {
 					String bid = Common.subStringEndOf(st, getid);
-					String pid = Common.subStringBeforeOf(st, getid);
+					//String pid = Common.subStringBeforeOf(st, getid);
 					SysMenuAuthority menu = this.sysMenuAuthorityService.findOneById(bid, SysMenuAuthority.class);
 					listmenu.add(menu);
 				} else {

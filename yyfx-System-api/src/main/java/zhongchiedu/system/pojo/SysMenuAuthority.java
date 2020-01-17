@@ -31,7 +31,7 @@ public class SysMenuAuthority extends GeneralBean<SysMenuAuthority> {
 	@DBRef
 	private SysOperationAuthority sysOperationAuthority;
 	private String parentResourceId;
-//	private String resKey;//目录key+":"+菜单key+":"+按钮key
+	private String resKey;//目录key+":"+菜单key+":"+按钮key
 //	private String resUrl;
 
 }
