@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.commons.utils.UserType;
+import zhongchiedu.shiro.token.LoginToken;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.service.SysUserService;
@@ -61,8 +63,8 @@ public class SysLoginController {
 			String accountName = user.getAccountName();
 			String password = user.getPassWord();
 			if (accountName != "" && password != "") {
-				UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
-				//LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
+				//UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
+				LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
 				// token.setRememberMe(rememberMe);
 				Subject subject = SecurityUtils.getSubject();// 获得主体
 				try {

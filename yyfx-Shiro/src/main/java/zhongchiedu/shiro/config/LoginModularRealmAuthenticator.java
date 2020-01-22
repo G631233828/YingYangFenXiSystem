@@ -27,19 +27,8 @@ import zhongchiedu.shiro.token.LoginToken;
  * @date 2020年1月16日
  */
 @Slf4j
-public class LoginModularRealmAuthenticator extends
-		ModularRealmAuthenticator {/*
-									 * <p>Title: doAuthenticate</p> <p>Description: </p>
-									 * 
-									 * @param authenticationToken
-									 * 
-									 * @return
-									 * 
-									 * @throws AuthenticationException
-									 * 
-									 * @see org.apache.shiro.authc.pam.ModularRealmAuthenticator#doAuthenticate(org.
-									 * apache.shiro.authc.AuthenticationToken)
-									 */
+public class LoginModularRealmAuthenticator extends ModularRealmAuthenticator {
+	
 	@Override
 	protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
@@ -55,6 +44,8 @@ public class LoginModularRealmAuthenticator extends
 		Collection<Realm> typeRealms = new ArrayList<>();
 		// 登陆类型对应所有的realm
 		for (Realm realm : realms) {
+			System.out.println("LoginModularRealmAuthenticator"+realm.getName());
+			System.out.println("LoginModularRealmAuthenticator"+loginType);
 			if (realm.getName().contains(loginType)) {
 				typeRealms.add(realm);
 			}

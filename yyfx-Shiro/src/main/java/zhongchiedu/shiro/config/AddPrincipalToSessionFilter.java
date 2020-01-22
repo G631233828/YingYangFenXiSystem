@@ -30,7 +30,7 @@ public class AddPrincipalToSessionFilter extends OncePerRequestFilter {
 		 Subject subject = SecurityUtils.getSubject();
 	        if (subject.isRemembered()) {
 	        	System.out.println("通过记住我登陆");
-	        	SysUser user = this.sysUserService.findSysUserByAccountName(subject.getPrincipal().toString());
+	        	SysUser user = this.sysUserService.findSysUserByAccountName(subject.getPrincipal().toString(),"");
 	            //将用户信息存入session
 	        	//对密码进行验证
 				UsernamePasswordToken token = new UsernamePasswordToken(user.getAccountName(), user.getPassWord(),subject.isRemembered());

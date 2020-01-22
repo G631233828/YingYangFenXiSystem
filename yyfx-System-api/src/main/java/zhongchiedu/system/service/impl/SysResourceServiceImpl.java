@@ -117,14 +117,11 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 			SysResource parent = null;
 			if(sysResource.getType() == 0) {
 				sysResource.setParentId("0");
-			}else {
-				//type =1  添加的是菜单
-				parent = this.findOneById(sysResource.getId(), SysResource.class);
-				if(Common.isNotEmpty(parent)) {
-					sysResource.setResKey(parent.getResKey()+":"+ sysResource.getResKey());
-				}
-			}
-			
+			} /*
+				 * else { //type =1 添加的是菜单 parent = this.findOneById(sysResource.getParentId(),
+				 * SysResource.class); if(Common.isNotEmpty(parent)) {
+				 * sysResource.setResKey(parent.getResKey()+":"+ sysResource.getResKey()); } }
+				 */
 			if(Common.isNotEmpty(sysResource.getId())) {
 				//update
 				SysResource ed = this.findOneById(sysResource.getId(), SysResource.class);
@@ -245,9 +242,9 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
   		
 		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
 		
-		SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
+		//SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
 		
-		String reskey = parent.getResKey()+":"+so.getKey();
+		String reskey = sr.getResKey()+":"+so.getKey();
 		if(Common.isEmpty(sm)) {
 			//创建
 			 sm= new SysMenuAuthority();

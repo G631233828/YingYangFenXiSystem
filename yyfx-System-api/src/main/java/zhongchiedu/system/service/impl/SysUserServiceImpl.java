@@ -54,10 +54,13 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 	 * @see zhongchiedu.system.service.SysUserService#findPagination(java.lang.Integer, java.lang.Integer)  
 	 */
 	@Override
-	public Pagination<SysUser> findPagination(Integer pageNo, Integer pageSize) {
+	public Pagination<SysUser> findPagination(String userType,Integer pageNo, Integer pageSize) {
 		Pagination<SysUser> pagination = null;
 		Query query = new Query();
 		query.addCriteria(Criteria.where("isDelete").is(false));
+		if(Common.isNotEmpty(userType)) {
+			query.addCriteria(Criteria.where("userType").is(userType));
+		}
 		try {
 			pagination = this.findPaginationByQuery(query, pageNo, pageSize, SysUser.class);
 
@@ -76,9 +79,12 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 	 * @see zhongchiedu.system.service.SysUserService#findSysUserByAccountName(java.lang.String)  
 	 */
 	@Override
-	public SysUser findSysUserByAccountName(String accountName) {
+	public SysUser findSysUserByAccountName(String accountName,String userType) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("accountName").is(accountName));
+		if(Common.isNotEmpty(userType)) {
+			query.addCriteria(Criteria.where("userType").is(userType));
+		}
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.findOneByQuery(query, SysUser.class);
 	}
@@ -174,7 +180,7 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 	@Override
 	public BasicDataResult ajaxgetRepletes(String name) {
 		if (Common.isNotEmpty(name)) {
-			SysUser sys = this.findSysUserByAccountName(name);
+			SysUser sys = this.findSysUserByAccountName(name,"");
 			if (Common.isNotEmpty(sys)) {
 				return BasicDataResult.build(206, "数据已存在，请勿重复提交", null);
 			}

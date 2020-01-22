@@ -36,6 +36,11 @@ public class SysUser extends GeneralBean<SysUser>{
 	private String lastLoginIp;		//上次登录Ip
 	@DBRef
 	private MultiMedia photograph;  //用户头像
+	
+	@DBRef
+	private SysSchool sysSchool;//绑定学校
+	private String userType;//用户类型
+	
 	private String salt;//加密密码的盐
 //	@DBRef
 //	private List<SysResource> resource;

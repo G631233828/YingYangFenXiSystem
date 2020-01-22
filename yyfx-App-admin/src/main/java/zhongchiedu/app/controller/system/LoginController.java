@@ -57,11 +57,16 @@ public class LoginController {
 			String accountName = user.getAccountName();
 			String password = user.getPassWord();
 			if (accountName != "" && password != "") {
-				//UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
-				LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
-				// token.setRememberMe(rememberMe);
-				Subject subject = SecurityUtils.getSubject();// 获得主体
 				try {
+				//UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
+				
+//				char passwordChars[] = (char[]) token.getCredentials(); 
+//				System.out.println(passwordChars);
+//				token.setPassword(passwordChars);
+				LoginToken token = new LoginToken(accountName, password,UserType.SCHOOL_ADMIN);
+				token.setRememberMe(rememberMe);
+				Subject subject = SecurityUtils.getSubject();// 获得主体
+				
 					subject.login(token);
 					if (subject.isAuthenticated()) {
 						return "redirect:/toindex";
@@ -82,8 +87,12 @@ public class LoginController {
 					msg = "帐号不存在!";
 				} catch (UnauthorizedException e) {
 					msg = "您没有得到相应的授权！" + e.getMessage();
-				} finally {
+				}catch(Exception e) {
+					msg = "未知异常" + e;
+				} 
+				finally {
 					model.addAttribute("msg", msg);
+					System.out.println(msg);
 				}
 				return "login";
 			}

@@ -25,6 +25,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import lombok.extern.slf4j.Slf4j;
+import zhongchiedu.shiro.realm.MongoDBRealm;
+import zhongchiedu.shiro.realm.SystemUserRealm;
 
 /**
  * 配置shiro
@@ -39,17 +41,40 @@ public class ShiroConfig {
 	@Bean
 	public MongoDBRealm mongoDBRealm() {
 		MongoDBRealm mongoDBRealm = new MongoDBRealm();
-		mongoDBRealm.setCredentialsMatcher(new LoginCredentialsMatcher());
+	//	mongoDBRealm.setCredentialsMatcher(new LoginCredentialsMatcher());
 		return mongoDBRealm;
 	}
 
 	@Bean
 	public SystemUserRealm systemUserRealm() {
 		SystemUserRealm systemUserRealm = new SystemUserRealm();
-		systemUserRealm.setCredentialsMatcher(new LoginCredentialsMatcher());
+		//systemUserRealm.setCredentialsMatcher(new LoginCredentialsMatcher());
 		return  systemUserRealm;
 	}
 
+//	@Bean
+//	public ModularRealmAuthenticator  modularRealmAuthenticator () {
+//		//自己重写的ModularRealmAuthenticator
+//		LoginModularRealmAuthenticator loginModularRealmAuthenticator = new LoginModularRealmAuthenticator();
+//		loginModularRealmAuthenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+//		return loginModularRealmAuthenticator;
+//	}
+
+//	  /**
+//     * 系统自带的Realm管理，主要针对多realm 授权
+//     */
+//    @Bean
+//    public ModularRealmAuthorizer modularRealmAuthorizer() {
+//        //自己重写的ModularRealmAuthorizer
+//    	LoginModularRealmAuthenticator modularRealmAuthorizer = new LoginModularRealmAuthenticator();
+//        return modularRealmAuthorizer;
+//    }
+	
+	
+	
+	
+	
+	
 	/**
 	 * 密码匹配凭证管理器
 	 * 
@@ -99,17 +124,16 @@ public class ShiroConfig {
 	@Bean
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-		List<Realm> realms = new ArrayList();
-		realms.add(mongoDBRealm());
+		List<Realm> realms = new ArrayList<Realm>();
+		//realms.add(mongoDBRealm());
 		realms.add(systemUserRealm());
 		securityManager.setRealms(realms);
 //		securityManager.setRealm(mongoDBRealm());
 //		securityManager.setRealm(systemUserReam());
 		// 注入缓存管理器;
 		securityManager.setCacheManager(ehCacheManager());// 这个如果执行多次，也是同样的一个对象;
-
+		//securityManager.setAuthenticator(modularRealmAuthenticator());
 		securityManager.setRememberMeManager(rememberMeManager());
-
 		return securityManager;
 	}
 

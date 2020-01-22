@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
-import zhongchiedu.system.pojo.SysRole;
 import zhongchiedu.system.pojo.SysUser;
 
 /**  
@@ -21,9 +20,9 @@ import zhongchiedu.system.pojo.SysUser;
 */
 public interface SysUserService extends GeneralService<SysUser>{
 	
-	Pagination<SysUser> findPagination(Integer pageNo,Integer pageSize);
+	Pagination<SysUser> findPagination(String userType,Integer pageNo,Integer pageSize);
 
-	SysUser findSysUserByAccountName(String accountName);
+	SysUser findSysUserByAccountName(String accountName,String userType);
 	
 	List<SysUser> findAllSysUserByIsDisable();
 	

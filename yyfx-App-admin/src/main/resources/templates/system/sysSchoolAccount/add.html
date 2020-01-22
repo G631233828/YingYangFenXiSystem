@@ -68,20 +68,20 @@ canvas#canvas4 {
 							</div>
 
 							<form class="form-horizontal" enctype="multipart/form-data"
-								name="example" id="sysUserForm" th:action="@{/admin/sysUser}" method="post">
+								name="example" id="sysSchoolAccountForm" th:action="@{/admin/sysSchoolAccount}" method="post">
 								<div class="body-nest" id="Blank_Page_Content">
 									<div class="row">
 										<!-- left column -->
 										<div class="col-md-3">
 											<div class="text-center">
-											 	<img th:src="${sysUser?.photograph!=null}?@{/}+${sysUser?.photograph?.savePath }+'/'+${sysUser?.photograph?.generateName }:@{/assets/img/150.png}" id="myImg" width="150px"
+											 	<img th:src="${sysSchoolAccount?.photograph!=null}?@{/}+${sysSchoolAccount?.photograph?.savePath }+'/'+${sysSchoolAccount?.photograph?.generateName }:@{/assets/img/150.png}" id="myImg" width="150px"
 													height="150px" class="avatar img-circle" alt="avatar"> 
 												<h6>头像上传</h6>
 
 												<div class="form-group">
 													<input id="headImg" type="file" name="file" multiple="true">
 												</div>
-													 <input name="oldheadImg" id="oldheadImg" th:value="${sysUser?.photograph?.id}" style="display: none;" > 
+													 <input name="oldheadImg" id="oldheadImg" th:value="${sysSchoolAccount?.photograph?.id}" style="display: none;" > 
 											</div>
 										</div>
 
@@ -90,23 +90,23 @@ canvas#canvas4 {
 											<!-- 	<div class="alert alert-info alert-dismissable">
 											<a class="panel-close close" data-dismiss="alert">×</a> <i
 												class="fa fa-coffee"></i> This is an <strong>.alert</strong>.
-											Use this to show important messages to the sysUser.
+											Use this to show important messages to the sysSchoolAccount.
 										</div> -->
 
 											<input type="hidden" name="_method" value="put"
-												th:if="${sysUser!=null}" /> <input type="hidden" name="id"
-												th:if="${sysUser!=null}" th:value="${sysUser.id}">
+												th:if="${sysSchoolAccount!=null}" /> <input type="hidden" name="id"
+												th:if="${sysSchoolAccount!=null}" th:value="${sysSchoolAccount.id}">
 
 											<div class="form-group">
 												<label class="col-lg-3 control-label">用户姓名：</label>
 												<div class="col-lg-8">
 													<input class="form-control" id="userName"
 														placeholder="请输入用户姓名" name="userName"
-														th:value="${sysUser!=null}?${sysUser.userName}"
+														th:value="${sysSchoolAccount!=null}?${sysSchoolAccount.userName}"
 														required="required">
 												</div>
 											</div>
-											<input type="text" name="userType" value="system">
+											<input type="text" name="userType" value="school_admin">
 											<div class="form-group">
 												<label class="col-lg-3 control-label">证件类型：</label>
 												<div class="col-lg-8">
@@ -114,13 +114,13 @@ canvas#canvas4 {
 														<select id="cardType" name="cardType" class="form-control">
 															<option value="">---请选择证件类型---</option>
 															<option value="身份证"
-																th:selected="${sysUser!=null}?${sysUser.cardType =='身份证'}">身份证</option>
+																th:selected="${sysSchoolAccount!=null}?${sysSchoolAccount.cardType =='身份证'}">身份证</option>
 															<option value="护照"
-																th:selected="${sysUser!=null}?${sysUser.cardType =='护照'}">护照</option>
+																th:selected="${sysSchoolAccount!=null}?${sysSchoolAccount.cardType =='护照'}">护照</option>
 															<option value="军人证"
-																th:selected="${sysUser!=null}?${sysUser.cardType =='军人证'}">军人证</option>
+																th:selected="${sysSchoolAccount!=null}?${sysSchoolAccount.cardType =='军人证'}">军人证</option>
 															<option value="港澳通行证"
-																th:selected="${sysUser!=null}?${sysUser.cardType =='港澳通行证'}">港澳通行证</option>
+																th:selected="${sysSchoolAccount!=null}?${sysSchoolAccount.cardType =='港澳通行证'}">港澳通行证</option>
 														</select>
 													</div>
 												</div>
@@ -131,7 +131,7 @@ canvas#canvas4 {
 												<div class="col-lg-8">
 													<input class="form-control" id="cardId"
 														placeholder="请输入证件号码" name="cardId"
-														th:value="${sysUser!=null}?${sysUser.cardId}">
+														th:value="${sysSchoolAccount!=null}?${sysSchoolAccount.cardId}">
 												</div>
 											</div>
 											<div class="form-group">
@@ -141,9 +141,9 @@ canvas#canvas4 {
 														placeholder="请输入登录帐号" name="accountName"
 														onchange="return ajaxgetRepletes()"
 														onblur="return ajaxgetRepletes()" required="required"
-														th:name="${sysUser!=null}?'':accountName"
-														th:value="${sysUser!=null}?${sysUser.accountName}"
-														th:disabled="${sysUser!=null}?${sysUser.accountName!=null}">
+														th:name="${sysSchoolAccount!=null}?'':accountName"
+														th:value="${sysSchoolAccount!=null}?${sysSchoolAccount.accountName}"
+														th:disabled="${sysSchoolAccount!=null}?${sysSchoolAccount.accountName!=null}">
 												</div>
 											</div>
 											<div class="form-group">
@@ -151,7 +151,7 @@ canvas#canvas4 {
 												<div class="col-lg-8">
 													<input class="form-control" required="required"
 														id="passWord" placeholder="请输入登录密码" name="passWord"
-														th:value="${sysUser!=null}?${sysUser.passWord}" type="password">
+														th:value="${sysSchoolAccount!=null}?${sysSchoolAccount.passWord}" type="password">
 												</div>
 											</div>
 											<div class="form-group">
@@ -159,7 +159,7 @@ canvas#canvas4 {
 												<div class="col-lg-8">
 													<input class="form-control" required="required"
 														id="passWord2" placeholder="请输入登录密码" name="passWord2"
-														th:value="${sysUser!=null}?${sysUser.passWord}" type="password">
+														th:value="${sysSchoolAccount!=null}?${sysSchoolAccount.passWord}" type="password">
 												</div>
 											</div>
 
@@ -172,8 +172,24 @@ canvas#canvas4 {
 															<option value="">---请选择角色---</option>
 															<option th:if="${roleList!=null}" th:value="${role.id}"
 																th:text="${role.roleName}"
-																th:selected="${sysUser!=null&&sysUser.role!=null}?${sysUser.role.roleName}==${role.roleName}"
+																th:selected="${sysSchoolAccount!=null&&sysSchoolAccount.role!=null}?${sysSchoolAccount.role.roleName}==${role.roleName}"
 																th:each="role:${roleList}">
+														</select>
+													</div>
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-lg-3 control-label">所属学校：</label>
+												<div class="col-lg-8">
+													<div class="ui-select">
+														<select id="sysSchool" name="sysSchool.id" required="required"
+															class="form-control">
+															<option value="">---请选择学校---</option>
+															<option th:if="${schools!=null}" th:value="${school.id}"
+																th:text="${school.name}"
+																th:selected="${sysSchoolAccount!=null&&sysSchoolAccount.sysSchool?.name!=null}?${sysSchoolAccount?.sysSchool?.name}==${school?.name}"
+																th:each="school:${schools}">
 														</select>
 													</div>
 												</div>
@@ -188,7 +204,7 @@ canvas#canvas4 {
 															<option value="">---请选择所属学校---</option>
 															<option th:if="${schools!=null}" th:value="${school.id}"
 																th:text="${school.name}"
-																th:selected="${sysUser!=null&&sysUser.school!=null}?${sysUser.school.name}==${school.name}"
+																th:selected="${sysSchoolAccount!=null&&sysSchoolAccount.school!=null}?${sysSchoolAccount.school.name}==${school.name}"
 																th:each="school:${schools}">
 														</select>
 													</div>
@@ -199,8 +215,8 @@ canvas#canvas4 {
 												<label class="col-md-3 control-label"></label>
 												<div class="col-md-8">
 													<button type="submit" class="btn btn-success"
-														th:text="${sysUser!=null?'修改':'添加'}"></button>
-													<span></span> <input th:if="${sysUser} eq null"
+														th:text="${sysSchoolAccount!=null?'修改':'添加'}"></button>
+													<span></span> <input th:if="${sysSchoolAccount} eq null"
 														class="btn btn-default" value="重置" type="reset">
 												</div>
 											</div>
@@ -244,7 +260,7 @@ canvas#canvas4 {
 	<script type="text/javascript"
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
 
-	<script type="text/javascript" th:src="@{/js/system/sysUser/sysUser.js}"></script>
+	<script type="text/javascript" th:src="@{/js/system/sysSchoolAccount/sysSchoolAccount.js}"></script>
 	<div th:replace="public/public_js::validator"></div>
 	<script>
 		$("#headImg").fileinput({

@@ -19,8 +19,6 @@ import zhongchiedu.system.pojo.SysUser;
 * @author 郭建波  
 * @date 2020年1月15日  
 */
-@Data
-@EqualsAndHashCode(callSuper=true)
 public class LoginToken extends  UsernamePasswordToken {
 
 	/** serialVersionUID*/  
@@ -28,13 +26,24 @@ public class LoginToken extends  UsernamePasswordToken {
 	
 	private String loginType;
 
-	/**  
-	* <p>Title: </p>  
-	* <p>Description: </p>  
-	* @param loginType  
-	*/  
-	public LoginToken() {
+	
+	/**
+	 * @return the loginType
+	 */
+	public String getLoginType() {
+		return loginType;
 	}
+
+
+
+	/**
+	 * @param loginType the loginType to set
+	 */
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+
+
 
 	/**  
 	* <p>Title: </p>  
@@ -46,14 +55,6 @@ public class LoginToken extends  UsernamePasswordToken {
 		System.out.println("loginToken ---"+loginType);
 		this.loginType = loginType;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

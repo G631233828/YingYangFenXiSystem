@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zhongchiedu.shiro.config;
+package zhongchiedu.shiro.realm;
 
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +13,11 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.commons.utils.UserType;
+import zhongchiedu.shiro.token.LoginToken;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysUser;
@@ -52,11 +55,11 @@ public class SystemUserRealm extends AuthorizingRealm {
 	 * 
 	 * @see org.apache.shiro.realm.CachingRealm#getName()
 	 */
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return UserType.SYSTEM;
-	}
+//	@Override
+//	public String getName() {
+//		// TODO Auto-generated method stub
+//		return UserType.SYSTEM;
+//	}
 
 	/*
 	 * <p>Title: doGetAuthorizationInfo</p> <p>Description: </p>
@@ -71,7 +74,17 @@ public class SystemUserRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		 if (!principals.getRealmNames().contains(getName())) return null;
+		
+		String username = (String) principals.getPrimaryPrincipal(); // 一定是String类型，在SimpleAuthenticationInfo
+		System.out.println("sys"+username);
+		 if(username == null) {
+			 throw new UnknownAccountException();
+		 }
+		
+		
+		
+		
+		if (!principals.getRealmNames().contains(getName())) return null;
 		
 		// 获取登录的用户名
 		String accountName = SecurityUtils.getSubject().getPrincipal().toString();
@@ -122,21 +135,27 @@ public class SystemUserRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		
 		// 获取用户的名称
-		UsernamePasswordToken usertoken = (UsernamePasswordToken) token;
-		// 根据获取到的用户信息从数据库查询是否存在该用户名下的信息
-		SysUser suser = this.SysUserService.findSysUserByAccountName(usertoken.getUsername());
-		if (Common.isNotEmpty(suser)) {
+		//UsernamePasswordToken usertoken = (UsernamePasswordToken) token;
+		
+		LoginToken usertoken = (LoginToken) token;
+		SysUser suser = null;
+		if(usertoken.getLoginType().equals(UserType.SYSTEM)) {
+			suser = this.SysUserService.findSysUserByAccountName(usertoken.getUsername(),UserType.SYSTEM);
+		}else if(usertoken.getLoginType().equals(UserType.SCHOOL_ADMIN)) {
+			suser = this.SysUserService.findSysUserByAccountName(usertoken.getUsername(),UserType.SCHOOL_ADMIN);
+		}else if(usertoken.getLoginType().equals(UserType.SCHOOL_USER)){
+			suser = this.SysUserService.findSysUserByAccountName(usertoken.getUsername(),UserType.SCHOOL_USER);
+		}else {
+			throw new UnknownAccountException();
+		}
+		if(Common.isNotEmpty(suser)) {
 			Session session = SecurityUtils.getSubject().getSession();
-
 			SysUser u = this.SysUserService.findOneById(suser.getId(), SysUser.class);
 			if (u.getIsDisable()) {
 				throw new DisabledAccountException();
 			}
-			System.out.println("system:"+getName());
 			if (Common.isNotEmpty(u)) {
-				
 				session.setAttribute(Contents.SYSUSER_SESSION, suser);
 				session.setAttribute(Contents.SYSRESOURCE_SESSION, Common.isNotEmpty(u.getRole())?u.getRole().getSysresource():"");
 				return new SimpleAuthenticationInfo(suser.getAccountName(), suser.getPassWord(), getName());
