@@ -257,9 +257,8 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 			this.sysMenuAuthorityService.save(sm);
 		}
 		//更新操作权限
-		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority();
+		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority()!=null?sr.getSysMenuAuthority():new ArrayList<>();
 		List<SysMenuAuthority> newsm = new ArrayList<>();
-		
 		if(listsm.size() == 0) {
 			listsm.add(sm);
 			sr.setSysMenuAuthority(listsm);

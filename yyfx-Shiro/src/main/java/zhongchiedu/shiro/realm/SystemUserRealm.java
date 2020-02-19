@@ -3,6 +3,7 @@
  */
 package zhongchiedu.shiro.realm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,8 +96,8 @@ public class SystemUserRealm extends AuthorizingRealm {
 			if (Common.isNotEmpty(suser)) {
 				SysUser u = this.SysUserService.findOneById(suser.getId(), SysUser.class);
 				// 获取角色拥有的所有菜单权限
-				List<SysResource> rs = u.getRole().getSysresource();
-				List<SysMenuAuthority> sm = u.getRole().getSysMenuAuthority();
+				List<SysResource> rs = u.getRole().getSysresource()!=null?u.getRole().getSysresource():new ArrayList<>();
+				List<SysMenuAuthority> sm = u.getRole().getSysMenuAuthority()!=null?u.getRole().getSysMenuAuthority():new ArrayList<>();
 				// 权限信息对象info 用来存放查出的所有用户role以及权限permission
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				// 设置权限名称

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,7 @@ public class SysUserController {
 	private String dir;
 	
 	@GetMapping("sysUsers")
-	// @RequiresPermissions(value = "admin:sysOperation:list")
+   // @RequiresPermissions(value = "admin:sysUsers")
 	@SystemControllerLog(description = "查询所有用户")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {

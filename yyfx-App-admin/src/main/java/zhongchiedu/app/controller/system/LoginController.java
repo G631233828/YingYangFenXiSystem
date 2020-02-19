@@ -63,7 +63,7 @@ public class LoginController {
 //				char passwordChars[] = (char[]) token.getCredentials(); 
 //				System.out.println(passwordChars);
 //				token.setPassword(passwordChars);
-				LoginToken token = new LoginToken(accountName, password,UserType.SCHOOL_ADMIN);
+				LoginToken token = new LoginToken(accountName, password,UserType.SYSTEM);
 				token.setRememberMe(rememberMe);
 				Subject subject = SecurityUtils.getSubject();// 获得主体
 				
