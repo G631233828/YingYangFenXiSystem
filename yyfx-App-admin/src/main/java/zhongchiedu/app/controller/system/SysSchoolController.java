@@ -5,6 +5,7 @@ package zhongchiedu.app.controller.system;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +43,7 @@ public class SysSchoolController {
 	private SysSchoolService sysSchoolService;
 	
 	@GetMapping("sysSchools")
-	// @RequiresPermissions(value = "admin:sysOperation:list")
+	@RequiresPermissions(value = "sysschool:list")
 	@SystemControllerLog(description = "查询所有学校")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -63,6 +64,7 @@ public class SysSchoolController {
 	 * @return
 	 */
 	@GetMapping("/sysSchool/{id}")
+	@RequiresPermissions(value = "sysschool:edit")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改学校"+id);
 		SysSchool sysSchool = this.sysSchoolService.findOneById(id, SysSchool.class);
@@ -91,7 +93,7 @@ public class SysSchoolController {
 	
 	
 	@DeleteMapping("/sysSchool/{id}")
-	//@RequiresPermissions(value = "admin:sysOperation:delete")
+	@RequiresPermissions(value = "sysschool:delete")
 	@SystemControllerLog(description = "删除学校")
 	public String delete(@PathVariable String id) {
 		log.info("删除学校" + id);
@@ -102,7 +104,7 @@ public class SysSchoolController {
 	
 	
 	@PostMapping("/sysSchool")
-	// @RequiresPermissions(value = "admin:sysOperation:add")
+	@RequiresPermissions(value = "sysschool:add")
 	@SystemControllerLog(description = "添加学校")
 	public String addsysRole(
 			@ModelAttribute("sysSchool") SysSchool sysSchool) {
@@ -112,7 +114,7 @@ public class SysSchoolController {
 	
 	
 	@PutMapping("/sysSchool")
-//	@RequiresPermissions(value = "admin:sysOperation:edit")
+	@RequiresPermissions(value = "sysschool:edit")
 	@SystemControllerLog(description = "修改学校")
 	public String editSysRole(
 			@ModelAttribute("sysSchool") SysSchool sysSchool) {

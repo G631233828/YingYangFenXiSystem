@@ -2,6 +2,7 @@ package zhongchiedu.system.pojo;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +36,9 @@ public class User extends GeneralBean<User> {
 	private List<Resource> resource;
 	@DBRef
 	private Role role;
+	
+	@Transient
+	private String type;//临时数据  登陆类型
 	
 
 	

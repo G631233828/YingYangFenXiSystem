@@ -43,6 +43,9 @@
 				roleId : {
 					required : true,
 				},
+				"sysSchool.id":{
+					required: true,
+				}
 			},
 			messages : {
 				userName : {
@@ -65,6 +68,9 @@
 				},
 				roleId : {
 					required : a + "请选择分配角色"
+				},
+				"sysSchool.id":{
+					required : a + "请选择所属学校"
 				}
 			}
 		});

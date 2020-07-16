@@ -49,26 +49,26 @@
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-								<!-- 	<shiro:hasPermission name="admin:sysRole:add"> -->
+									<shiro:hasPermission name="sysRole:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/admin/sysRole}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									</shiro:hasPermission>
 
-								<!-- 	<shiro:hasPermission name="admin:sysRole:edit"> -->
+									<shiro:hasPermission name="sysRole:edit"> 
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','sysRole')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+								</shiro:hasPermission> 
 
-									<!-- <shiro:hasPermission name="admin:sysRole:delete"> -->
+									 <shiro:hasPermission name="sysRole:delete"> 
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{sysRole}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
-									<!-- </shiro:hasPermission> -->
+									 </shiro:hasPermission> 
 								</div>
 
 								<div class="titleClose">
@@ -100,6 +100,7 @@
 												</th>
 												<th class="numeric">角色名称</th>
 												<th class="numeric">角色key</th>
+												<th class="numeric">所属单位</th>
 												<th class="numeric">使用状态</th>
 												<th class="numeric">描述</th>
 												<th class="numeric">操作</th>
@@ -117,28 +118,29 @@
 												</td>
 												<td class="numeric">[[${role.roleName }]]</td>
 												<td class="numeric">[[${role.roleKey }]]</td>
+												<td class="numeric">[[${role?.sysSchool?.name }]]</td>
 												<td class="numeric" th:id="disBtn+${role.id}"
 													th:utext="${role.isDisable eq true }?|<button type='button' onclick=toDisable('${role.id}','admin/sysRole') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${role.id}','admin/sysRole') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric">[[${role.description }]]</td>
 												<td class="numeric">
-												<!-- <shiro:hasPermission name="admin:role:edit"> -->
+												 <shiro:hasPermission name="sysRole:edit">
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${role.id}','sysRole')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:role:delete"> -->
+													 </shiro:hasPermission>
+													 <shiro:hasPermission name="sysRole:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{sysRole/}${role.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:role:author"> -->
+													 </shiro:hasPermission>
+													 <shiro:hasPermission name="sysRole:author"> 
 														<button class="btn btn-white btn-xs"
 															th:onclick="|return author('${role.id}')|">
 															<i class="fa fa-wrench"> </i>权限管理
 														</button>
-													<!-- </shiro:hasPermission> -->
+													 </shiro:hasPermission>
 													</td>
 											</tr>
 

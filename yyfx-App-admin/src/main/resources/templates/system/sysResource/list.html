@@ -54,26 +54,26 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-									<!-- <shiro:hasPermission name="admin:sysResource:add"> -->
-									<button class="btn btn-default btn-sm"
-										th:onclick="|window.location.href='@{/admin/sysResource}'|">
-										<i class="glyphicon glyphicon-plus"> </i> 添加
-									</button>
-									<!-- </shiro:hasPermission> -->
+									<shiro:hasPermission name="sysResource:add">
+										<button class="btn btn-default btn-sm"
+											th:onclick="|window.location.href='@{/admin/sysResource}'|">
+											<i class="glyphicon glyphicon-plus"> </i> 添加
+										</button>
+									</shiro:hasPermission>
 
-									<!-- <shiro:hasPermission name="admin:sysResource:edit"> -->
-									<button class="btn btn-primary btn-sm"
-										onclick="return toeditPage('','sysResource')">
-										<i class="fa fa-edit"> </i>编辑
-									</button>
-									<!-- </shiro:hasPermission> -->
+									<shiro:hasPermission name="sysResource:edit">
+										<button class="btn btn-primary btn-sm"
+											onclick="return toeditPage('','sysResource')">
+											<i class="fa fa-edit"> </i>编辑
+										</button>
+									</shiro:hasPermission>
 
-									<!-- <shiro:hasPermission name="admin:sysResource:delete"> -->
-									<button class="btn btn-danger btn-sm"
-										th:onclick="|return del('','@{sysResource}')|">
-										<i class="fa fa-trash-o"> </i>删除
-									</button>
-									<!-- </shiro:hasPermission> -->
+									<shiro:hasPermission name="sysResource:delete">
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{sysResource}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
 
 								</div>
 
@@ -107,6 +107,7 @@ canvas#canvas4 {
 												<th class="numeric">菜单名称</th>
 												<th class="numeric">菜单key</th>
 												<th class="numeric">菜单url</th>
+												<th class="numeric">功能权限Key</th>
 												<th class="numeric">类别</th>
 												<th class="numeric">图标</th>
 												<th class="numeric">使用状态</th>
@@ -132,10 +133,10 @@ canvas#canvas4 {
 													</td>
 													<td class="numeric">[[${res.name }]]</td>
 													<td class="numeric">[[${res.resKey }]]</td>
+													<td class="numeric">[[${res.resUrl }]]</td>
+													<td class="numeric">[[${res.permissionKey }]]</td>
 													<td class="numeric"
 														th:text="${res.type eq 0}  ?'目录':${res.type eq 1?'菜单':'按钮'}"></td>
-													<td class="numeric">[[${res.resUrl }]]</td>
-
 													<td class="numeric"><i th:class="${res.icon}"></i></td>
 													<td class="numeric" th:id="disBtn+${res.id}"
 														th:utext="${res.isDisable eq true }?|<button type='button' onclick=toDisable('${res.id}','admin/sysResource') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res.id}','admin/sysResource') class='btn btn-success'>启用</button>|"></td>
@@ -152,15 +153,15 @@ canvas#canvas4 {
 
 													<td class="numeric">[[${res.description }]]</td>
 													<td class="numeric">
-														<!-- <shiro:hasPermission name="sysResource:edit"> -->
+														 <shiro:hasPermission name="sysResource:edit"> 
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${res.id}','sysResource')|">
 															<i class="fa fa-edit"> </i>编辑
-														</button> <!-- </shiro:hasPermission>  --> <!-- <shiro:hasPermission name="sysResource:delete"> -->
+														</button> </shiro:hasPermission>  <shiro:hasPermission name="sysResource:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{/sysResource/}${res.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
-														</button> <!-- </shiro:hasPermission> -->
+														</button>  </shiro:hasPermission>
 													</td>
 												</tr>
 												<!-- 菜单 -->
@@ -177,9 +178,10 @@ canvas#canvas4 {
 														</td>
 														<td class="numeric">[[${res2.name }]]</td>
 														<td class="numeric">[[${res2.resKey }]]</td>
+														<td class="numeric">[[${res2.resUrl }]]</td>
+														<td class="numeric">[[${res2.permissionKey }]]</td>
 														<td class="numeric"
 															th:text="${res2.type eq 0}  ?'目录':${res2.type eq 1?'菜单':'按钮'}"></td>
-														<td class="numeric">[[${res2.resUrl }]]</td>
 
 														<td class="numeric"><i th:class="${res2.icon}"></i></td>
 														<td class="numeric" th:id="disBtn+${res2.id}"
@@ -196,17 +198,18 @@ canvas#canvas4 {
 															</td>
 														</th:block>
 														<td class="numeric">[[${res2.description }]]</td>
-														<td class="numeric">
-															<!-- <shiro:hasPermission name="sysResource:edit"> -->
-															<button class="btn btn-primary btn-xs"
-																th:onclick="|return toeditPage('${res2.id}','sysResource')|">
-																<i class="fa fa-edit"> </i>编辑
-															</button> <!-- </shiro:hasPermission> --> <!--  <shiro:hasPermission name="sysResource:delete"> -->
-															<button class="btn btn-danger btn-xs"
-																th:onclick="|return del('@{sysResource/}${res2.id}','')|">
-																<i class="fa fa-trash-o"> </i>删除
-															</button> <!-- </shiro:hasPermission> -->
-														</td>
+														<td class="numeric"><shiro:hasPermission
+																name="sysResource:edit">
+																<button class="btn btn-primary btn-xs"
+																	th:onclick="|return toeditPage('${res2.id}','sysResource')|">
+																	<i class="fa fa-edit"> </i>编辑
+																</button>
+															</shiro:hasPermission> <shiro:hasPermission name="sysResource:delete">
+																<button class="btn btn-danger btn-xs"
+																	th:onclick="|return del('@{sysResource/}${res2.id}','')|">
+																	<i class="fa fa-trash-o"> </i>删除
+																</button>
+															</shiro:hasPermission></td>
 													</tr>
 												</th:block>
 											</th:block>
@@ -250,7 +253,6 @@ canvas#canvas4 {
 
 										分页结束
 									</div> -->
-
 								</section>
 
 							</div>

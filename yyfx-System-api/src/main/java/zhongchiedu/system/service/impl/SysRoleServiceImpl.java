@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,14 +21,21 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.system.pojo.SysMenuAuthority;
+import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysSchool;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.service.SysMenuAuthorityService;
+import zhongchiedu.system.service.SysOperationAuthorityService;
 import zhongchiedu.system.service.SysResourceService;
 import zhongchiedu.system.service.SysRoleService;
+import zhongchiedu.system.service.SysSchoolService;
+import zhongchiedu.system.service.SysUserService;
 
 /**
  * <p>
@@ -50,6 +58,16 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 	@Autowired
 	private SysResourceService sysResourceService;
 
+	@Autowired
+	private SysSchoolService sysSchoolService;
+	
+	@Autowired
+	private SysOperationAuthorityService sysOperationAuthorityService;
+	
+	
+//	@Autowired
+//	private SysUserService SysUserService;
+
 	/*
 	 * <p>Title: findPagination</p> <p>Description: </p>
 	 * 
@@ -64,16 +82,26 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 	 * java.lang.Integer)
 	 */
 	@Override
-	public Pagination<SysRole> findPagination(Integer pageNo, Integer pageSize) {
+	public Pagination<SysRole> findPagination(SysUser user, Integer pageNo, Integer pageSize) {
 		Pagination<SysRole> pagination = null;
 		Query query = new Query();
-		query.addCriteria(Criteria.where("isDelete").is(false));
-		try {
-			pagination = this.findPaginationByQuery(query, pageNo, pageSize, SysRole.class);
+		String userType_ = user.getUserType();
 
-		} catch (Exception e) {
-			log.info("查询所有信息失败——————————》" + e.toString());
-			e.printStackTrace();
+		if (userType_.equals(UserType.SCHOOL_ADMIN) || userType_.equals(UserType.SYSTEM)) {
+
+			if (userType_.equals(UserType.SCHOOL_ADMIN)) {
+				query.addCriteria(Criteria.where("sysSchool.$id").is(new ObjectId(user.getSysSchool().getId())));
+			}
+
+			// 系统用户获取系统角色
+			query.addCriteria(Criteria.where("isDelete").is(false));
+			try {
+				pagination = this.findPaginationByQuery(query, pageNo, pageSize, SysRole.class);
+
+			} catch (Exception e) {
+				log.info("查询所有信息失败——————————》" + e.toString());
+				e.printStackTrace();
+			}
 		}
 		return Common.isNotEmpty(pagination) ? pagination : new Pagination<SysRole>();
 	}
@@ -104,8 +132,24 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 	 * @see zhongchiedu.system.service.SysRoleService#findAllSysRoleByIsDisable()
 	 */
 	@Override
-	public List<SysRole> findAllSysRoleByIsDisable() {
+	public List<SysRole> findAllSysRoleByIsDisable(SysUser user) {
+		
 		Query query = new Query();
+		//1.系统管理员   只查看  system 学校管理员的角色
+		//2.学校管理员或有权限的老师  只能看到user的权限
+		String userType_ = user.getUserType();
+		if(userType_.equals(UserType.SYSTEM)) {
+			Criteria ca = new Criteria();
+			ca.orOperator(Criteria.where("userType").is(UserType.SYSTEM),Criteria.where("userType").is(UserType.SCHOOL_ADMIN));
+			query.addCriteria(ca);
+		}else if(userType_.equals(UserType.SCHOOL_ADMIN)||userType_.equals(UserType.SCHOOL_USER)) {
+			String schoolId = user.getSysSchool().getId();
+			query.addCriteria(Criteria.where("sysSchool.$id").is(new ObjectId(schoolId)));
+			query.addCriteria(Criteria.where("userType").is(UserType.SCHOOL_USER));
+		}else {
+			return null;
+		}
+		
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.find(query, SysRole.class);
@@ -135,8 +179,22 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 	 * pojo.SysRole)
 	 */
 	@Override
-	public void saveOrUpdate(SysRole sysRole) {
-		if (Common.isNotEmpty(sysRole)) {
+	public void saveOrUpdate(SysRole sysRole, SysUser user) {
+		if (Common.isNotEmpty(sysRole) && Common.isNotEmpty(user)) {
+			sysRole.setUserType(UserType.SCHOOL_ADMIN);
+			String schoolId = user.getSysSchool() == null ? "" : user.getSysSchool().getId();
+			// 学校老师，管理员登陆
+			if (Common.isNotEmpty(schoolId) && (user.getUserType().equals(UserType.SCHOOL_ADMIN)
+					|| user.getUserType().equals(UserType.SCHOOL_USER))) {
+				// 添加学校id
+				SysSchool school = this.sysSchoolService.findSysSchoolById(schoolId);
+				if (Common.isEmpty(school)) {
+					return;
+				}
+				sysRole.setSysSchool(school);
+				sysRole.setUserType(UserType.SCHOOL_USER);
+			}
+			// 超级管理员登陆
 			if (Common.isNotEmpty(sysRole.getId())) {
 				// update
 				SysRole ed = this.findOneById(sysRole.getId(), SysRole.class);
@@ -252,7 +310,7 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 				String getid = i.next().toString();
 				if (getid.contains(st)) {
 					String bid = Common.subStringEndOf(st, getid);
-					//String pid = Common.subStringBeforeOf(st, getid);
+					// String pid = Common.subStringBeforeOf(st, getid);
 					SysMenuAuthority menu = this.sysMenuAuthorityService.findOneById(bid, SysMenuAuthority.class);
 					listmenu.add(menu);
 				} else {
@@ -264,7 +322,7 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 			role.setSysMenuAuthority(new ArrayList<SysMenuAuthority>());
 			this.save(role);
 			// 更新
-			 role.setSysMenuAuthority(listmenu);
+			role.setSysMenuAuthority(listmenu);
 			role.setSysresource(listres);
 			this.save(role);
 			uploadRoleVersion(id);
@@ -325,5 +383,96 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 		}
 		return BasicDataResult.build(200, "未设置权限", null);
 	}
+
+	@Override
+	public BasicDataResult createSysOperationAuthority(String param) {
+		String id = Common.subStringBeforeOf("_", param);//当前编辑id
+		String operId = Common.subStringEndOf("_", param);
+		SysOperationAuthority so = this.sysOperationAuthorityService.findOneById(operId, SysOperationAuthority.class);
+		
+  		SysResource sr = this.sysResourceService.findOneById(id, SysResource.class);
+  		
+		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
+		
+		//SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
+		
+		String reskey = sr.getPermissionKey()+":"+so.getKey();
+		if(Common.isEmpty(sm)) {
+			//创建
+			 sm= new SysMenuAuthority();
+			 sm.setParentResourceId(sr.getId());
+			 sm.setResKey(reskey);
+			 sm.setSysOperationAuthority(so);
+			this.sysMenuAuthorityService.insert(sm);
+		}else {
+			sm.setResKey(reskey);
+			this.sysMenuAuthorityService.save(sm);
+		}
+		//更新操作权限
+		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority()==null?new ArrayList<SysMenuAuthority>():sr.getSysMenuAuthority();
+		List<SysMenuAuthority> newsm = new ArrayList<>();
+		
+		if(listsm.size() == 0) {
+			listsm.add(sm);
+			sr.setSysMenuAuthority(listsm);
+			this.sysResourceService.save(sr);
+			return BasicDataResult.build(200, "操作成功",null);
+		}else {
+			//判断是否存在，存在则去除
+			boolean flag = this.contain(listsm, sm.getId());
+			if(flag) {
+				//删除
+				for(SysMenuAuthority sys:listsm) {
+					if(!sys.getId().equals(sm.getId())) {
+						newsm.add(sys);
+					}
+				}
+				sr.setSysMenuAuthority(newsm);
+				this.sysResourceService.save(sr);
+				//删除的时候需要把角色表中的权限也去掉
+				//获取所有的非删除状态下的角色
+				List<SysRole> listRoles = this.findAllSysRole();
+				for(SysRole sysRole : listRoles) {
+					List<SysMenuAuthority> newRoleAuth = new ArrayList<>();
+					for(SysMenuAuthority sys:sysRole.getSysMenuAuthority()) {
+						if(!sys.getId().equals(sm.getId())) {
+							newRoleAuth.add(sys);
+						}
+					}
+					sysRole.setSysMenuAuthority(newRoleAuth);
+					this.save(sysRole);
+				}
+				
+				
+				
+				return BasicDataResult.build(200, "操作成功",null);
+			}else {
+				//添加
+				listsm.add(sm);
+				sr.setSysMenuAuthority(listsm);
+				this.sysResourceService.save(sr);
+				return BasicDataResult.build(200, "操作成功",null);
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	public boolean contain(List<SysMenuAuthority> listsm,String containId) {
+		for(SysMenuAuthority sys:listsm) {
+			if(sys.getId().equals(containId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	
+
+
 
 }

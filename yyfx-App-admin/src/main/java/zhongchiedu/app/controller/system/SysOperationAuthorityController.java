@@ -48,7 +48,7 @@ public class SysOperationAuthorityController {
 	private SysOperationAuthorityService sysOperationAuthorityService;
 
 	@GetMapping("sysOperations")
-	// @RequiresPermissions(value = "admin:sysOperation:list")
+	@RequiresPermissions(value = "sysoperation:list")
 	@SystemControllerLog(description = "查询所有按钮配置")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -69,6 +69,7 @@ public class SysOperationAuthorityController {
 	 * @return
 	 */
 	@GetMapping("/sysOperation/{id}")
+	@RequiresPermissions(value = "sysoperation:edit")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改按钮权限"+id);
 		SysOperationAuthority sysOperationAuthority = this.sysOperationAuthorityService.findOneById(id, SysOperationAuthority.class);
@@ -97,7 +98,7 @@ public class SysOperationAuthorityController {
 	
 	
 	@DeleteMapping("/sysOperation/{id}")
-	//@RequiresPermissions(value = "admin:sysOperation:delete")
+	@RequiresPermissions(value = "sysoperation:delete")
 	@SystemControllerLog(description = "删除按钮")
 	public String delete(@PathVariable String id) {
 		log.info("删除按钮" + id);
@@ -120,7 +121,7 @@ public class SysOperationAuthorityController {
 	 * @return
 	 */
 	@PostMapping("/sysOperation")
-	// @RequiresPermissions(value = "admin:sysOperation:add")
+	@RequiresPermissions(value = "sysoperation:add")
 	@SystemControllerLog(description = "添加按钮")
 	public String addSysOperation(
 			@ModelAttribute("sysOperationAuthority") SysOperationAuthority sysOperationAuthority) {
@@ -141,7 +142,7 @@ public class SysOperationAuthorityController {
 	 * @return
 	 */
 	@PutMapping("/sysOperation")
-//	@RequiresPermissions(value = "admin:sysOperation:edit")
+	@RequiresPermissions(value = "sysoperation:edit")
 	@SystemControllerLog(description = "修改按钮配置")
 	public String editSysOperation(
 			@ModelAttribute("sysOperationAuthority") SysOperationAuthority sysOperationAuthority) {

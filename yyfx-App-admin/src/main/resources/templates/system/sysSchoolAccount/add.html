@@ -53,7 +53,7 @@ canvas#canvas4 {
 
 						<div style="margin: -20px 15px;" class="nest" id="Blank_PageClose">
 							<div class="title-alt">
-								<h6>用户信息</h6>
+								<h6>学校管理员信息</h6>
 								<div class="titleClose">
 									<a class="gone" href="#Blank_PageClose"> <span
 										class="entypo-cancel"></span>
@@ -106,7 +106,7 @@ canvas#canvas4 {
 														required="required">
 												</div>
 											</div>
-											<input type="text" name="userType" value="school_admin">
+											<input type="hidden" name="userType" value="school_admin">
 											<div class="form-group">
 												<label class="col-lg-3 control-label">证件类型：</label>
 												<div class="col-lg-8">
@@ -195,22 +195,7 @@ canvas#canvas4 {
 												</div>
 											</div>
 
-											<!-- <div class="form-group">
-												<label class="col-lg-3 control-label">所属学校：</label>
-												<div class="col-lg-8">
-													<div class="ui-select">
-														<select id="schoolId" name="school.id"
-															class="form-control">
-															<option value="">---请选择所属学校---</option>
-															<option th:if="${schools!=null}" th:value="${school.id}"
-																th:text="${school.name}"
-																th:selected="${sysSchoolAccount!=null&&sysSchoolAccount.school!=null}?${sysSchoolAccount.school.name}==${school.name}"
-																th:each="school:${schools}">
-														</select>
-													</div>
-												</div>
-											</div>
- -->
+
 											<div class="form-group">
 												<label class="col-md-3 control-label"></label>
 												<div class="col-md-8">

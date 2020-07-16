@@ -13,4 +13,5 @@ public interface MultiMediaService extends GeneralService<MultiMedia> {
 	
 	public List<MultiMedia> uploadPictures(MultipartFile[] file,String dir,String path,String belong,int width,int height);
 	
+	 List<MultiMedia> uploadPictures(MultipartFile[] file,String dir,String path,String belong);
 }

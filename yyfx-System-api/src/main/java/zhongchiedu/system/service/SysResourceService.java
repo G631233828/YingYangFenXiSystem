@@ -6,6 +6,7 @@ import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
 import zhongchiedu.system.pojo.SysResource;
+import zhongchiedu.system.pojo.SysUser;
 
 /**
  * 
@@ -39,7 +40,15 @@ public interface SysResourceService  extends GeneralService<SysResource>{
 	
 	String delete(String id);
 	
-	BasicDataResult createSysOperationAuthority(String param);
+//	BasicDataResult createSysOperationAuthority(String param);
+	
+
+
+	
+	
+	
+	
+
 	
 	
 	

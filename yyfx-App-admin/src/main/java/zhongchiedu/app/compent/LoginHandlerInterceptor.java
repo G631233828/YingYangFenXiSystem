@@ -19,15 +19,18 @@ import org.springframework.web.servlet.ModelAndView;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.system.pojo.Role;
+import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.pojo.User;
 import zhongchiedu.system.service.RoleService;
+import zhongchiedu.system.service.SysRoleService;
 
 @Component
 public class LoginHandlerInterceptor implements HandlerInterceptor {
 
 	private static final Logger log = LoggerFactory.getLogger(LoginHandlerInterceptor.class);
 	@Autowired
-	private RoleService roleService;
+	private SysRoleService sysRoleService;
 	
 	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -39,12 +42,12 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 		}
 		
 		//修改权限之后需要去刷新用户的权限
-		User user = (User) session.getAttribute(Contents.USER_SESSION);
+		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 		if(Common.isNotEmpty(user)){
 			//获取session中所属角色的id
-			Role sessionRole = user.getRole();
+			SysRole sessionRole = user.getRole();
 			//通过roleID 查找数据库中的role
-			Role role = this.roleService.findOneById(sessionRole.getId(), Role.class);
+			SysRole role = this.sysRoleService.findOneById(sessionRole.getId(), SysRole.class);
 			if(sessionRole.getVersion() == role.getVersion()){
 				return true;
 			}else{

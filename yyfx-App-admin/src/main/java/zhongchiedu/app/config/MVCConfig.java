@@ -19,25 +19,31 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import zhongchiedu.app.compent.LoginHandlerInterceptor;
+import zhongchiedu.app.compent.WebHandlerInterceptor;
 
 @Configuration
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
-	@Value("${upload-imgpath}")
+	@Value("${upload.imgpath}")
 	private String imgpath;
-	@Value("${video.savePath}")
-	private String video;
-	@Value("${upload-dir}")
+//	@Value("${upload.kinderitor}")
+//	private String kinderitor;
+	@Value("${upload.savedir}")
 	private String dir;
+	@Value("${upload.ueditordir}")
+	private String ueditordir;
 	
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//    	registry.addResourceHandler("/img/**").addResourceLocations("file:"+filepath+"/"); 
-//    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
-    	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
-    	registry.addResourceHandler(video+"/**").addResourceLocations("file:"+dir+video+"/");
-	    	super.addResourceHandlers(registry);
-	    }
+	 @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//	    	registry.addResourceHandler("/img/**").addResourceLocations("file:"+filepath+"/"); 
+//	    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
+//	    	registry.addResourceHandler(kinderitor+"/**").addResourceLocations("file:"+dir+kinderitor+"/");
+	    	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
+	    	registry.addResourceHandler(ueditordir+"/**").addResourceLocations("file:"+ueditordir+"/");
+		    	super.addResourceHandlers(registry);
+		    }
+			  
+
 		  
 //
 //    @Bean
@@ -63,6 +69,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 		return new LoginHandlerInterceptor();
 	}
 	
+	@Bean
+	public WebHandlerInterceptor webHandlerInterceptor() {
+		return new WebHandlerInterceptor();
+	}
+	
+	
 	/**
 	 * shiro 界面整合 thymeleaf
 	 * @return
@@ -83,6 +95,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 			public void addViewControllers(ViewControllerRegistry registry) {
 				registry.addViewController("/login").setViewName("index");
 				registry.addViewController("/toindex").setViewName("index");
+				registry.addViewController("/").setViewName("/web/index");
 //				registry.addViewController("/").setViewName("/website/index");
 			}
 
@@ -93,6 +106,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 			public void addInterceptors(InterceptorRegistry registry) {
 				//registry.addInterceptor(sessionInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login");
 				registry.addInterceptor(loginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login");
+				registry.addInterceptor(webHandlerInterceptor()).addPathPatterns("/web/**").excludePathPatterns("/assets/**");
 			}
 			
 		};

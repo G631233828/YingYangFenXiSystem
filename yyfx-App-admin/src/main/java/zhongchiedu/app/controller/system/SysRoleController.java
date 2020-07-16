@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
+import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
-import zhongchiedu.system.pojo.Resource;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.service.SysResourceService;
 import zhongchiedu.system.service.SysRoleService;
+import zhongchiedu.system.service.SysUserService;
 
 /**  
 * <p>Title: SysRoleController</p>  
@@ -47,18 +50,26 @@ public class SysRoleController {
 	
 	@Autowired
 	private SysResourceService sysResourceService;
+	
+	@Autowired
+	private SysUserService sysUserService;
 
 	@GetMapping("sysRoles")
-	// @RequiresPermissions(value = "admin:sysOperation:list")
+	@RequiresPermissions(value = "sysrole:list")
 	@SystemControllerLog(description = "查询所有角色")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
+		
+		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 		// 分页查询数据
 		log.info("查询所有角色");
-		Pagination<SysRole> pagination = this.sysRoleService.findPagination(pageNo, pageSize);
+		Pagination<SysRole> pagination = this.sysRoleService.findPagination(user, pageNo, pageSize);
 		model.addAttribute("pageList", pagination);
-			
-		List<SysResource> findAllSysResources = this.sysResourceService.findAllSysResources();
+		
+		List<SysResource> findAllSysResources = this.sysUserService.findAllSysResources(user);
+//			
+//		List<SysResource> findAllSysResources = this.sysResourceService.findAllSysResources();
+//		
 		model.addAttribute("findAllSysResources", findAllSysResources);
 		
 		
@@ -75,6 +86,7 @@ public class SysRoleController {
 	 * @return
 	 */
 	@GetMapping("/sysRole/{id}")
+	@RequiresPermissions(value = "sysrole:edit")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改角色"+id);
 		SysRole sysRole = this.sysRoleService.findOneById(id, SysRole.class);
@@ -103,7 +115,7 @@ public class SysRoleController {
 	
 	
 	@DeleteMapping("/sysRole/{id}")
-	//@RequiresPermissions(value = "admin:sysOperation:delete")
+	@RequiresPermissions(value = "sysrole:delete")
 	@SystemControllerLog(description = "删除角色")
 	public String delete(@PathVariable String id) {
 		log.info("删除角色" + id);
@@ -126,11 +138,12 @@ public class SysRoleController {
 	 * @return
 	 */
 	@PostMapping("/sysRole")
-	// @RequiresPermissions(value = "admin:sysOperation:add")
+	@RequiresPermissions(value = "sysrole:add")
 	@SystemControllerLog(description = "添加角色")
 	public String addsysRole(
-			@ModelAttribute("sysRole") SysRole sysRole) {
-		this.sysRoleService.saveOrUpdate(sysRole);
+			@ModelAttribute("sysRole") SysRole sysRole,HttpSession session) {
+		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
+		this.sysRoleService.saveOrUpdate(sysRole,user);
 		return "redirect:/admin/sysRoles";
 	}
 
@@ -147,11 +160,12 @@ public class SysRoleController {
 	 * @return
 	 */
 	@PutMapping("/sysRole")
-//	@RequiresPermissions(value = "admin:sysOperation:edit")
+	@RequiresPermissions(value = "sysrole:edit")
 	@SystemControllerLog(description = "修改角色")
 	public String editSysRole(
-			@ModelAttribute("sysRole") SysRole sysRole) {
-		this.sysRoleService.saveOrUpdate(sysRole);
+			@ModelAttribute("sysRole") SysRole sysRole,HttpSession session) {
+		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
+		this.sysRoleService.saveOrUpdate(sysRole,user);
 		return "redirect:/admin/sysRoles";
 	}
 

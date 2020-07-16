@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+</head>
+<body>
+
+
+	<div class="row border-bottom white-bg" th:fragment="top">
+		<nav class="navbar navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<button aria-controls="navbar" aria-expanded="false"
+					data-target="#navbar" data-toggle="collapse"
+					class="navbar-toggle collapsed" type="button">
+					<i class="fa fa-reorder"></i>
+				</button>
+				<a th:href="@{toindex}" class="navbar-brand">返回系统</a>
+			</div>
+			<div class="navbar-collapse collapse" id="navbar">
+				<ul class="nav navbar-nav">
+
+					<li class="dropdown" th:each="webmenu:${session.webMenus}"
+						th:if="${webmenu.type eq 1}"><a aria-expanded="false"
+						role="button" href="#" class="dropdown-toggle"
+						data-toggle="dropdown">[[${webmenu.name}]] <span class="caret"></span>
+					</a>
+						<ul role="menu" class="dropdown-menu">
+
+							<li th:each="webmenu2:${session.webMenus}"
+								th:if="${webmenu2.firstLevel eq webmenu.id }"><a
+								th:href="@{/school/findNews(webMenuId=${webmenu2.id})}">[[${webmenu2.name}]]</a>
+							</li>
+
+						</ul></li>
+
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+
+
+</body>
+</html>

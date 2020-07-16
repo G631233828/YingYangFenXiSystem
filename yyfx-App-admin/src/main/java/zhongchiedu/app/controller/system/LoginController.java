@@ -1,6 +1,5 @@
 package zhongchiedu.app.controller.system;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,7 @@ import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.shiro.token.LoginToken;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.pojo.User;
 import zhongchiedu.system.service.UserService;
 
@@ -44,58 +44,66 @@ public class LoginController {
 
 	@RequestMapping("/tologin")
 	@SystemControllerLog(description = "用户申请登陆")
-	public String login(User user,boolean rememberMe, HttpServletRequest request, Map<String, Object> map, HttpSession session,Model model)
-			throws Exception {
-		if(Common.isEmpty(user.getAccountName())||Common.isEmpty(user.getPassWord())){
+	public String login(SysUser user, boolean rememberMe, HttpServletRequest request, Map<String, Object> map,
+			HttpSession session, Model model) throws Exception {
+		if (Common.isEmpty(user.getAccountName()) || Common.isEmpty(user.getPassWord())||Common.isEmpty(user.getUserType())) {
 			return "login";
 		}
+		String type = user.getUserType().equals(UserType.SCHOOL_USER)?UserType.SCHOOL_USER:user.getUserType().equals(UserType.SCHOOL_ADMIN)?UserType.SCHOOL_ADMIN:user.getUserType().equals(UserType.SYSTEM)?UserType.SYSTEM:"";
+		if(Common.isEmpty(type)) {
+			return "login";
+		}
+		
+		
 		String msg = "";
-			/*
-			 * boolean rememberMe = false; if (remember != "") { rememberMe =
-			 * true; }
-			 */
-			String accountName = user.getAccountName();
-			String password = user.getPassWord();
-			if (accountName != "" && password != "") {
-				try {
-				//UsernamePasswordToken token = new UsernamePasswordToken(accountName, password,rememberMe);
-				
+		/*
+		 * boolean rememberMe = false; if (remember != "") { rememberMe = true; }
+		 */
+		String accountName = user.getAccountName();
+		String password = user.getPassWord();
+		
+		
+		
+		if (accountName != "" && password != "") {
+			try {
+				// UsernamePasswordToken token = new UsernamePasswordToken(accountName,
+				// password,rememberMe);
+
 //				char passwordChars[] = (char[]) token.getCredentials(); 
 //				System.out.println(passwordChars);
 //				token.setPassword(passwordChars);
-				LoginToken token = new LoginToken(accountName, password,UserType.SCHOOL_ADMIN);
+				LoginToken token = new LoginToken(accountName, password, type);
 				token.setRememberMe(rememberMe);
 				Subject subject = SecurityUtils.getSubject();// 获得主体
-				
-					subject.login(token);
-					if (subject.isAuthenticated()) {
-						return "redirect:/toindex";
-					} else {
-						msg = "登录失败";
-					}
-				} catch (IncorrectCredentialsException e) {
-					msg = "登录密码错误!";
-				} catch (ExcessiveAttemptsException e) {
-					msg = "登录失败次数过多!";
-				} catch (LockedAccountException e) {
-					msg = "帐号已被锁定!" ;
-				} catch (DisabledAccountException e) {
-					msg = "帐号已被禁用,请与管理员联系!" ;
-				} catch (ExpiredCredentialsException e) {
-					msg = "帐号已过期!";
-				} catch (UnknownAccountException e) {
-					msg = "帐号不存在!";
-				} catch (UnauthorizedException e) {
-					msg = "您没有得到相应的授权！" + e.getMessage();
-				}catch(Exception e) {
-					msg = "未知异常" + e;
-				} 
-				finally {
-					model.addAttribute("msg", msg);
-					System.out.println(msg);
+
+				subject.login(token);
+				if (subject.isAuthenticated()) {
+					return "redirect:/toindex";
+				} else {
+					msg = "登录失败";
 				}
-				return "login";
+			} catch (IncorrectCredentialsException e) {
+				msg = "登录密码错误!";
+			} catch (ExcessiveAttemptsException e) {
+				msg = "登录失败次数过多!";
+			} catch (LockedAccountException e) {
+				msg = "帐号已被锁定!";
+			} catch (DisabledAccountException e) {
+				msg = "帐号已被禁用,请与管理员联系!";
+			} catch (ExpiredCredentialsException e) {
+				msg = "帐号已过期!";
+			} catch (UnknownAccountException e) {
+				msg = "帐号不存在!";
+			} catch (UnauthorizedException e) {
+				msg = "您没有得到相应的授权！" + e.getMessage();
+			} catch (Exception e) {
+				msg = "未知异常" + e;
+			} finally {
+				model.addAttribute("msg", msg);
+				System.out.println(msg);
 			}
+			return "login";
+		}
 
 		return "redirect:/toindex";
 	}
@@ -107,9 +115,9 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/loginOut")
 	@SystemControllerLog(description = "用户退出")
-	public String loginOut(HttpSession session,HttpServletResponse resp) {
+	public String loginOut(HttpSession session, HttpServletResponse resp) {
 		Subject subject = SecurityUtils.getSubject();// 获得主体
-		session.removeAttribute(Contents.USER_SESSION);//删除cookie
+		session.removeAttribute(Contents.USER_SESSION);// 删除cookie
 		Cookie co = new Cookie("accountName", "");
 		co.setMaxAge(0);// 设置立即过期
 		co.setPath("/");// 根目录，整个网站有效
@@ -118,16 +126,11 @@ public class LoginController {
 		return "login";
 	}
 
-	
-
-	
-	
-	@RequestMapping(value="/toindex")
+	@RequestMapping(value = "/toindex")
 	@SystemControllerLog(description = "用户登陆成功")
-	public String toindex(Model model){
-	
+	public String toindex(Model model) {
+
 		return "index";
 	}
-	
 
 }

@@ -204,5 +204,6 @@
 		<module>yyfx-Commons</module>
 		<module>yyfx-App-admin</module>
 		<module>yyfx-Shiro</module>
+		<module>school-Web-api</module>
 	</modules>
 </project>

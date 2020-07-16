@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+    <title>上海师范大学附属中学闵行分校</title>
+    <meta name="keywords">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/viewer.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/index.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/page.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/detail.css}">
+</head>
+
+<body>
+    <!-- 头部框架 -->
+    <div class="headerPage">
+        <!-- BANNER框架 -->
+        <div class="bannerPage">
+            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+
+        </div>
+        <div class="bannerPageMobile">
+            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+
+        </div>
+        <!-- nav和logo框架 -->
+        
+        <div th:replace="web/public/public::top"></div>
+        
+    </div>
+    <!-- 主体内容框架 -->
+    <div class="subjectContent">
+        <div class="subjectContentContainer">
+        
+        <div th:replace="web/public/public::subjectContentContainerPosition"></div>
+        
+      <!--       <div class="subjectContentContainerPosition">
+                <span>您的位置：</span>
+                <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/index.html">首页 &gt; </a>
+                <a class="address">校园风采</a>
+            </div> -->
+            
+            <div class="subjectContentContainerContent">
+               
+                 <div th:replace="web/public/public::classification"></div>
+               
+               
+         <!--        <div class="classification">
+                    <ul>
+                        <li class="classificationLiCurrent">
+                            <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/40f6fb31-ce8d-42ad-b5cb-78c89daa6d3b/list.html" class="classificationACurrent">校园风采</a>
+                        </li>
+                    </ul>
+                </div>
+                 -->
+                
+                <div class="details site-detail">
+                    <div class="site-detail-name">[[${news.title}]]</div>
+
+                    <div class="site-detail-infos">
+                        <span>发布人：[[${news.author}]]</span>
+                        <span>发布时间：[[${#dates.format(news.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
+
+                    </div>
+                    <div class="site-detail-content"  th:utext="${news.content}">
+                    </div>
+                    <div class="site-detail-files">
+                        <div style="margin-bottom: 10px;">附件下载：</div>
+                        <ul>
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subjectContentMobile">
+        <div class="subjectContentContainerMobile">
+            <div class="subjectContentContainerContentMobile">
+              <div th:replace="web/public/public::classificationMobile"></div>
+              <!--   <div class="classificationMobile">
+                    <ul>
+                        <li class="classificationLiCurrentMobile">
+                            <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/40f6fb31-ce8d-42ad-b5cb-78c89daa6d3b/list.html" class="classificationACurrentMobile">校园风采</a>
+                        </li>
+                    </ul>
+                </div> -->
+                
+                
+                <div class="detailsMobile site-detail">
+                    <div class="site-detail-name">[[${news.title}]]</div>
+
+                    <div class="site-detail-infos">
+                        <span>发布人：[[${news.author}]]</span>
+                        <span>发布时间：[[${#dates.format(news.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
+
+                    </div>
+
+                     <div class="site-detail-content" th:utext="${news.content}">
+                    </div>
+                    <div class="site-detail-files">
+                        <div style="margin-bottom: 10px;">附件下载：</div>
+                        <ul>
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 页脚底部框架 -->
+    <div th:replace="web/public/public::footer"></div>
+    
+    
+    
+    <script type="text/javascript" th:src="@{/assets/website/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/website/js/viewer.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/website/js/site.js}"></script>
+    <script type="text/javascript" data-news-id="22e48f3f-e2c2-4a91-8cc5-1242cff40914" data-site-id="a59f8895-297e-49ce-b07c-68955251229a" data-category-id="40f6fb31-ce8d-42ad-b5cb-78c89daa6d3b" th:src="@{/assets/website/js/site-detail.js}"></script>
+
+
+</body>
+
+</html>

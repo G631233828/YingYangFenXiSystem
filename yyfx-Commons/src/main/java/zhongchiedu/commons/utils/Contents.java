@@ -20,11 +20,12 @@ public class Contents {
 	 */
 	public static final String SYSRESOURCE_SESSION = "sysResource_session";
 
-	public static final String USER_REDIS_SESSION = "user-redis-session";// api session
 	public static final String USER_SESSION = "user_session";// 后台用户session
 	public static final String RESOURCES_LIST = "resourceslist";
 	public static final String MENU_ID = "menuid";
 	public static final String SCHOOL_SESSION = "school_session";// 学校session
+	
+	public static final String WEBMENU="webmenu";//前台菜单
 
 	/**
 	 * Realm名称

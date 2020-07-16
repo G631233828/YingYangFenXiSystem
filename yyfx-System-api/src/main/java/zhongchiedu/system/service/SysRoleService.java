@@ -3,14 +3,20 @@
  */
 package zhongchiedu.system.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.query.Query;
+
 import zhongchiedu.commons.utils.BasicDataResult;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
+import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysUser;
 
 /**  
 * <p>Title: SysRoleService</p>  
@@ -20,15 +26,15 @@ import zhongchiedu.system.pojo.SysRole;
 */
 public interface SysRoleService  extends GeneralService<SysRole>{
 
-	Pagination<SysRole> findPagination(Integer pageNo,Integer pageSize);
+	Pagination<SysRole> findPagination(SysUser user ,Integer pageNo,Integer pageSize);
 
 	SysRole findSysRoleByName(String name);
 	
-	List<SysRole> findAllSysRoleByIsDisable();
+	List<SysRole> findAllSysRoleByIsDisable(SysUser user);
 	
 	List<SysRole> findAllSysRole();
 	
-	void saveOrUpdate(SysRole sysRole);
+	void saveOrUpdate(SysRole sysRole,SysUser user);
 	
 	BasicDataResult toDisable(String id);
 	
@@ -40,10 +46,7 @@ public interface SysRoleService  extends GeneralService<SysRole>{
 
 	BasicDataResult getAuthor(String id);
 	
-	
-	
-	
-	
+	BasicDataResult createSysOperationAuthority(String param);
 	
 	
 	

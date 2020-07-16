@@ -49,26 +49,26 @@
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-								<!-- 	<shiro:hasPermission name="admin:sysSchool:add"> -->
+									<shiro:hasPermission name="sysSchool:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/admin/sysSchool}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									</shiro:hasPermission> 
 
-								<!-- 	<shiro:hasPermission name="admin:sysSchool:edit"> -->
+								<shiro:hasPermission name="sysSchool:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','sysSchool')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									</shiro:hasPermission> 
 
-									<!-- <shiro:hasPermission name="admin:sysSchool:delete"> -->
+									<shiro:hasPermission name="sysSchool:delete">
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{sysSchool}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
-									<!-- </shiro:hasPermission> -->
+									 </shiro:hasPermission>
 								</div>
 
 								<div class="titleClose">
@@ -133,18 +133,18 @@
 													th:utext="${school.isDisable eq true }?|<button type='button' onclick=toDisable('${school.id}','admin/sysSchool') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${school.id}','admin/sysSchool') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric">[[${school.description }]]</td>
 												<td class="numeric">
-												<!-- <shiro:hasPermission name="admin:school:edit"> -->
+												<shiro:hasPermission name="sysSchool:edit">
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${school.id}','sysSchool')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:school:delete"> -->
+													</shiro:hasPermission>
+													 <shiro:hasPermission name="sysSchool:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{sysSchool/}${school.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													<!-- </shiro:hasPermission> -->
+													 </shiro:hasPermission> 
 													
 												
 													</td>

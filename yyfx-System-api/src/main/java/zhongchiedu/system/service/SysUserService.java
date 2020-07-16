@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
+import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysUser;
 
 /**  
@@ -20,7 +21,7 @@ import zhongchiedu.system.pojo.SysUser;
 */
 public interface SysUserService extends GeneralService<SysUser>{
 	
-	Pagination<SysUser> findPagination(String userType,Integer pageNo,Integer pageSize);
+	Pagination<SysUser> findPagination(SysUser user,Integer pageNo,Integer pageSize);
 
 	SysUser findSysUserByAccountName(String accountName,String userType);
 	
@@ -28,7 +29,7 @@ public interface SysUserService extends GeneralService<SysUser>{
 	
 	List<SysUser> findAllSysUser();
 	
-	void saveOrUpdate(SysUser sysUser,String roleId ,MultipartFile[] file ,String imgPath,String dir,String oldheadImg);
+	void saveOrUpdate(SysUser sysUser,String roleId ,MultipartFile[] file ,String imgPath,String dir,String oldheadImg,SysUser sessionUser);
 	
 	BasicDataResult toDisable(String id);
 	
@@ -40,4 +41,7 @@ public interface SysUserService extends GeneralService<SysUser>{
 
 	BasicDataResult editPassword(String id,String password);
 
+	List<SysResource> findAllSysResources(SysUser user);
+	
+	
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.service.SysOperationAuthorityService;
 import zhongchiedu.system.service.SysResourceService;
+import zhongchiedu.system.service.SysRoleService;
 
 /**
  * <p>
@@ -50,9 +52,12 @@ public class SysResourceController {
 	private SysResourceService sysResourceService;
 	@Autowired
 	private SysOperationAuthorityService sysOperationAuthorityService;
+	@Autowired
+	private SysRoleService sysRoleService;
+	
 
 	@GetMapping("sysResources")
-	// @RequiresPermissions(value = "admin:sysResource:list")
+	@RequiresPermissions(value = "sysresource:list")
 	@SystemControllerLog(description = "查询所有资源")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -71,6 +76,7 @@ public class SysResourceController {
 	 * 跳转到添加页面
 	 */
 	@GetMapping("/sysResource")
+	@RequiresPermissions(value = "sysresource:add")
 	public String addSysResourcePage(Model model) {
 		// 获取所有的启用的资源目录
 		List<SysResource> list = this.sysResourceService.findSysResourceMenu("0");
@@ -89,6 +95,7 @@ public class SysResourceController {
 	 * @return
 	 */
 	@GetMapping("/sysResource/{id}")
+	@RequiresPermissions(value = "sysresource:edit")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改资源配置"+id);
 		// 获取所有的启用的资源目录
@@ -103,7 +110,7 @@ public class SysResourceController {
 	}
 
 	@DeleteMapping("/sysResource/{id}")
-	// @RequiresPermissions(value = "admin:sysResource:delete")
+	@RequiresPermissions(value = "sysresource:delete")
 	@SystemControllerLog(description = "删除")
 	public String delete(@PathVariable String id) {
 		log.info("删除" + id);
@@ -113,7 +120,7 @@ public class SysResourceController {
 	}
 
 	@PostMapping("/sysResource")
-	// @RequiresPermissions(value = "admin:sysResource:add")
+	@RequiresPermissions(value = "sysresource:add")
 	@SystemControllerLog(description = "添加资源")
 	public String addSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
 		this.sysResourceService.saveOrUpdate(sysResource);
@@ -121,7 +128,7 @@ public class SysResourceController {
 	}
 
 	@PutMapping("/sysResource")
-//	@RequiresPermissions(value = "admin:sysResource:edit")
+	@RequiresPermissions(value = "sysresource:edit")
 	@SystemControllerLog(description = "修改资源")
 	public String editSysResource(@ModelAttribute("sysResource") SysResource sysResource) {
 		this.sysResourceService.saveOrUpdate(sysResource);
@@ -143,7 +150,7 @@ public class SysResourceController {
 	@RequestMapping(value = "/sysResource/setOperationAuthority", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public BasicDataResult setOperationAuthority(@RequestParam(value = "param", defaultValue = "") String param) {
-	return this.sysResourceService.createSysOperationAuthority(param);
+	return this.sysRoleService.createSysOperationAuthority(param);
 	}
 
 }

@@ -23,6 +23,8 @@ public interface SysSchoolService extends GeneralService<SysSchool>{
 
 	SysSchool findSysSchoolByName(String name);
 	
+	SysSchool findSysSchoolById(String id);
+	
 	List<SysSchool> findAllSysSchoolByIsDisable();
 	
 	List<SysSchool> findAllSysSchool();

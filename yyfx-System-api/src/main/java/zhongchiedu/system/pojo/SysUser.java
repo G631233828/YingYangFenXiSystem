@@ -5,6 +5,7 @@ package zhongchiedu.system.pojo;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import lombok.AllArgsConstructor;
@@ -46,4 +47,6 @@ public class SysUser extends GeneralBean<SysUser>{
 //	private List<SysResource> resource;
 	@DBRef
 	private SysRole role;
+	
+	
 }

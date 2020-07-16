@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+    <title></title>
+    <meta name="keywords">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/index.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/page.css}">
+</head>
+
+<body>
+    <!-- 头部框架 -->
+    <div class="headerPage">
+         <!-- BANNER框架 -->
+        <div class="bannerPage">
+            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+
+        </div>
+        <div class="bannerPageMobile">
+            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+
+        </div>
+        <!-- nav和logo框架 -->
+           <div th:replace="web/public/public::top"></div>
+           
+           
+    </div>
+    
+    
+    <!-- 主体内容框架 -->
+    <div class="subjectContent">
+        <div class="subjectContentContainer">
+        
+        
+          <div th:replace="web/public/public::subjectContentContainerPosition"></div>
+        
+       <!--      <div class="subjectContentContainerPosition">
+                <span>您的位置：</span>
+                <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/index.html">首页 &gt; </a>
+                <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/41ab413e-9f6a-4d11-9887-7c1cc1b98e61/list.html">支部建设 &gt; </a>
+                <a class="address">党建动态</a>
+            </div>
+             -->
+            
+            <div class="subjectContentContainerContent">
+          <div th:replace="web/public/public::classification"></div>
+            
+            
+                <!-- <div class="classification">
+                    <ul>
+                        <li class="classificationLiCurrent">
+                            <a href="#" class="classificationACurrent">党建动态</a>
+                        </li>
+                        <li>
+                            <a href="#">廉政建设</a>
+                        </li>
+
+                    </ul>
+                </div> -->
+                
+                
+                
+                <div class="list site-list-data">    
+                    <ul class="site-list-news">                  
+                    <li><a href="article.html" target="_blank"><span style="">动态建设1。。。。。</span><p>2014-03-20 15:26:18</p></a></li>
+                     <li><a href="#" target="_blank"><span style="">动态建设2。。。。。</span><p>2014-03-20 15:26:18</p></a></li>
+                     <li><a href="#" target="_blank"><span style="">动态建设3。。。。。</span><p>2014-03-20 15:26:18</p></a></li>
+                    </ul>
+                    <div class="page site-list-page">
+                    <dl>                                    
+                    <dd class="site-list-page-total"><a href="javascript:void(0);">共1记录</a></dd>                                    
+                    <dd class="site-list-page-prepage"><a href="javascript:loadnews(2);">上一页</a></dd>                                    
+                    <dd class="site-list-page-nums curr"><a href="javascript:loadnews(1);">1</a></dd>
+                    <dd class="site-list-page-nextpage"><a href="javascript:loadnews(3);">下一页</a></dd>                                
+                    </dl>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subjectContentMobile">
+        <div class="subjectContentContainerMobile">
+            <div class="subjectContentContainerContentMobile">
+             <div th:replace="web/public/public::classificationMobile"></div>
+            
+               <!--  <div class="classificationMobile">
+                    <ul>
+                        <li class="classificationLiCurrentMobile">
+                            <a href="#">党建动态</a>
+                        </li>
+                        <li>
+                            <a href="#">廉政建设</a>
+                        </li>
+
+                    </ul>
+                </div> -->
+                <div class="listMobile site-list-data">
+                    <ul class="site-list-news"></ul>
+                    <div class="pageMobile site-list-page"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 页脚底部框架 -->
+    <div class="footer">
+        <img src="images/footerBg.png">
+        <div class="footerContainer" style="margin-top: 65px;height: auto;">
+            <center>
+                <div class="contact site-footer">
+                    <div>邮编：201112   电话：24090002   邮箱：sdfzmh@163.com   地址：上海市闵行区浦江镇浦佳路91号 <img src="images/e0d84456-e477-43ab-a3b2-27d743f06012.jpg" style="position: relative;margin-right: -80px;right: 125px;float: right;height: 80px;width: 80px;"></div>
+
+                    <div style="width:300px;margin:0 auto; padding:20px 0;">
+                        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202007442" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="images/remark2.png" style="float:left;">
+                            <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">沪公网安备 31011202007442号</p>
+                        </a>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </div>
+    <div class="footerMobile">
+        <div class="footerContainerMobile">
+            <center>
+                <div class="contact site-footer">
+                    <div>邮编：201112   电话：24090002   邮箱：sdfzmh@163.com   地址：上海市闵行区浦江镇浦佳路91号 <img src="images/e0d84456-e477-43ab-a3b2-27d743f06012.jpg" style="position: relative;margin-right: -80px;right: 125px;float: right;height: 80px;width: 80px;"></div>
+
+                    <div style="width:300px;margin:0 auto; padding:20px 0;">
+                        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202007442" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="images/remark2.png" style="float:left;">
+                            <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">沪公网安备 31011202007442号</p>
+                        </a>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/assets/website/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/website/js/site.js}"></script>
+    <script type="text/javascript" data-site-id="a59f8895-297e-49ce-b07c-68955251229a" data-category-id="95e6b96e-aedc-4a74-9c20-c65ecfdab56f" th:src="@{/assets/website/js/site-list.js}"></script>
+
+
+</body>
+
+</html>

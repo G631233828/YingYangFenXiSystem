@@ -97,6 +97,7 @@ public class SystemUserRealm extends AuthorizingRealm {
 				// 获取角色拥有的所有菜单权限
 				List<SysResource> rs = u.getRole().getSysresource();
 				List<SysMenuAuthority> sm = u.getRole().getSysMenuAuthority();
+				
 				// 权限信息对象info 用来存放查出的所有用户role以及权限permission
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				// 设置权限名称
@@ -155,6 +156,7 @@ public class SystemUserRealm extends AuthorizingRealm {
 			if (u.getIsDisable()) {
 				throw new DisabledAccountException();
 			}
+		
 			if (Common.isNotEmpty(u)) {
 				session.setAttribute(Contents.SYSUSER_SESSION, suser);
 				session.setAttribute(Contents.SYSRESOURCE_SESSION, Common.isNotEmpty(u.getRole())?u.getRole().getSysresource():"");

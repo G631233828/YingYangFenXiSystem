@@ -49,26 +49,26 @@
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-								<!-- 	<shiro:hasPermission name="admin:sysOperation:add"> -->
+									<shiro:hasPermission name="sysOperation:add"> 
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/admin/sysOperation}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+							-	</shiro:hasPermission>
 
-								<!-- 	<shiro:hasPermission name="admin:sysOperation:edit"> -->
+									<shiro:hasPermission name="sysOperation:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','sysOperation')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-								<!-- 	</shiro:hasPermission> -->
+									</shiro:hasPermission> 
 
-									<!-- <shiro:hasPermission name="admin:sysOperation:delete"> -->
+									 <shiro:hasPermission name="sysOperation:delete">
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{sysOperation}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
-									<!-- </shiro:hasPermission> -->
+									 </shiro:hasPermission> 
 								</div>
 
 								<div class="titleClose">
@@ -121,19 +121,19 @@
 													th:utext="${sysOperation.isDisable eq true }?|<button type='button' onclick=toDisable('${sysOperation.id}','admin/sysOperation') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${sysOperation.id}','admin/sysOperation') class='btn btn-success'>启用</button>|"></td>
 												<td class="numeric">[[${sysOperation.description }]]</td>
 												<td class="numeric">
-													<!-- <shiro:hasPermission
-														name="admin:sysOperation:edit"> -->
+													<shiro:hasPermission
+														name="sysOperation:edit"> 
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${sysOperation.id}','sysOperation')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-													<!-- </shiro:hasPermission>
-													 <shiro:hasPermission name="admin:sysOperation:delete"> -->
+													</shiro:hasPermission>
+													 <shiro:hasPermission name="sysOperation:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{sysOperation/}${sysOperation.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													<!-- </shiro:hasPermission> -->
+													 </shiro:hasPermission>
 													</td>
 											</tr>
 

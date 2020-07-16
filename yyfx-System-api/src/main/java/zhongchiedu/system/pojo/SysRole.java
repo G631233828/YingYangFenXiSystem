@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pojo.GeneralBean;
 
 /**
@@ -39,7 +40,12 @@ public class SysRole extends GeneralBean<SysRole> {
 
 	@DBRef
 	private List<SysMenuAuthority> sysMenuAuthority;
-
+	
+	@DBRef
+	private SysSchool sysSchool;
+	
+	private String userType;
+	
 	private int version; // 当前版本
 
 }

@@ -18,14 +18,19 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysOperationAuthority;
 import zhongchiedu.system.pojo.SysResource;
+import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.service.SysMenuAuthorityService;
 import zhongchiedu.system.service.SysOperationAuthorityService;
 import zhongchiedu.system.service.SysResourceService;
+import zhongchiedu.system.service.SysRoleService;
+import zhongchiedu.system.service.SysUserService;
 
 /**  
 * <p>Title: SysResourceServiceImpl</p>  
@@ -41,6 +46,9 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 	private SysOperationAuthorityService sysOperationAuthorityService;
 	@Autowired
 	private SysMenuAuthorityService sysMenuAuthorityService;
+//	@Autowired
+//	private SysRoleService sysRoleService;
+	
 
 
 	/* <p>Title: findPagination</p>  
@@ -125,6 +133,7 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 			if(Common.isNotEmpty(sysResource.getId())) {
 				//update
 				SysResource ed = this.findOneById(sysResource.getId(), SysResource.class);
+				sysResource.setSysMenuAuthority(ed.getSysMenuAuthority());
 				BeanUtils.copyProperties(sysResource, ed);
 				this.save(sysResource);
 				log.info("资源修改成功{}",sysResource.getId());
@@ -232,77 +241,89 @@ public class SysResourceServiceImpl extends GeneralServiceImpl<SysResource> impl
 	 * @return  
 	 * @see zhongchiedu.system.service.SysResourceService#createSysOperationAuthority(java.lang.String)  
 	 */
-	@Override
-	public BasicDataResult createSysOperationAuthority(String param) {
-		String id = Common.subStringBeforeOf("_", param);//当前编辑id
-		String operId = Common.subStringEndOf("_", param);
-		SysOperationAuthority so = this.sysOperationAuthorityService.findOneById(operId, SysOperationAuthority.class);
-		
-  		SysResource sr = this.findOneById(id, SysResource.class);
-  		
-		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
-		
-		//SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
-		
-		String reskey = sr.getResKey()+":"+so.getKey();
-		if(Common.isEmpty(sm)) {
-			//创建
-			 sm= new SysMenuAuthority();
-			 sm.setParentResourceId(sr.getId());
-			 sm.setResKey(reskey);
-			 sm.setSysOperationAuthority(so);
-			this.sysMenuAuthorityService.insert(sm);
-		}else {
-			sm.setResKey(reskey);
-			this.sysMenuAuthorityService.save(sm);
-		}
-		//更新操作权限
-		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority();
-		List<SysMenuAuthority> newsm = new ArrayList<>();
-		
-		if(listsm.size() == 0) {
-			listsm.add(sm);
-			sr.setSysMenuAuthority(listsm);
-			this.save(sr);
-			return BasicDataResult.build(200, "操作成功",null);
-		}else {
-			//判断是否存在，存在则去除
-			boolean flag = this.contain(listsm, sm.getId());
-			if(flag) {
-				//删除
-				for(SysMenuAuthority sys:listsm) {
-					if(!sys.getId().equals(sm.getId())) {
-						newsm.add(sys);
-					}
-				}
-				sr.setSysMenuAuthority(newsm);
-				this.save(sr);
-				return BasicDataResult.build(200, "操作成功",null);
-			}else {
-				//添加
-				listsm.add(sm);
-				sr.setSysMenuAuthority(listsm);
-				this.save(sr);
-				return BasicDataResult.build(200, "操作成功",null);
-			}
-		}
-		
-	}
+//	@Override
+//	public BasicDataResult createSysOperationAuthority(String param) {
+//		String id = Common.subStringBeforeOf("_", param);//当前编辑id
+//		String operId = Common.subStringEndOf("_", param);
+//		SysOperationAuthority so = this.sysOperationAuthorityService.findOneById(operId, SysOperationAuthority.class);
+//		
+//  		SysResource sr = this.findOneById(id, SysResource.class);
+//  		
+//		SysMenuAuthority sm = this.sysMenuAuthorityService.findSysMenuAuthority(operId, id);
+//		
+//		//SysResource parent = this.findOneById(sr.getParentId(), SysResource.class);
+//		
+//		String reskey = sr.getPermissionKey()+":"+so.getKey();
+//		if(Common.isEmpty(sm)) {
+//			//创建
+//			 sm= new SysMenuAuthority();
+//			 sm.setParentResourceId(sr.getId());
+//			 sm.setResKey(reskey);
+//			 sm.setSysOperationAuthority(so);
+//			this.sysMenuAuthorityService.insert(sm);
+//		}else {
+//			sm.setResKey(reskey);
+//			this.sysMenuAuthorityService.save(sm);
+//		}
+//		//更新操作权限
+//		List<SysMenuAuthority> listsm = sr.getSysMenuAuthority()==null?new ArrayList<SysMenuAuthority>():sr.getSysMenuAuthority();
+//		List<SysMenuAuthority> newsm = new ArrayList<>();
+//		
+//		if(listsm.size() == 0) {
+//			listsm.add(sm);
+//			sr.setSysMenuAuthority(listsm);
+//			this.save(sr);
+//			return BasicDataResult.build(200, "操作成功",null);
+//		}else {
+//			//判断是否存在，存在则去除
+//			boolean flag = this.contain(listsm, sm.getId());
+//			if(flag) {
+//				//删除
+//				for(SysMenuAuthority sys:listsm) {
+//					if(!sys.getId().equals(sm.getId())) {
+//						newsm.add(sys);
+//					}
+//				}
+//				sr.setSysMenuAuthority(newsm);
+//				this.save(sr);
+////				//删除的时候需要把角色表中的权限也去掉
+////				//获取所有的非删除状态下的角色
+////				List<SysRole> listRoles = this.sysRoleService.findAllSysRole();
+////				for(SysRole sysRole : listRoles) {
+////					List<SysMenuAuthority> newRoleAuth = new ArrayList<>();
+////					for(SysMenuAuthority sys:sysRole.getSysMenuAuthority()) {
+////						if(!sys.getId().equals(sm.getId())) {
+////							newRoleAuth.add(sys);
+////						}
+////					}
+////					sysRole.setSysMenuAuthority(newRoleAuth);
+////					this.sysRoleService.save(sysRole);
+////				}
+////				
+//				
+//				
+//				return BasicDataResult.build(200, "操作成功",null);
+//			}else {
+//				//添加
+//				listsm.add(sm);
+//				sr.setSysMenuAuthority(listsm);
+//				this.save(sr);
+//				return BasicDataResult.build(200, "操作成功",null);
+//			}
+//		}
+//		
+//	}
 
 
-	public boolean contain(List<SysMenuAuthority> listsm,String containId) {
-		for(SysMenuAuthority sys:listsm) {
-			if(sys.getId().equals(containId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
+//	public boolean contain(List<SysMenuAuthority> listsm,String containId) {
+//		for(SysMenuAuthority sys:listsm) {
+//			if(sys.getId().equals(containId)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//	
 	
 	
 	

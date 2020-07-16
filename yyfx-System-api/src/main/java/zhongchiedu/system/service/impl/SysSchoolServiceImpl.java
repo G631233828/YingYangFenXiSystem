@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -186,6 +187,14 @@ public class SysSchoolServiceImpl extends GeneralServiceImpl<SysSchool> implemen
 			lock.unlock();
 		}
 		return "error";
+	}
+
+	@Override
+	public SysSchool findSysSchoolById(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(new ObjectId(id)));
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		return this.findOneByQuery(query, SysSchool.class);
 	}
 
 }
