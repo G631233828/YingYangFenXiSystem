@@ -1,13 +1,19 @@
 package zhongchiedu.school.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -18,6 +24,7 @@ import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
+import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.NewsService;
@@ -55,14 +62,14 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			String editorValue) {
 		if (Common.isNotEmpty(news)) {
 			WebMenu webMenu = this.webMenuService.findOneById(news.getWebMenu().getId(), WebMenu.class);
- 			if(Common.isNotEmpty(webMenu)) {
- 				//根据当前的menuid获取根menu
- 				WebMenu supMenu = this.webMenuService.findWebMenuById(webMenu.getFirstLevel());
- 				if(Common.isNotEmpty(supMenu)) {
- 					news.setSupMenu(supMenu);
- 				}
- 			}
-			
+			if (Common.isNotEmpty(webMenu)) {
+				// 根据当前的menuid获取根menu
+				WebMenu supMenu = this.webMenuService.findWebMenuById(webMenu.getFirstLevel());
+				if (Common.isNotEmpty(supMenu)) {
+					news.setSupMenu(supMenu);
+				}
+			}
+
 			News ed = null;
 			// 上传图片
 			List<MultiMedia> newsImg = this.multiMediaService.uploadPictures(filenews, dir, path, "NEWS");
@@ -161,6 +168,69 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 
 		return this.findOneByQuery(query, News.class);
 
+	}
+
+	@Override
+	public Pagination<News> findNewsBySuperMenuId(String id, Integer pageNo, Integer pageSize) {
+		Pagination<News> pagination = null;
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("supMenu.$id").is(new ObjectId(id)));
+		query.with(new Sort(new Order(Direction.DESC, "createDate")));
+		try {
+			pagination = this.findPaginationByQuery(query, pageNo, pageSize, News.class);
+
+		} catch (Exception e) {
+			log.info("查询所有信息失败——————————》" + e.toString());
+			e.printStackTrace();
+		}
+		return Common.isNotEmpty(pagination) ? pagination : new Pagination<News>();
+	}
+
+	@Override
+	public Pagination<News> findNewsByWebMenuId(String id, Integer pageNo, Integer pageSize) {
+		Pagination<News> pagination = null;
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("webMenu.$id").is(new ObjectId(id)));
+		query.with(new Sort(new Order(Direction.DESC, "createDate")));
+		try {
+			pagination = this.findPaginationByQuery(query, pageNo, pageSize, News.class);
+
+		} catch (Exception e) {
+			log.info("查询所有信息失败——————————》" + e.toString());
+			e.printStackTrace();
+		}
+		return Common.isNotEmpty(pagination) ? pagination : new Pagination<News>();
+	}
+
+	@Override
+	public List<News> findNewsByNewsIds(List<IndexSetting> indexs) {
+
+		Set<ObjectId> list = new HashSet();
+		List<News> news = new ArrayList<News>();
+
+		for (IndexSetting index : indexs) {
+			list.add(new ObjectId(index.getWebMenu().getId()));
+		}
+
+		List<News> getNews = null;
+		
+		for(ObjectId id:list) {
+			Query query = new Query();
+			query.limit(20);
+			query.with(new Sort(new Order(Direction.DESC, "createTime")));
+			query.addCriteria(Criteria.where("isDelete").is(false));
+			query.addCriteria(Criteria.where("isDisable").is(false));
+			query.addCriteria(Criteria.where("webMenu.$id").is(id));
+			getNews = this.find(query, News.class);
+			if (getNews.size()>0) {
+				news.addAll(getNews);
+			}
+		}
+		return news;
 	}
 
 }

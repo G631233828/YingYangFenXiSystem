@@ -27,7 +27,7 @@ public class SiteTemplateController {
 	
 	
 	@RequestMapping("/findSiteTemplate")
-	@RequiresPermissions(value = "siteTemplate:list")
+	@RequiresPermissions(value = "siteTemplate:edit")
 	@SystemControllerLog(description="查询网站模板配置")
 	public String findSiteTemplate(Model model) {
 		

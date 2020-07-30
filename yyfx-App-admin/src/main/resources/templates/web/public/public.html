@@ -12,7 +12,7 @@
 			<!-- pc端头部 -->
 			<div class="topContainer">
 				<div class="logo">
-					<img src="images/logo.png">
+					<img style="z-index: 999" th:src="|@{/}${session.settings?.logo?.savePath}${session.settings?.logo?.generateName}|">
 				</div>
 				<div class="nav site-navs">
 					<ul class="one">
@@ -39,11 +39,12 @@
 		<!-- 手机端头部 -->
 		<div class="topMobile">
 			<div class="topContainerMobile">
-				<div class="logo">
-					<img src="images/logoMobile.png">
-				</div>
+				<!-- <div class="logo">
+					<img style="z-index: 999"  th:src="|@{/}${session.settings?.logo?.savePath}${session.settings?.logo?.generateName}|">
+				</div> -->
+				
 				<div class="nav">
-					<img src="images/navIcon.png">
+					<img th:src="@{/assets/website/images/navIcon.png}">
 				</div>
 			</div>
 			<!--弹窗-->
@@ -51,7 +52,17 @@
 				<div class="popupCon">
 					<ul>
 						<li><a
-							href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/index.html">首页</a></li>
+							th:href="@{/web/index}">首页</a></li>
+							
+						<li th:each="webmenu:${session.webmenu}"
+							th:if="${webmenu.type == 1}"><a 
+							th:href="|@{/web/list/}${webmenu.id}|">[[${webmenu.name}]]</a>
+						</li>	
+							
+							
+							
+							
+							
 
 					</ul>
 				</div>
@@ -63,14 +74,11 @@
 
 	<div th:fragment="subjectContentContainerPosition">
 		<div class="subjectContentContainerPosition">
-			<span>您的位置：</span> <a
-				th:href="@{/}">首页 &gt; </a>
-			<a
-				href="">[[${one.name}]] &gt; </a>
-				
-		<th:block th:if="${two != null}">
-			<a class="address">[[${two.name}]]</a>
-		</th:block>
+			<span>您的位置：</span> <a th:href="@{/web/index}">首页 &gt; </a> <a href="">[[${one?.name}]] &gt; </a>
+
+			<th:block th:if="${two != null}">
+				<a class="address">[[${two?.name}]]</a>
+			</th:block>
 		</div>
 
 	</div>
@@ -78,14 +86,14 @@
 
 
 
-<!-- 页面通用 左边导航 手机端显示 -->
+	<!-- 页面通用 左边导航 手机端显示 -->
 	<div th:fragment="classificationMobile">
 		<div class="classificationMobile">
 			<ul>
 				<li th:each="menu:${webMenusleft}"
 					th:class="${menu.id eq webMenu.id}?'classificationLiCurrentMobile':''">
 					<a th:href="|@{/web/list/}${menu.id}|"
-					th:class="${menu.id eq webMenu.id}?'classificationACurrentMobile':''">[[${menu.name}]]</a>
+					th:class="${menu.id eq webMenu.id}?'classificationACurrentMobile':''">[[${menu?.name}]]</a>
 				</li>
 
 			</ul>
@@ -96,7 +104,7 @@
 
 
 
-<!-- 页面通用 左边导航 电脑端显示 -->
+	<!-- 页面通用 左边导航 电脑端显示 -->
 	<div class="classification" th:fragment="classification">
 		<ul>
 			<li th:each="menu:${webMenusleft}"
@@ -134,19 +142,24 @@
 				<center>
 					<div class="contact site-footer">
 						<div>
-							邮编：201112   电话：24090002   邮箱：X@163.com   地址：上海市X <img
-								sth:rc="@{/assest/website/images/e0d84456-e477-43ab-a3b2-27d743f06012.jpg}"
-								style="position: relative; margin-right: -80px; right: 125px; float: right; height: 80px; width: 80px;">
+							邮编：[[${session.settings?.postCode}]] 
+							 电话：[[${session.settings?.connectPhone}]] 
+							 邮箱：[[${session.settings?.email}]]
+							 地址：[[${session.settings?.address}]]
+							
+							<img th:if="${session.settings?.qRcode!=null}"
+								th:src="|@{/}${session.settings?.qRcode?.savePath}${session.settings?.qRcode?.generateName}|"
+								style="position: relative; margin-right: -200px; right: 125px; float: right; height: 80px; width: 80px;">
 						</div>
 						<div style="width: 300px; margin: 0 auto; padding: 20px 0;">
 							<a target="_blank"
-								href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202007442"
+								th:href="@{http://www.beian.gov.cn/portal/registerSystemInfo(recordcode=${session.settings?.recordNumber})}"
 								style="display: inline-block; text-decoration: none; height: 20px; line-height: 20px;"><img
-								th:src="@{/assest/website/images/remark2.png}"
+								src="http://www.beian.gov.cn/file/ghs.png"
 								style="float: left;">
 								<p
 									style="float: left; height: 20px; line-height: 20px; margin: 0px 0px 0px 5px; color: #939393;">沪公网安备
-									X号</p> </a>
+									[[${session.settings?.recordNumber}]]号</p> </a>
 						</div>
 					</div>
 				</center>
@@ -155,22 +168,20 @@
 		<div class="footerMobile">
 			<div class="footerContainerMobile">
 				<center>
-					<div class="contact site-footer">
+				<div class="contact site-footer">
 						<div>
-							邮编：201112   电话：X   邮箱：X.com   地址：X <img
-								th:src="@{/assets/website/images/e0d84456-e477-43ab-a3b2-27d743f06012.jpg}"
-								style="position: relative; margin-right: -80px; right: 125px; float: right; height: 80px; width: 80px;">
+							 电话：[[${session.settings?.connectPhone}]] 
+							 地址：[[${session.settings?.address}]]
 						</div>
-
 						<div style="width: 300px; margin: 0 auto; padding: 20px 0;">
 							<a target="_blank"
-								href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202007442"
+								th:href="@{http://www.beian.gov.cn/portal/registerSystemInfo(recordcode=${session.settings?.recordNumber})}"
 								style="display: inline-block; text-decoration: none; height: 20px; line-height: 20px;"><img
-								th:src="@{/assets/website/images/remark2.png}"
+								src="http://www.beian.gov.cn/file/ghs.png"
 								style="float: left;">
 								<p
 									style="float: left; height: 20px; line-height: 20px; margin: 0px 0px 0px 5px; color: #939393;">沪公网安备
-									x号</p> </a>
+									[[${session.settings?.recordNumber}]] 号</p> </a>
 						</div>
 					</div>
 				</center>

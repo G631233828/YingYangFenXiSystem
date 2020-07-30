@@ -1,198 +1,169 @@
 <!DOCTYPE html>
 <!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="web/public/public_css::pub_css"></head>
+<!-- <head th:include="web/public/public_css::pub_css"></head> -->
 
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/reset.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/banner.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/responsiveslides.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/index.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/models.css}">
 <body>
-    <!-- 头部框架 -->
-    <div class="header">
-        <div class="banner site-banner">
-            <div class="fullwidthbanner site-banner-cont" data-banner-time="4000">
-                <ul>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-horizontal">
-                        <img alt th:src="@{/assets/website/images/59d1af47-84f2-4364-8d72-84d6253c5937.jpg}">
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-vertical">
-                        <img alt th:src="@{/assets/website/images/8c9a3f0e-1e30-440c-ba43-59fc3c00d382.jpg}">
+	<!-- 头部框架 -->
+	<div class="header">
+		<div class="banner site-banner">
+			<div class="fullwidthbanner site-banner-cont" data-banner-time="4000">
+				<ul>
+					<li th:each="bananas:${session.settings?.listBanana}"
+						data-masterspeed="300" data-slotamount="15"
+						data-transition="3dcurtain-horizontal"><img 
+						th:alt="|@{/}${bananas?.savePath}${bananas?.generateName}|"
+						th:src="|@{/}${bananas?.savePath}${bananas?.generateName}|">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- nav和logo框架 -->
+		<div th:replace="web/public/public::top"></div>
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="slotslide-vertical">
-                        <img alt th:src="@{/assets/website/images/8f6a6e12-df08-4412-9114-1fb54ce907fd.jpg}">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-horizontal">
-                        <img alt th:src="@{/assets/website/images/3ddc6970-0d7f-4026-a6a8-45223cfd73f6.jpg}">
+	</div>
+	<!-- 主体内容框架 -->
+	<div class="subjectContent site-body" id="body">
+		<div class="subjectContentContainer">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-vertical">
-                        <img alt th:src="@{/assets/website/images/b3feffde-7e93-4c77-a94a-c3cc6f58c917.jpg}">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="slotslide-vertical">
-                        <img alt th:src="@{/assets/website/images/5e128089-091e-4330-9019-111b98b0fda3.jpg}">
+			<th:block th:each="index,num:${indexs}">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-horizontal">
-                        <img alt th:src="@{/assets/website/images/dee9fa8c-d2df-40e0-aa38-84be5a73b01b.jpg}">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="3dcurtain-vertical">
-                        <img alt th:src="@{/assets/website/images/fd4ab0f8-b35d-4b48-8a6c-e0062f2698e4.jpg}">
+				<th:block th:if="${num.count%3 ==1}">
+					<div class="subjectContentContainerTop">
+				</th:block>
+				<th:block th:if="${index.isArticle == 'true'}">
 
-                    </li>
-                    <li data-masterspeed="300" data-slotamount="15" data-transition="slotslide-vertical">
-                        <img alt th:src="@{/assets/website/images/8650b926-f258-4b3d-a519-900ecd881bbf.jpg}">
+					<div th:class="|${num.count % 3 == 2 ?'news': num.count % 3 == 1?'demeanor': 'notices'} site-layout site-layout${num.count % 3 ==0 ?'3':num.count }|"
+						data-id="97930059-d6bf-4cb8-92ec-f3021dad908c">
+						<div class="site-word">
+							<div class="title">
+								<span>[[${index?.webMenu?.name}]]</span>
+								<p>News</p>
+								<a th:href="|@{/web/list/}${index?.webMenu?.id}|">更多</a>
+							</div>
+							<div class="content">
+								<div class="noticesContent">
+									<ul>
+									
 
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- nav和logo框架 -->
-        <div th:replace="web/public/public::top"></div>
-        
-        
-    </div>
-    <!-- 主体内容框架 -->
-    <div class="subjectContent site-body" id="body">
-        <div class="subjectContentContainer">
-            <div class="subjectContentContainerTop">
-                <div class="demeanor site-layout site-layout1" data-id="f14962bb-1020-4835-9172-1e5969fa72d6">
-                    <div class="site-imgplay">
-                        <div class="title">
-                            <span>校园风采</span>
-                            <p>Campus elegance</p>
-                        </div>
-                        <div class="content">
-                            <div class="demeanorImg">
-                                <div class="rslides-wrap">
-                                    <ul class="rslides">
-                                        <li title="让理想照亮现实  ——高二年级职业生涯规划辅导讲座侧记">
-                                            <a target="_blank" href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/40f6fb31-ce8d-42ad-b5cb-78c89daa6d3b/eb8a5035-415f-4d39-ae27-7f39954115e7/detail.html">
-                                                <img alt th:src="@{/assets/website/images/73db1f75-105a-4126-bfac-6dcd52787a3b.png}">
+										<li th:each="news:${newslist}" th:if="${news?.webMenu?.id == index?.webMenu?.id}">
+										<a target="_blank" th:href="|@{/web/news/}${news.id}|"
+											th:title="${news.title}"> <span
+												style="color:" th:text="${#strings.abbreviate(news.title,28)}"></span>
+												<p>[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</p>
+										</a>
+										</li>
+									
+									</ul>
+								</div>
+							</div>
+						</div>
 
-                                            </a>
-                                            <p class="caption" style="color: ">让理想照亮现实 ——高二年级职业生涯规划辅导讲座侧记</p>
-                                        </li>
+					</div>
 
-                                        <li title="布谷声中夏令新 ——我校高二年级复学井然有序">
-                                            <a target="_blank" href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/40f6fb31-ce8d-42ad-b5cb-78c89daa6d3b/22e48f3f-e2c2-4a91-8cc5-1242cff40914/detail.html">
-                                                <img alt th:src="@{/assets/website/images/e101d054-b937-4b08-9dbc-d861becfe12d.jpg}">
+				</th:block>
+				<th:block th:if="${index.isArticle == 'false'}">
 
-                                            </a>
-                                            <p class="caption" style="color: ">布谷声中夏令新 ——我校高二年级复学井然有序</p>
-                                        </li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+			<div th:class="|${num.count % 3 == 2 ?'news': num.count % 3 == 1?'demeanor': 'notices'} site-layout site-layout${num.count % 3 ==0 ?'3':num.count }|"
+						data-id="97930059-d6bf-4cb8-92ec-f3021dad908c">
+						<div class="site-imgplay">
+							<div class="title">
+								<span>[[${index?.webMenu?.name}]]</span>
+								<p>Campus elegance</p>
+							</div>
+							<div class="content">
+								<div class="demeanorImg">
+									<div class="rslides-wrap">
+										<ul class="rslides">
+										
+									 <li th:each="news:${newslist}" th:if="${news?.webMenu?.id == index?.webMenu?.id}">
+									 
+										<a target="_blank" th:href="|@{/web/news/}${news.id}|" 	th:title="${news?.title}">
+											 <img alt th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.generateName}|">
+											 <span
+												style="color:" th:text="${#strings.abbreviate(news?.title,28)}"></span>
+										</a>
+											<p class="caption" style="color:" th:text="${#strings.abbreviate(news.title,20)}"></p>
+										</li>
+										
 
-                </div>
-                <div class="news site-layout site-layout2" data-id="97930059-d6bf-4cb8-92ec-f3021dad908c">
-                    <div class="site-word">
-                        <div class="title">
-                            <span>校内新闻</span>
-                            <p>News</p>
-                            <a href="list.html">更多</a>
-                        </div>
-                        <div class="content">
-                            <div class="noticesContent">
-                                <ul>
 
-                                    <li>
-                                        <a target="_blank" href="article.html" title="有序有效        承“上”启“下”——闵行教育学院对我校线上教学进行集中调研">
-                                            <span style="color: ">有序有效 承“上”启“下”</span>
-                                            <p>2020-04-29</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                </div>
-                
-                
-                <div class="notices site-layout site-layout3" data-id="e77f3768-9900-46ac-afb2-a2879c87d5fa">
-                    <div class="site-word">
-                        <div class="title">
-                            <span>公告栏</span>
-                            <p>Bulletin board</p>
-                            <a href="#">更多</a>
-                        </div>
-                        <div class="content">
-                            <div class="noticesContent">
-                                <ul>
-                                    <li>
-                                        <a target="_blank" href="#" title="上海师范大学附属中学闵行分校线上教学管理规定">
-                                            <span style="color: ">上海师范大学附属中学闵行分校线</span>
-                                            <p>2020-02-24</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                
-            </div>
-            
-             <!-- 底部bottom icons -->
-            <div class="subjectContentContainerBomttom">
-                <div class="icons site-layout site-layout4" data-id="7749b9f6-b219-4085-82b9-1e6fc67ba17f">
-                    <div class="site-imglink">
-                        <ul>
-                            <li>
-                                <a href="#" title="校长信箱">
-                                    <img alt th:src="@{/assets/website/images/ffba3d78-e5ec-4600-9ef8-0427cafbacb9.png}">
+					</div>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="教务平台">
-                                    <img th:src="@{/assets/website/images/9eef1201-1984-4e77-ad12-26f41f94763f.png}">
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="素质评价">
-                                    <img alt th:src="@{/assets/website/images/dd79ca99-0e51-4497-9664-ff94901ddb1f.png}">
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="文明创建">
-                                    <img alt th:src="@{/assets/website/images/147dbeeb-f6bf-409a-9efe-f88db5fd2855.png}">
+				</th:block>
+				<th:block th:if="${num.count%3 ==1}">
+		</div>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="语言文字">
-                                    <img alt th:src="@{/assets/website/images/18dad033-0be0-4155-ad6e-d87e715899e5.png}">
+		</th:block>
+		</th:block>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="招生平台">
-                                    <img alt th:src="@{/assets/website/images/7f55a38a-e1e6-4aed-85cf-98762cf14235.png}">
 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="办公平台">
-                                    <img alt th:src="@{/assets/website/images/8893e7e1-47f0-4ea3-b5d2-9cd5315849dd.png}">
 
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            
-          <!--   <div class="links site-layout site-layout5" data-id="f6859014-7694-45c9-b4fa-99e24bd16647" style="position: relative;text-align: center;z-index: 9;">
+
+	
+
+		<!-- 底部bottom icons -->
+		<div class="subjectContentContainerBomttom">
+			<div class="icons site-layout site-layout4"
+				data-id="7749b9f6-b219-4085-82b9-1e6fc67ba17f">
+				<div class="site-imglink">
+					<ul>
+						<li><a href="#" title="校长信箱"> <img alt
+								th:src="@{/assets/website/images/ffba3d78-e5ec-4600-9ef8-0427cafbacb9.png}">
+
+						</a></li>
+						<li><a href="#" title="教务平台"> <img
+								th:src="@{/assets/website/images/9eef1201-1984-4e77-ad12-26f41f94763f.png}">
+
+						</a></li>
+						<li><a href="#" title="素质评价"> <img alt
+								th:src="@{/assets/website/images/dd79ca99-0e51-4497-9664-ff94901ddb1f.png}">
+
+						</a></li>
+						<li><a href="#" title="文明创建"> <img alt
+								th:src="@{/assets/website/images/147dbeeb-f6bf-409a-9efe-f88db5fd2855.png}">
+
+						</a></li>
+						<li><a href="#" title="语言文字"> <img alt
+								th:src="@{/assets/website/images/18dad033-0be0-4155-ad6e-d87e715899e5.png}">
+
+						</a></li>
+						<li><a href="#" title="招生平台"> <img alt
+								th:src="@{/assets/website/images/7f55a38a-e1e6-4aed-85cf-98762cf14235.png}">
+
+						</a></li>
+						<li><a href="#" title="办公平台"> <img alt
+								th:src="@{/assets/website/images/8893e7e1-47f0-4ea3-b5d2-9cd5315849dd.png}">
+
+						</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		<!--   <div class="links site-layout site-layout5" data-id="f6859014-7694-45c9-b4fa-99e24bd16647" style="position: relative;text-align: center;z-index: 9;">
                 <div class="site-select">
                     <span class="select-title">友情链接</span>
 
@@ -205,12 +176,27 @@
 
                 </div>
             </div> -->
-        </div>
-    </div>
-    <!-- 页脚底部框架 -->
-    <div th:replace="web/public/public::footer"></div>
-    
-    <div th:replace="web/public/public_js::pub_js"></div>
+	</div>
+	</div>
+	<!-- 页脚底部框架 -->
+	<div th:replace="web/public/public::footer"></div>
+
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.themepunch.plugins.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.themepunch.revolution.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/responsiveslides.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/ckplayer.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jq_scroll.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/website/js/site.js}"></script>
+	<script type="text/javascript"
+		data-site-id="a59f8895-297e-49ce-b07c-68955251229a"
+		th:src="@{/assets/website/js/jquery.sitefloat.plugins.js}"></script>
 
 </body>
 

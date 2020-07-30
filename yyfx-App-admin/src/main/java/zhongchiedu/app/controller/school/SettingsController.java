@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -37,7 +38,7 @@ public class SettingsController {
 	private MultiMediaServiceImpl multiMediaService;
 
 	@RequestMapping("/findSettings")
-	// @RequiresPermissions(value = "settings:list")
+	@RequiresPermissions(value = "settings:edit")
 	@SystemControllerLog(description = "查询网站配置")
 	public String findSiteTemplate(Model model) {
 
@@ -53,20 +54,24 @@ public class SettingsController {
 	private String dir;
 
 	@RequestMapping("/settings")
-	// @RequiresPermissions(value = "settings:edit")
+	@RequiresPermissions(value = "settings:edit")
 	@SystemControllerLog(description = "编辑网站设置")
 	public String addOrEditAboutUs(@ModelAttribute("settings") Settings settings,
 			@RequestParam(defaultValue = "", value = "oldIcon") String oldIcon,
 			@RequestParam(defaultValue = "", value = "oldLogo") String oldLogo,
+			@RequestParam(defaultValue = "", value = "oldbanana") String oldbanana,
 			@RequestParam(defaultValue = "", value = "oldqRcode") String oldqRcode, HttpSession session,
-			@RequestParam("fileicon") MultipartFile[] fileicon, @RequestParam("filelogo") MultipartFile[] filelogo,
+			@RequestParam("fileicon") MultipartFile[] fileicon,
+			@RequestParam("filelogo") MultipartFile[] filelogo,
 			@RequestParam("fileqRcode") MultipartFile[] fileqRcode,
-			@RequestParam("filebanana") MultipartFile[] filebanana, HttpServletRequest request) {
+			@RequestParam("filebananas") MultipartFile[] filebananas, 
+			@RequestParam("filebanana") MultipartFile[] filebanana, 
+			HttpServletRequest request) {
 		if (Common.isEmpty(settings.getId())) {
 			settings.setId(null);
 		}
-		this.settingsService.saveOrUpdateSettings(settings, session, fileicon, filelogo, filebanana, fileqRcode, imgPath,
-				oldIcon, oldLogo, oldqRcode, dir);
+		this.settingsService.saveOrUpdateSettings(settings, session, fileicon, filelogo,filebananas, filebanana, fileqRcode, imgPath,
+				oldIcon, oldLogo, oldqRcode,oldbanana, dir);
 
 		return "redirect:/school/findSettings";
 	}

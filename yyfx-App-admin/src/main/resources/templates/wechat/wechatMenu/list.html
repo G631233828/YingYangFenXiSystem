@@ -5,11 +5,17 @@
 <head th:include="public/public_css::pub_css"></head>
 <head>
 <meta charset="utf-8">
-
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
 <link rel="stylesheet" th:href="@{/assets/js/nestable/nestable.css}"
 	type="text/css" />
 <link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
-
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -78,7 +84,7 @@
 
 							<div class="row m-b">
 
-								<div class="col-sm-4" th:each="menu:${wechatMenu}"
+								<div class="col-sm-4"  th:each="menu:${weChatMenu}"
 									th:if="${menu.parentId == '0'}">
 									<div class="dd" id="nestable">
 
@@ -87,7 +93,7 @@
 												<div class="dd-handle">
 													<div>
 														[[${menu.name}]] <a class="btn btn-link btn-danger "
-															th:onclick="|return del('@{/wechatmenu/}${menu.id}','');|"
+															th:onclick="|return del('@{wechat/wechatmenu/}${menu.id}','');|"
 															style="float: right; margin-left: 2px; margin-top: -5px;">
 															<span class="fa fa-trash-o"></span>
 														</a> <a class=" btn btn-link"
@@ -104,10 +110,10 @@
 												</div>
 												<ol class="dd-list">
 													<li class="dd-item" data-id="3">
-														<div class="dd-handle" th:each="menusub:${wechatMenu}"
+														<div class="dd-handle" th:each="menusub:${weChatMenu}"
 															th:if="${menusub.parentId eq menu.id}">
 															[[${menusub.name}]] <a class="btn btn-link btn-danger "
-																th:onclick="|return del('@{/wechatmenu/}${menusub.id}','');|"
+																th:onclick="|return del('@{/wechat/wechatmenu/}${menusub.id}','');|"
 																style="float: right; margin-left: 2px; margin-top: -5px;">
 																<span class="fa fa-trash-o"></span>
 															</a> <a class="btn btn-link"
@@ -136,6 +142,7 @@
 			</div>
 
 			<div th:replace="public/public::myModal"></div>
+			<div th:replace="public/public::myMessageModal"></div>
 			<div th:replace="wechat/wechatMenu/add::wechatMenuAddModal"></div>
 
 		</div>

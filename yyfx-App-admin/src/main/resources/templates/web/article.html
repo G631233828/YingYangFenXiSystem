@@ -4,8 +4,9 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
-    <title>上海师范大学附属中学闵行分校</title>
+   <title>[[${session.settings?.title}]]</title>
     <meta name="keywords">
+      <link rel="shortcut icon" th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/reset.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/viewer.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/website/css/index.css}">
@@ -18,11 +19,11 @@
     <div class="headerPage">
         <!-- BANNER框架 -->
         <div class="bannerPage">
-            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+            <img alt  th:src="|@{/}${session.settings?.banana?.savePath}${session.settings?.banana?.generateName}|">
 
         </div>
         <div class="bannerPageMobile">
-            <img alt onerror="this.src = &#39;/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/images/bannerPage.jpg&#39;;" th:src="@{/assets/website/images/8c3a9ec3-3519-46e1-b8ea-bde20aa2f93e.jpg}">
+            <img alt th:src="|@{/}${session.settings?.banana?.savePath}${session.settings?.banana?.generateName}|">
 
         </div>
         <!-- nav和logo框架 -->
@@ -57,14 +58,14 @@
                  -->
                 
                 <div class="details site-detail">
-                    <div class="site-detail-name">[[${news.title}]]</div>
+                    <div class="site-detail-name">[[${news?.title}]]</div>
 
                     <div class="site-detail-infos">
-                        <span>发布人：[[${news.author}]]</span>
-                        <span>发布时间：[[${#dates.format(news.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
+                        <span>发布人：[[${news?.author}]]</span>
+                        <span>发布时间：[[${#dates.format(news?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
 
                     </div>
-                    <div class="site-detail-content"  th:utext="${news.content}">
+                    <div class="site-detail-content"  th:utext="${news?.content}">
                     </div>
                     <div class="site-detail-files">
                         <div style="margin-bottom: 10px;">附件下载：</div>
@@ -92,23 +93,23 @@
                 
                 
                 <div class="detailsMobile site-detail">
-                    <div class="site-detail-name">[[${news.title}]]</div>
+                    <div class="site-detail-name">[[${news?.title}]]</div>
 
                     <div class="site-detail-infos">
-                        <span>发布人：[[${news.author}]]</span>
-                        <span>发布时间：[[${#dates.format(news.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
+                        <span>发布人：[[${news?.author}]]</span>
+                        <span>发布时间：[[${#dates.format(news?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
 
                     </div>
 
-                     <div class="site-detail-content" th:utext="${news.content}">
+                     <div class="site-detail-content" th:utext="${news?.content}">
                     </div>
-                    <div class="site-detail-files">
+                 <!--    <div class="site-detail-files">
                         <div style="margin-bottom: 10px;">附件下载：</div>
                         <ul>
 
 
                         </ul>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>

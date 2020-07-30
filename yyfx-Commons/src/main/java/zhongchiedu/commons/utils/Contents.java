@@ -26,6 +26,10 @@ public class Contents {
 	public static final String SCHOOL_SESSION = "school_session";// 学校session
 	
 	public static final String WEBMENU="webmenu";//前台菜单
+	
+	public static final String SETTINGS="settings";//网站配置
+	
+	
 
 	/**
 	 * Realm名称

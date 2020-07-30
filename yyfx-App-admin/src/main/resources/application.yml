@@ -1,0 +1,8 @@
+wx:
+  mp:
+    configs:
+      - appId: wx40d294a89bcd9fcb
+        secret: e48b8b33730cb8bf7ed2aa26e671549b
+        token: zhongchi
+        aesKey: HbQ8Z0VJjGXgc5AmyuBMpqmDDj2YJJgNEPVFrDbjoZ2
+

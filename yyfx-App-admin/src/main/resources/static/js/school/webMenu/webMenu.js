@@ -26,9 +26,6 @@ function changeType() {
 function selectFirstLevel(){
 	var type = $("#type").val();
 	var parentId = $("#parentId").val();
-	alert(0)
-	alert(type)
-	alert(parentId)
 	if(type == 2 && parentId !=""){
 		alert(getRootPath())
 		// 需要通过ajax加载对应的菜单列表

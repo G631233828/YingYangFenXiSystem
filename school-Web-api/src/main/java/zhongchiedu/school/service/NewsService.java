@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
+import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.News;
 
 public interface NewsService extends GeneralService<News> {
@@ -25,5 +26,29 @@ public interface NewsService extends GeneralService<News> {
 	void updateNewsVisit(String id);
 	
 	News findNewsById(String id);
+	
+	Pagination<News> findNewsBySuperMenuId(String id,Integer pageNo,Integer pageSize);     
+	
+	Pagination<News> findNewsByWebMenuId(String id,Integer pageNo,Integer pageSize);     
+	
+	List<News> findNewsByNewsIds(List<IndexSetting> indexs);
 
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import zhongchiedu.commons.utils.Common;
+import zhongchiedu.framework.pagination.Pagination;
+import zhongchiedu.school.pojo.IndexSetting;
+import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.service.IndexSettingService;
 import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.WebMenuService;
 
@@ -22,13 +27,16 @@ public class WebController {
 	@Autowired
 	private NewsService newsService;
 
+	@Autowired
+	private IndexSettingService indexSettingService;
 	
 
 	@RequestMapping(value = "/index")
 	public String toindex(Model model) {
-
-		
-
+		List<IndexSetting> indexs = this.indexSettingService.findIndexSetting();
+		model.addAttribute("indexs", indexs);
+		List<News> newslist = this.newsService.findNewsByNewsIds(indexs);
+		model.addAttribute("newslist", newslist);
 		return "web/index";
 	}
 	
@@ -60,25 +68,49 @@ public class WebController {
 			//网页当前位置导航 
 			model.addAttribute("one", webMenu);
 			//获取当前模块下的所有新闻
-			
+			Pagination<News> pageList = this.newsService.findNewsBySuperMenuId(webMenu.getId(), pageNo, pageSize);
+			model.addAttribute("pageList", pageList);
 		}else if(webMenu.getType()== 2) {
 			List<WebMenu> webMenusleft = this.webMenuService.findWebMenuByFirstLevel(webMenu.getFirstLevel());
 			model.addAttribute("webMenusleft", webMenusleft);
 			WebMenu one = this.webMenuService.findWebMenuById(webMenu.getFirstLevel());
 			model.addAttribute("one", one);
 			model.addAttribute("two", webMenu);
-			//获取当前二级目录的所有新闻
-			
-			
+			Pagination<News> pageList = this.newsService.findNewsByWebMenuId(webMenu.getId(), pageNo, pageSize);
+			model.addAttribute("pageList", pageList);
 		}
 		model.addAttribute("webMenu", webMenu);
 		
-		
-		
-		
-
+	
 		return "web/list";
 	}
+	
+	
+	@RequestMapping(value = "/news/{newsId}")
+	public String findNews(Model model,@PathVariable(value="newsId",required = true)String newsId) {
+		
+		News news = this.newsService.findNewsById(newsId);
+		if(Common.isNotEmpty(news)) {
+			List<WebMenu> webMenusleft = this.webMenuService.findWebMenuByFirstLevel(news.getWebMenu().getFirstLevel());
+			model.addAttribute("webMenusleft", webMenusleft);
+			model.addAttribute("news", news);
+			model.addAttribute("two", news.getWebMenu());
+			model.addAttribute("webMenu", news.getWebMenu());
+			model.addAttribute("one", news.getSupMenu());
+		}
+		
+		return "web/article";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 //	@RequestMapping(value = "/list/{menuid}/{newsid}")
 //	public String list(Model model,@PathVariable(value = "menuid",required = true)String menuid,@PathVariable(value ="newsid",required = false)String newsid) {
@@ -106,8 +138,15 @@ public class WebController {
 	
 	
 	
-	
-	
+//	
+//	public static void main(String[] args) {
+//		
+//		for(int i=1;i<=10;i++) {
+//			System.out.println(i%3);
+//		}
+//	
+//	}
+//	
 	
 	
 	

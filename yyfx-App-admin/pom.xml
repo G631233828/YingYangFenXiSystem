@@ -8,7 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 <dependencies>
-
+		
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>yyfx-Shiro</artifactId>
@@ -17,6 +17,11 @@
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>school-Web-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.com.yyfx</groupId>
+			<artifactId>wechat-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -73,16 +78,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+		</dependency>
+		
+		
 		<!--thymeleaf-shiro-extras -->
 		<dependency>
 			<groupId>com.github.theborakompanioni</groupId>
 			<artifactId>thymeleaf-extras-shiro</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
-		<dependency>
-			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf</artifactId>
-		</dependency>
+		
 		<!-- springboot 热部署 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

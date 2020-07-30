@@ -30,6 +30,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //	private String kinderitor;
 	@Value("${upload.savedir}")
 	private String dir;
+	@Value("${upload.ueditor}")
+	private String ueditor;
 	@Value("${upload.ueditordir}")
 	private String ueditordir;
 	
@@ -39,6 +41,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //	    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
 //	    	registry.addResourceHandler(kinderitor+"/**").addResourceLocations("file:"+dir+kinderitor+"/");
 	    	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
+	    	registry.addResourceHandler(ueditor+"/**").addResourceLocations("file:"+dir+ueditor+"/");
 	    	registry.addResourceHandler(ueditordir+"/**").addResourceLocations("file:"+ueditordir+"/");
 		    	super.addResourceHandlers(registry);
 		    }

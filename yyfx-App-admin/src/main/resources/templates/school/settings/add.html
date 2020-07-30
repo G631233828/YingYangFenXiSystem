@@ -95,9 +95,27 @@
 											<div class="form-group">
 												<label class="col-lg-1 control-label">首页Banana：</label>
 												<div class="col-lg-6">
-													<input id="file" name="filebanana" type="file" multiple>
+													<input id="file" name="filebananas" type="file" multiple>
 												</div>
 											</div>
+											
+											
+											<div class="form-group">
+												<label class="col-lg-1 control-label">信息页Banana：</label>
+												<div class="col-lg-6">
+													<input id="filebanana" name="filebanana" type="file" >
+												</div>
+											</div>
+											<input type="hidden"
+												th:value="${settings!=null&&settings?.banana!=null}?${settings?.banana?.id}"
+												name="oldbanana" id="oldbanana">
+											
+											
+											
+											
+											
+											
+											
 
 
 											<div class="form-group">
@@ -254,8 +272,10 @@
 	var path ="";
 	var icon = "";
 	var logo = "";
+	var banana = "";
 	var qRcode = "";
 	var picicon;
+	var picbanana;
 	var piclogo;
 	var picqRcode;
 	/* <![CDATA[ */
@@ -263,6 +283,11 @@
 	   icon = [[${settings!=null}?${settings.icon}:null]];
 	   logo = [[${settings!=null}?${settings.logo}:null]];
 	   qRcode = [[${settings!=null}?${settings.qRcode}:null]];
+	   banana = [[${settings!=null}?${settings.banana}:null]];
+	   if(banana!=null){
+		picicon = "<img src='"+path+banana.savePath+"/"+banana.generateName
+		+"' class='file-preview-image' style='width:auto;height:160px;'>";
+	   }
 	   if(icon!=null){
 		picicon = "<img src='"+path+icon.savePath+"/"+icon.generateName
 		+"' class='file-preview-image' style='width:auto;height:160px;'>";
@@ -277,6 +302,19 @@
 	   }
 /* ]]> */
 
+ 		$("#filebanana").fileinput({
+			maxFileCount : 1, //表示允许同时上传的最大文件个数
+			allowedFileExtensions : [ 'jpg', 'gif', 'png', 'jpeg','ico' ],//接收的文件后缀
+			showUpload: false,
+			showCaption: false,
+			showPreview : true,//显示预览
+			browseClass: "btn btn-primary btn-lg",
+			fileType: "any",
+     	    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+      	    initialPreview : [
+      	    	picbanana,
+			],
+	}); 
 		$("#fileicon").fileinput({
 			maxFileCount : 1, //表示允许同时上传的最大文件个数
 			allowedFileExtensions : [ 'jpg', 'gif', 'png', 'jpeg','ico' ],//接收的文件后缀
@@ -319,6 +357,20 @@
 	});
 	
 	
+		
+		
+		
+		
+		//点击删除按钮之后将图片所在input清空
+		$("#filebanana .fileinput-remove-button").click(function(e){
+		 	$("#oldbanana").val(""); 
+		})
+		//点击删除按钮之后将图片所在input清空
+		$("#filebanana .fileinput-remove").click(function(e){
+			 $("#oldbanana").val("");
+		})
+		 
+		
 		//点击删除按钮之后将图片所在input清空
 		$("#logofile .fileinput-remove-button").click(function(e){
 			$("#settingslogo").val(""); 

@@ -158,19 +158,17 @@ public class WebMenuController {
 		return list!=null?BasicDataResult.build(200, "success",list):BasicDataResult.build(400, "error",null);
 	}
 	
-//	@RequestMapping("aaa/{name}/{value}")
-//	//@RequiresPermissions(value = "webmenu:edit")
-//	@SystemControllerLog(description = "修改资源")
-//	public String test(@PathVariable("name")String name,@PathVariable("value")String value) {
-//		System.out.println(name);
-//		System.out.println(value);
-//		System.out.println(name);  
-//		System.out.println(value);
-//		System.out.println(name);
-//		System.out.println(value);
-//		return "redirect:/school/webMenus";
-//	}
-//	
-	
+	/**
+	 * 根据选择的目录获取菜单
+	 * @param parentId
+	 * @return
+	 */
+	@RequestMapping(value="/webMenu/getSecondLevel",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public BasicDataResult getSecondLevel(@RequestParam(value = "firstLevel", defaultValue = "") String firstLevel){
+		
+		List<WebMenu> list = this.webMenuService.findWebMenuByFirstLevel(firstLevel);
+		return list!=null?BasicDataResult.build(200, "success",list):BasicDataResult.build(400, "error",null);
+	}
 
 }

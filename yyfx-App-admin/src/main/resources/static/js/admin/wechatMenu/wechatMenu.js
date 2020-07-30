@@ -152,7 +152,7 @@ function release(){
 		url : "wechatmenu/release",
 		dataType : "json",
 		success : function(data) {
-			$("#myModal").modal('show');
+			$("#myMessageModal").modal('show');
 			$("#modalbody").text(data.msg);
 			
 		}

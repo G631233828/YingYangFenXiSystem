@@ -37,23 +37,24 @@ public class SettingsServiceImpl extends GeneralServiceImpl<Settings> implements
 
 	@Override
 	public void saveOrUpdateSettings(Settings settings, HttpSession session, MultipartFile[] fileicon,
-			MultipartFile[] filelogo, MultipartFile[] filebanana, MultipartFile[] fileqRcode, String imgPath,
-			String oldIcon, String oldLogo, String oldqRcode, String dir) {
+			MultipartFile[] filelogo,  MultipartFile[] filebananas,MultipartFile[] filebanana, MultipartFile[] fileqRcode, String imgPath,
+			String oldIcon, String oldLogo, String oldqRcode, String oldbanana, String dir) {
 
 		Settings getsettings = null;
 		// icon
 		List<MultiMedia> icon = this.multiMediaSerice.uploadPictures(fileicon, dir, imgPath, "SETTINGS_ICON", 80, 80);
 
 		// logo
-		List<MultiMedia> logo = this.multiMediaSerice.uploadPictures(filelogo, dir, imgPath, "SETTINGS_LOGO", 187, 70);
+		List<MultiMedia> logo = this.multiMediaSerice.uploadPictures(filelogo, dir, imgPath, "SETTINGS_LOGO", 548, 162);
+		// banana
+		List<MultiMedia> banana = this.multiMediaSerice.uploadPictures(filebanana, dir, imgPath, "SETTINGS_BANANA", 1903, 480);
 
 		// logo
-		List<MultiMedia> qRcod = this.multiMediaSerice.uploadPictures(fileqRcode, dir, imgPath, "SETTINGS_QRCODE", 80,
-				80);
+		List<MultiMedia> qRcord = this.multiMediaSerice.uploadPictures(fileqRcode, dir, imgPath, "SETTINGS_QRCORD", 187, 70);
 
-		// banana
-		List<MultiMedia> list = this.multiMediaSerice.uploadPictures(filebanana, dir, imgPath, "SETTINGS_BANANA", 1903,
-				790);
+		// listbanana
+		List<MultiMedia> list = this.multiMediaSerice.uploadPictures(filebananas, dir, imgPath, "SETTINGS_LISTBANANA", 1903,
+				600);
 
 		if (Common.isNotEmpty(settings.getId())) {
 
@@ -63,6 +64,7 @@ public class SettingsServiceImpl extends GeneralServiceImpl<Settings> implements
 				settings.setLogo(Common.isNotEmpty(oldLogo) ? getsettings.getLogo() : null);
 				settings.setIcon(Common.isNotEmpty(oldIcon) ? getsettings.getIcon() : null);
 				settings.setQRcode(Common.isNotEmpty(oldqRcode) ? getsettings.getQRcode() : null);
+				settings.setBanana(Common.isNotEmpty(oldbanana)?getsettings.getBanana():null);
 				if (Common.isNotEmpty(getsettings.getListBanana())) {
 					List<MultiMedia> lm = getsettings.getListBanana();
 					list.addAll(lm);
@@ -76,8 +78,11 @@ public class SettingsServiceImpl extends GeneralServiceImpl<Settings> implements
 		if (logo.size() > 0) {
 			settings.setLogo(logo.get(0));
 		}
-		if (qRcod.size() > 0) {
-			settings.setQRcode(qRcod.get(0));
+		if (qRcord.size() > 0) {
+			settings.setQRcode(qRcord.get(0));
+		}
+		if(banana.size()>0) {
+			settings.setBanana(banana.get(0));
 		}
 		if (list.size() > 0) {
 			settings.setListBanana(list);

@@ -1,9 +1,5 @@
 package zhongchiedu.app.compent;
 
-
-
-
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.school.pojo.Settings;
 import zhongchiedu.school.pojo.SiteTemplate;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.service.SettingsService;
 import zhongchiedu.school.service.SiteTemplateService;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.pojo.Role;
@@ -44,6 +42,9 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 	
 	@Autowired
 	private SiteTemplateService siteTemplateServie;
+	
+	@Autowired
+	private SettingsService settingsService;
 
 	@Autowired
 	private WebMenuService webMenuService;
@@ -66,6 +67,9 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 				 session.setAttribute(Contents.WEBMENU, webMenus);
 			}
 		}
+		  
+		Settings settings = this.settingsService.findOneByQuery(new Query(), Settings.class);
+		session.setAttribute(Contents.SETTINGS, settings);
 		
 		return true;
 

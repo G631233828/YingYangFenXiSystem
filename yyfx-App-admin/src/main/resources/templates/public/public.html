@@ -254,6 +254,42 @@
 
 
 
+	<!-- 信息提示 -->
+	<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+		class="modal fade bs-example-modal-lg" style="display: none;"
+		th:fragment="myMessageModal" id="myMessageModal">
+		<div class="modal-dialog modal-lg"
+			style="margin-top: 10%; width: 320px; height: 200px;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h4>信息提示</h4>
+				</div>
+				<div class="modal-body">
+					<h3 id="modalbody" align="center"></h3>
+				</div>
+				<div class="modal-footer" style="margin-top: 0px;">
+					<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
 	<!-- 	<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
 		class="modal fade bs-example-modal-lg" style="display: none;"
 		th:fragment="myModal" id="myModal">

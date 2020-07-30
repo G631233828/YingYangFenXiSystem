@@ -21,7 +21,6 @@ import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +42,11 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.xalan.xsltc.compiler.sym;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 
@@ -972,7 +973,12 @@ public class Common {
     	
     }
     
-  
+    public static String toJson(Object obj) {
+        Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
+        return gson.toJson(obj);
+    }
 	
     public static void main(String[] args) {
 		

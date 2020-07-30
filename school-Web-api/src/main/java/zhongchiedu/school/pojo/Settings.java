@@ -2,6 +2,8 @@ package zhongchiedu.school.pojo;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,16 +26,21 @@ public class Settings  extends GeneralBean<Settings>{
 	 * 
 	 */
 	private static final long serialVersionUID = 6167698514532160275L;
-	
+	@DBRef
 	private MultiMedia  logo; //学校logo
 	
+	@DBRef
 	private List<MultiMedia> listBanana;//轮播图
 	
+	@DBRef
+	private MultiMedia banana;//信息页列表页面banana
+	
+	@DBRef
 	private MultiMedia icon;//网站icon
 	
 	private String title;//网站titie
 	
-	
+	@DBRef
 	private MultiMedia qRcode;//二维码
 	
 	private String address;//地址

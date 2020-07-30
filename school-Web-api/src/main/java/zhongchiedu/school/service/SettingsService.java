@@ -15,7 +15,10 @@ import zhongchiedu.school.pojo.Settings;
 
 public interface SettingsService extends GeneralService<Settings> {
 
+//	public void saveOrUpdateSettings(Settings settings, HttpSession session, MultipartFile[] fileicon,
+//			MultipartFile[] filelogo,MultipartFile[] filebanana,MultipartFile[] fileqRcode, String imgPath, 
+//			String oldIcon, String oldLogo,String oldqRcode,String dir);
 	public void saveOrUpdateSettings(Settings settings, HttpSession session, MultipartFile[] fileicon,
-			MultipartFile[] filelogo, MultipartFile[] filebanana,MultipartFile[] fileqRcode, String imgPath, 
-			String oldIcon, String oldLogo,String oldqRcode,String dir);
+			MultipartFile[] filelogo, MultipartFile[] filebananas,MultipartFile[] filebanana,MultipartFile[] fileqRcode, String imgPath, 
+			String oldIcon, String oldLogo,String oldqRcode,String oldbanana,String dir);
 }

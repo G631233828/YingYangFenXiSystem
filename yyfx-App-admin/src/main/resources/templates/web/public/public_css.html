@@ -3,9 +3,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="pub_css">
 <meta charset="utf-8">
-<title>[[${session.title}]]</title>
+<title>[[${session.settings?.title}]]</title>
+      <link rel="shortcut icon" th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|" type="image/x-icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" th:content="${title}">
+<meta name="description" th:content="${session.settings?.title}">
 <meta name="author" content="zhongchi">
 
 
