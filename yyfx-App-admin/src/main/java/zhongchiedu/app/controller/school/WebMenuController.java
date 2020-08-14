@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
@@ -54,7 +56,7 @@ public class WebMenuController {
 	@GetMapping("/webMenu")
 	@RequiresPermissions(value = "webMenu:add")
 	public String addSysResourcePage(Model model) {
-		List<WebMenu> list = this.webMenuService.findWebMenu("0",null);
+		List<WebMenu> list = this.webMenuService.findWebMenu("0",false,null);
 		model.addAttribute("resList", list);
 		return "school/webMenu/add";
 	}
@@ -79,7 +81,7 @@ public class WebMenuController {
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改菜单" + id);
 		// 获取所有的启用的资源目录
-		List<WebMenu> list = this.webMenuService.findWebMenu("0",null);
+		List<WebMenu> list = this.webMenuService.findWebMenu("0",false,null);
 		model.addAttribute("resList", list);
 		WebMenu webMenu = this.webMenuService.findOneById(id, WebMenu.class);
 		model.addAttribute("webMenu", webMenu);
@@ -88,7 +90,7 @@ public class WebMenuController {
 		if(webMenu.getType() == 2) {
 			//获取当前二级菜单下的所有一级菜单
 		//parentId  type =1
-			List<WebMenu> listmenus = this.webMenuService.findWebMenu(webMenu.getParentId(), 1);
+			List<WebMenu> listmenus = this.webMenuService.findWebMenu(webMenu.getParentId(),false, 1);
 			model.addAttribute("listmenus", listmenus);
 		}
 		
@@ -120,16 +122,25 @@ public class WebMenuController {
 	@PostMapping("/webMenu")
 	@RequiresPermissions(value = "webmenu:add")
 	@SystemControllerLog(description = "添加资源")
-	public String addWebMenu(@ModelAttribute("webMenu") WebMenu webMenu) {
-		this.webMenuService.saveOrUpdate(webMenu);
+	public String addWebMenu(@ModelAttribute("webMenu") WebMenu webMenu,
+			@RequestParam(defaultValue = "", value = "oldImg") String oldImg,
+			@RequestParam("img") MultipartFile[] img) {
+		this.webMenuService.saveOrUpdate(webMenu, img, oldImg, imgPath, dir);
 		return "redirect:/school/webMenus";
 	}
+	
+	@Value("${upload.imgpath}")
+	private String imgPath;
 
+	@Value("${upload.savedir}")
+	private String dir;
 	@PutMapping("/webMenu")
 	@RequiresPermissions(value = "webmenu:edit")
 	@SystemControllerLog(description = "修改资源")
-	public String editWebMenu(@ModelAttribute("webMenu") WebMenu webMenu) {
-		this.webMenuService.saveOrUpdate(webMenu);
+	public String editWebMenu(@ModelAttribute("webMenu") WebMenu webMenu,
+			@RequestParam(defaultValue = "", value = "oldImg") String oldImg,
+			@RequestParam("img") MultipartFile[] img) {
+		this.webMenuService.saveOrUpdate(webMenu, img, oldImg, imgPath, dir);
 		return "redirect:/school/webMenus";
 	}
 
@@ -154,7 +165,7 @@ public class WebMenuController {
 	@ResponseBody
 	public BasicDataResult getFirstLevel(@RequestParam(value = "parentId", defaultValue = "") String parentId){
 
-		List<WebMenu> list = this.webMenuService.findWebMenu(parentId,1);
+		List<WebMenu> list = this.webMenuService.findWebMenu(parentId,false,1);
 		return list!=null?BasicDataResult.build(200, "success",list):BasicDataResult.build(400, "error",null);
 	}
 	

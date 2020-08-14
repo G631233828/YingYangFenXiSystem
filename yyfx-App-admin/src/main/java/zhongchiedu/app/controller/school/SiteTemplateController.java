@@ -33,7 +33,7 @@ public class SiteTemplateController {
 		
 		SiteTemplate siteTemplate = this.siteTemplateService.findOneByQuery(new Query(), SiteTemplate.class);
 		
-		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0", null);
+		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, null);
 		
 		model.addAttribute("siteTemplate", siteTemplate);
 		model.addAttribute("webMenus", webMenus);

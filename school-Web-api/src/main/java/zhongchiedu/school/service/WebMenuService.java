@@ -2,6 +2,8 @@ package zhongchiedu.school.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
@@ -21,9 +23,9 @@ public interface WebMenuService  extends GeneralService<WebMenu>{
 
 	Pagination<WebMenu> findPagination(Integer pageNo,Integer pageSize);
 	
-	List<WebMenu> findWebMenu(String parentId,Integer type);
+	List<WebMenu> findWebMenu(String parentId,boolean weiWeb,Integer type);
 	
-	void saveOrUpdate(WebMenu webMenu);
+	void saveOrUpdate(WebMenu webMenu,MultipartFile[] img,String oldImg,String imgPath,String dir);
 	
 	BasicDataResult toDisable(String id);
 	

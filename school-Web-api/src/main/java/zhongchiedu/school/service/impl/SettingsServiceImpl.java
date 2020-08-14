@@ -90,7 +90,7 @@ public class SettingsServiceImpl extends GeneralServiceImpl<Settings> implements
 
 		if (Common.isNotEmpty(getsettings)) {
 			BeanUtils.copyProperties(settings, getsettings);
-			getsettings.setListBanana(Common.isNotEmpty(filebanana) ? list : getsettings.getListBanana());
+			getsettings.setListBanana(Common.isNotEmpty(filebananas) ? list : getsettings.getListBanana());
 			this.save(getsettings);
 		} else {
 			this.insert(settings);

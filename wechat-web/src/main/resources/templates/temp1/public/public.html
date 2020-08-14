@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+
+
+
+
+<body>
+
+	<!--  top start  -->
+	<div th:fragment="top">
+
+		<!--头部-->
+		<div class="head" style="background-color: #3d8031;">
+			<a th:href="@{/weiweb/index}" title="首页" class="home-btn commonfont">&#xe608;</a>
+			<em> 选 择 </em> <span class="n_ico">&nbsp;</span>
+			<div class="nav" style="background-color: #3d8031;">
+				<th:block th:each="webmenu:${session.weiwebmenu}">
+
+					<a th:href="|@{/weiweb/list/}${webmenu.id}|">[[${webmenu?.name}]]</a>
+				</th:block>
+			</div>
+		</div>
+		<!--头部-->
+
+	</div>
+	<!-- top end -->
+
+	<div th:fragment="banana">
+
+		<!-- 学校logo图片 -->
+		<div class="logoImg">
+			<img style="width: 40px; float: left;"
+				th:src="|@{/}${session.weiweb?.logo?.savePath}${session.weiweb?.logo?.generateName}|">
+			<div
+				style="font-size: 20px; color: #409201; float: left; padding-top: 10px; padding-left: 8px;">
+			[[${session.weiweb?.name}]]
+				</div>
+		</div>
+		<!--幻灯片-->
+		<div id="banner" class="banner">
+			<div id="owl-demo" class="owl-carousel">
+
+				<a class="item" target="_blank" href=""
+					th:each="banana:${session.weiweb?.listBanana}"> <img
+					th:src="|@{/}${banana?.savePath}${banana?.generateName}|"
+					style="width: 100%;" alt="">
+				</a>
+			</div>
+		</div>
+		<!-- 结束 幻灯片-->
+
+	</div>
+
+
+
+	<!-- SIDE MENU -->
+	<div th:fragment="menu" id="navbar">
+		<div class="breadcrumbs homepage" style="background-color: #71b83a;">
+			<span class="pagetitle"> <a th:href="@{/weiweb/index}"
+				title="首页" style="padding: 0px 0px 0px 0px;"> <img
+					th:src="@{/assets/web/images/homelink.png}"
+					style="margin-left: 10px;" width="57" height="44" alt="" />
+			</a> [[${webMenu.name}]]
+			</span>
+		</div>
+
+	</div>
+	<!-- END OF SIDE MENU -->
+
+
+
+
+
+
+	<div th:fragment="footer">
+
+		<div class="botton">
+			版权所有 © 2020-2023 [[${session.weiweb?.name}]]-微网站<br /> Power by Cored.
+		</div>
+	</div>
+
+</body>
+
+</html>

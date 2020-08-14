@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="app" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<title>[[${session.weiweb?.name}]]</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/topmenu.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/find.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/thems.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/reset.css}" />
+<script type="text/javascript"
+	th:src="@{/assets/web/js/jquery-1.8.3.min.js}"></script>
+
+
+
+<script type="text/javascript"
+	th:src="@{/assets/web/js/js_z.js}"></script>
+<style type="text/css">
+.botton {
+	line-height: 150%;
+	font-size: 11px;
+	color: #333;
+	width: 100%;
+	text-align: center;
+	background: #eee;
+	padding: 8px 0;
+	text-decoration: none;
+}
+</style>
+
+<body style="background-color: #ffffff;">
+
+	<!-- top 模块 
+		<div class="dc_headerLogo"
+			style="*margin: 0 auto; *max-width: 640px; *width: 100%;">
+			<div
+				style="height: 48px; font-size: 20px; color: #ffffff; padding-top: 16px;">
+				${ac.name}</div>
+		</div>-->
+	<!-- banana 模块 -->
+	<div th:include="temp1/public/public::top"></div>
+
+	<div class="content" style="padding: 55px 10px 0px 10px;">
+		<div class="about">
+			<div style="text-align: center; font-size: 20px;">[[${news?.title}]]</div>
+			<span style="float: left; font-size: 12px; color: #6b6b69">作者：
+				[[${news?.author}]]</span> <span
+				style="float: right; font-size: 12px; color: #6b6b69">日期：
+				[[${news?.createDate}]]</span>
+			<div class="picContent">
+				<br />
+
+				<p style="width: 100%;" th:utext="${news?.content}"></p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 底部模块 -->
+	<div th:include="temp1/public/public::footer"></div>
+
+
+
+
+
+
+</body>
+
+</html>

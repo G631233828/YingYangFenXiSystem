@@ -11,3 +11,20 @@ logging:
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
+
+spring:  profiles:    active:    - mongodb
+
+
+upload:
+  savedir: E:/
+  imgpath: upload/images/
+  kinderitor: upload/kinderitor/
+  ueditor: upload/ueditor/
+#图片列表配置
+  ueditordir: E:/upload
+ 
+ 
+ 
+ 
+ 
+ 

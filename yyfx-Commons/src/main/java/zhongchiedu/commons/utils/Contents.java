@@ -29,6 +29,9 @@ public class Contents {
 	
 	public static final String SETTINGS="settings";//网站配置
 	
+	public static final String WEIWEBMENU="weiwebmenu";//微网站菜单
+	public static final String WEIWEB="weiweb";//微网站菜单
+	
 	
 
 	/**

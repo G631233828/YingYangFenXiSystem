@@ -7,8 +7,8 @@
 		<artifactId>YingYangFenXiSystem</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-<dependencies>
-		
+	<dependencies>
+
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>yyfx-Shiro</artifactId>
@@ -34,7 +34,7 @@
 			<artifactId>yyfx-Mongodb-famework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -82,14 +82,14 @@
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 		</dependency>
-		
-		
+
+
 		<!--thymeleaf-shiro-extras -->
 		<dependency>
 			<groupId>com.github.theborakompanioni</groupId>
 			<artifactId>thymeleaf-extras-shiro</artifactId>
 		</dependency>
-		
+
 		<!-- springboot 热部署 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,6 +111,8 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>
+	
+
 	</dependencies>
 
 
@@ -141,13 +143,13 @@
 		</plugins>
 	</build>
 
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	<artifactId>yyfx-App-admin</artifactId>
 	<packaging>war</packaging>
 </project>

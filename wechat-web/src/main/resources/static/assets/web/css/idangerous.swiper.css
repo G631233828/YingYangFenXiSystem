@@ -1,0 +1,142 @@
+/* Adding url prefix '/device/tablet-computer-unknown/' */
+
+/* Minify_CSS_UriRewriter::$debugText
+
+docRoot    : /home/wwwwap/kurogo_gdei/Kurogo-Mobile-Web/www
+currentDir : /home/wwwwap/kurogo_gdei/Kurogo-Mobile-Web/app/modules/home/css
+
+*/
+
+/* idangerous.swiper.css */
+
+/* 1   */ /*
+/* 2   *|  * Swiper 2.7.0
+/* 3   *|  * Mobile touch slider and framework with hardware accelerated transitions
+/* 4   *|  *
+/* 5   *|  * http://www.idangero.us/sliders/swiper/
+/* 6   *|  *
+/* 7   *|  * Copyright 2010-2014, Vladimir Kharlampidi
+/* 8   *|  * The iDangero.us
+/* 9   *|  * http://www.idangero.us/
+/* 10  *|  *
+/* 11  *|  * Licensed under GPL & MIT
+/* 12  *|  *
+/* 13  *|  * Released on: August 30, 2014
+/* 14  *| */
+/* 15  */ /* ===============================================================
+/* 16  *| Basic Swiper Styles 
+/* 17  *| ================================================================*/
+/* 18  */ .swiper-container {
+/* 19  */ 	margin:0 auto;
+/* 20  */ 	position:relative;
+/* 21  */ 	overflow:hidden;
+/* 22  */ 	-webkit-backface-visibility:hidden;
+/* 23  */ 	-moz-backface-visibility:hidden;
+/* 24  */ 	-ms-backface-visibility:hidden;
+/* 25  */ 	-o-backface-visibility:hidden;
+/* 26  */ 	backface-visibility:hidden;
+/* 27  */ 	/* Fix of Webkit flickering */
+/* 28  */ 	z-index:1;
+/* 29  */ }
+/* 30  */ .swiper-wrapper {
+/* 31  */ 	position:relative;
+/* 32  */ 	width:100%;
+/* 33  */ 	-webkit-transition-property:-webkit-transform, left, top;
+/* 34  */ 	-webkit-transition-duration:0s;
+/* 35  */ 	-webkit-transform:translate3d(0px,0,0);
+/* 36  */ 	-webkit-transition-timing-function:ease;
+/* 37  */ 	
+/* 38  */ 	-moz-transition-property:-moz-transform, left, top;
+/* 39  */ 	-moz-transition-duration:0s;
+/* 40  */ 	-moz-transform:translate3d(0px,0,0);
+/* 41  */ 	-moz-transition-timing-function:ease;
+/* 42  */ 	
+/* 43  */ 	-o-transition-property:-o-transform, left, top;
+/* 44  */ 	-o-transition-duration:0s;
+/* 45  */ 	-o-transform:translate3d(0px,0,0);
+/* 46  */ 	-o-transition-timing-function:ease;
+/* 47  */ 	-o-transform:translate(0px,0px);
+/* 48  */ 	
+/* 49  */ 	-ms-transition-property:-ms-transform, left, top;
+/* 50  */ 	-ms-transition-duration:0s;
+
+/* idangerous.swiper.css */
+
+/* 51  */ 	-ms-transform:translate3d(0px,0,0);
+/* 52  */ 	-ms-transition-timing-function:ease;
+/* 53  */ 	
+/* 54  */ 	transition-property:transform, left, top;
+/* 55  */ 	transition-duration:0s;
+/* 56  */ 	transform:translate3d(0px,0,0);
+/* 57  */ 	transition-timing-function:ease;
+/* 58  */ 
+/* 59  */ 	-webkit-box-sizing: content-box;
+/* 60  */ 	-moz-box-sizing: content-box;
+/* 61  */ 	box-sizing: content-box;
+/* 62  */ }
+/* 63  */ .swiper-free-mode > .swiper-wrapper {
+/* 64  */ 	-webkit-transition-timing-function: ease-out;
+/* 65  */ 	-moz-transition-timing-function: ease-out;
+/* 66  */ 	-ms-transition-timing-function: ease-out;
+/* 67  */ 	-o-transition-timing-function: ease-out;
+/* 68  */ 	transition-timing-function: ease-out;
+/* 69  */ 	margin: 0 auto;
+/* 70  */ }
+/* 71  */ .swiper-slide {
+/* 72  */ 	float: left;
+/* 73  */ 	-webkit-box-sizing: content-box;
+/* 74  */ 	-moz-box-sizing: content-box;
+/* 75  */ 	box-sizing: content-box;
+/* 76  */ }
+/* 77  */ 
+/* 78  */ /* IE10 Windows Phone 8 Fixes */
+/* 79  */ .swiper-wp8-horizontal {
+/* 80  */ 	-ms-touch-action: pan-y;
+/* 81  */ }
+/* 82  */ .swiper-wp8-vertical {
+/* 83  */ 	-ms-touch-action: pan-x;
+/* 84  */ }
+/* 85  */ 
+/* 86  */ /* ===============================================================
+/* 87  *| Your custom styles, here you need to specify container's and slide's
+/* 88  *| sizes, pagination, etc.
+/* 89  *| ================================================================*/
+/* 90  */ .swiper-container {
+/* 91  */ 	/* Specify Swiper's Size: */
+/* 92  */ 
+/* 93  */ 	/*width:200px;
+/* 94  *| 	height: 100px;*/
+/* 95  */ }
+/* 96  */ .swiper-slide {
+/* 97  */ 	/* Specify Slides's Size: */
+/* 98  */ 	
+/* 99  */ 	/*width: 100%;
+/* 100 *| 	height: 100%;*/
+
+/* idangerous.swiper.css */
+
+/* 101 */ }
+/* 102 */ .swiper-slide-active {
+/* 103 */ 	/* Specific active slide styling: */
+/* 104 */ 	
+/* 105 */ }
+/* 106 */ .swiper-slide-visible {
+/* 107 */ 	/* Specific visible slide styling: */	
+/* 108 */ 
+/* 109 */ }
+/* 110 */ /* ===============================================================
+/* 111 *| Pagination Styles
+/* 112 *| ================================================================*/
+/* 113 */ .swiper-pagination-switch {
+/* 114 */ 	/* Stylize pagination button: */	
+/* 115 */ 
+/* 116 */ }
+/* 117 */ .swiper-active-switch {
+/* 118 */ 	/* Specific active button style: */	
+/* 119 */ 	
+/* 120 */ }
+/* 121 */ .swiper-visible-switch {
+/* 122 */ 	/* Specific visible button style: */	
+/* 123 */ 	
+/* 124 */ }
+/* 125 */ 

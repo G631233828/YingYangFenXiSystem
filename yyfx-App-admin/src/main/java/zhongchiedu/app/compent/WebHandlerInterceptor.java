@@ -63,7 +63,7 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 			if (Common.isNotEmpty(site) && Common.isNotEmpty(site.getWebMenu())) {
 				WebMenu menu = site.getWebMenu();
 				// 通过webmenu获取所有的菜单
-				 webMenus = this.webMenuService.findWebMenu(menu.getId(), null);
+				 webMenus = this.webMenuService.findWebMenu(menu.getId(),false, null);
 				 session.setAttribute(Contents.WEBMENU, webMenus);
 			}
 		}

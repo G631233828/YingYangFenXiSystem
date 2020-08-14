@@ -40,7 +40,7 @@ public class SettingsController {
 	@RequestMapping("/findSettings")
 	@RequiresPermissions(value = "settings:edit")
 	@SystemControllerLog(description = "查询网站配置")
-	public String findSiteTemplate(Model model) {
+	public String findSettings(Model model) {
 
 		Settings settings = this.settingsService.findOneByQuery(new Query(), Settings.class);
 		model.addAttribute("settings", settings);
@@ -56,7 +56,7 @@ public class SettingsController {
 	@RequestMapping("/settings")
 	@RequiresPermissions(value = "settings:edit")
 	@SystemControllerLog(description = "编辑网站设置")
-	public String addOrEditAboutUs(@ModelAttribute("settings") Settings settings,
+	public String addOrUpdateSettings(@ModelAttribute("settings") Settings settings,
 			@RequestParam(defaultValue = "", value = "oldIcon") String oldIcon,
 			@RequestParam(defaultValue = "", value = "oldLogo") String oldLogo,
 			@RequestParam(defaultValue = "", value = "oldbanana") String oldbanana,

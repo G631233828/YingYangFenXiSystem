@@ -62,7 +62,7 @@ public class IndexSettingController {
 	// @RequiresPermissions(value = "sysresource:add")
 	public String addIndexSettingPage(Model model) {
 
-		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0", 0);
+		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, 0);
 		model.addAttribute("webMenus", webMenus);
 
 		return "school/indexSetting/add";
@@ -85,13 +85,13 @@ public class IndexSettingController {
 	// @RequiresPermissions(value = "sysresource:edit")
 	public String toeditPage(@PathVariable String id, Model model) {
 
-		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0", 0);
+		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, 0);
 		model.addAttribute("webMenus", webMenus);
 
 		IndexSetting indexSetting = this.indexSettingService.findOneById(id, IndexSetting.class);
 		model.addAttribute("indexSetting", indexSetting);
 
-		List<WebMenu> firstLevel = this.webMenuService.findWebMenu(indexSetting.getWebMenu().getParentId(), 1);
+		List<WebMenu> firstLevel = this.webMenuService.findWebMenu(indexSetting.getWebMenu().getParentId(), false,1);
 		model.addAttribute("firstLevel", firstLevel);
 
 		// 获取当前所有的一级菜单根据indexSetting.firstLevel

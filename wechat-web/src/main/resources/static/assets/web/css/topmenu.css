@@ -1,0 +1,51 @@
+@charset "utf-8";
+@font-face{
+    font-family:"member";
+    src:
+        url('../font/member.woff') format('woff'),
+        url('../font/member.ttf') format('truetype');
+}
+.member_iconfont{
+    font-family:"member" !important;
+    font-style:normal;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-stroke-width:0.2px;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+/* index style */
+/*header*/
+.header{width:100%;height:0.691rem;background:#1d1d1d;position:relative;z-index:9999;}
+.head{text-align: center;position:fixed;width:100%;height:0.691rem;top:0;right:0;box-shadow: 0 0 2px rgba(9,2,4,.55);line-height:0.791rem;z-index:99;-webkit-transition:all 0.3s ease-in-out 0s;-moz-transition:all 0.3s ease-in-out 0s;-ms-transition:all 0.3s ease-in-out 0s;transition:all 0.3s ease-in-out 0s;}
+.logo{display:inline-block;width:62.8125%;height:auto;margin-left:3.4375%; color:#FFF; font-size:0.24rem;}
+.top-nav{position:absolute;right:1.09375%;top:100%;width:14.0625%;}
+.class-btn{position:absolute;right:16%;top:0%;width:14.0625%;font-size:0.24rem;line-height:0.82rem;color:#fff;text-align:center;overflow:hidden;}
+.top-home{position:absolute;left:1.09375%;top:0;width:14.0625%;font-size:0.4rem;line-height:0.82rem;color:#fff;text-align:center;overflow:hidden;}
+.top-title{width:30%;position: absolute;left:35%;top:0;font-size:0.3rem;line-height:0.71rem;text-align:center;color:#fff;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+.sub_page{min-height:6rem;overflow:hidden;font-size:0.16rem}
+.sub_page center{padding:0.4rem 0;font-size:0.2rem}
+.sub_page center a{color:red}
+.search_hl{width:14.0625%;top:-1px;position:absolute;height:100%;font-size:0.38rem;line-height:0.8rem;color:#ffffff;text-align:center;overflow:hidden;}
+.search_l{	left:0%;}
+/*header end*/
+
+
+
+
+
+/* sub header */
+.nav-btn{width:14.0625%;right:0;top:0;position:absolute;font-size:0.4rem;line-height:0.71rem;color:#ffffff;text-align:center;overflow:hidden;}
+.home-btn{width:14.0625%;left:1.09375%;top:0;position:absolute;height:100%;font-size:0.4rem;line-height:0.71rem;color:#ffffff;text-align:center;overflow:hidden;display:block;}
+.top-nav{position:absolute;right:1.09375%;top:100%;width:14.0625%;}
+.top-home{position:absolute;left:1.09375%;top:0;width:14.0625%;font-size:0.4rem;line-height:0.82rem;color:#fff;text-align:center;overflow:hidden;}
+.class-btn{position:absolute;right:16%;top:0%;width:18.0625%;font-size:0.24rem;line-height:0.666rem;color:#fff;text-align:center;overflow:hidden;}
+.class-btn span.commonfont{font-size:0.28rem}
+
+.
+/*font*/
+@font-face{font-family:"iconfont";src:url('../font/iconfont.woff') format('woff'),url('../font/iconfont.ttf') format('truetype');}
+.iconfont{font-family:"iconfont" !important;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale;}
+
+/*font*/
+@font-face{font-family:"commonfont";src:url('../font/common.woff') format('woff'),url('../font/common.ttf') format('truetype');}
+.commonfont{font-family:"commonfont" !important;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale;}

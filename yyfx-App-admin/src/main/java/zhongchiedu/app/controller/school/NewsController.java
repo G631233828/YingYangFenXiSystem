@@ -54,7 +54,7 @@ public class NewsController {
 		SiteTemplate siteTemplate = this.siteTemplateService.findOneByQuery(new Query(), SiteTemplate.class);
 		WebMenu webMenu = siteTemplate.getWebMenu() != null ? siteTemplate.getWebMenu() : null;
 		if (Common.isNotEmpty(webMenu)) {
-			List<WebMenu> webMenus = this.webMenuService.findWebMenu(webMenu.getId(), null);
+			List<WebMenu> webMenus = this.webMenuService.findWebMenu(webMenu.getId(),false, null);
 			if (webMenus.size() > 0) {
 				session.setAttribute("webMenus", webMenus);
 			}

@@ -1,0 +1,44 @@
+@charset "utf-8";
+@font-face{
+    font-family:"member";
+    src:
+        url('../font/member.woff') format('woff'),
+        url('../font/member.ttf') format('truetype');
+}
+
+
+/* common */
+.content{min-height:8rem;overflow:hidden;font-size:0.2rem;margin-top: 5px;padding-bottom: 15%;background-color: transparent;}
+.content_new{margin-top:0!important;}
+.common_bg{background-color: #b30f1a!important;}
+/* index style */
+
+
+/* subpage */
+.about,.view{width:92.5%;margin:0% auto;font:0.22rem/2.2 "microsoft yahei";color:#1d1d1d;}
+.about p{margin-bottom:0.8em;}
+.about h3{ display:inline-block; background-color:#0a56d5; color:#fff; font-size:0.22rem; padding:0 10px; margin-bottom:0.8em; border-radius:5px; }
+
+.view p { margin:0; padding:0;}
+.view h1{width:100%;text-align:center;font:0.3rem/0.5rem "microsoft yahei";color:#393939; }
+.about h1{line-height: 0.6rem; text-align:center;font:0.28rem/0.5rem "microsoft yahei"; font-weight:bold;margin-bottom:3%;}
+.view img{max-width: 100%;display:inline}
+.page{display:block;width:90%;height:0.38rem;font:0.22rem/0.38rem "microsoft yahei";color:#777;background:#ddd;border-radius:0.38rem;margin:2% auto;text-overflow: ellipsis;overflow:hidden;white-space: nowrap;text-indent:0.1rem;text-align:center;}
+.page a{color:#666;}
+.page span.thisclass{color:#f00;}
+
+
+
+
+
+
+.header{height:0.691rem!important;}
+@media all and (min-width:640px){
+    .content{width:640px;margin:0 auto;position:relative;margin-top:6% ; padding-bottom: 16%;}
+}
+@media only screen and (max-width: 479px) and (min-width: 321px) {
+    html{font-size: 70px;}
+}
+@media only screen and (max-width: 320px) {
+    html{font-size: 60px;}
+}

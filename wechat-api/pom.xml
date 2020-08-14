@@ -10,14 +10,14 @@
 	<artifactId>wechat-api</artifactId>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.github.binarywang/weixin-java-mp -->
- 		<dependency>
+		<dependency>
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-mp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-common</artifactId>
-		</dependency> 
+		</dependency>
 
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
@@ -39,11 +39,15 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-		<groupId>net.sf.json-lib</groupId>
-		<artifactId>json-lib</artifactId>
-		<classifier>jdk15</classifier>
-	</dependency>
-		
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.com.yyfx</groupId>
+			<artifactId>yyfx-System-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

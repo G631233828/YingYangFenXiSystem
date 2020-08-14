@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="app" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<title>[[${session.weiweb?.name}]]</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link th:href="@{/assets/web/css/g.css}" rel="stylesheet" media="all"
+	type="text/css" />
+<link th:href="@{/assets/web/css/idangerous.swiper.css}"
+	rel="stylesheet" media="all" type="text/css" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/thems.css}">
+<script type="text/javascript"
+	th:src="@{/assets/web/js/jquery-1.8.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/web/js/banner.js}"></script>
+
+<script language="javascript">
+	$(function() {
+		$('#owl-demo').owlCarousel({
+			items : 1,
+			navigation : true,
+			navigationText : [ "上一个", "下一个" ],
+			autoPlay : true,
+			stopOnHover : true
+		}).hover(function() {
+			$('.owl-buttons').show();
+		}, function() {
+			$('.owl-buttons').hide();
+		});
+	});
+</script>
+
+<style type="text/css">
+.logoImg {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	z-index: 9999;
+}
+
+.bodybg {
+	background-image:
+		url('${pageContext.request.contextPath}/files/${ac.indexBgImg}');
+	background-repeat: repeat-y;
+	background-size: 100%;
+}
+
+.botton {
+	line-height: 150%;
+	font-size: 11px;
+	color: #333;
+	width: 100%;
+	text-align: center;
+	background: #eee;
+	padding: 8px 0;
+	text-decoration: none;
+}
+
+body {
+	font-family: "Microsoft Yahei";
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+	background-color: #f5f5f5;
+}
+</style>
+
+<body class="HomeModule kgo-site-homepage">
+
+
+	<div id="nonfooternav">
+		<!-- top 模块 
+		<div class="dc_headerLogo"
+			style="*margin: 0 auto; *max-width: 640px; *width: 100%;">
+			<div
+				style="height: 48px; font-size: 20px; color: #ffffff; padding-top: 16px;">
+				${ac.name}</div>
+		</div>-->
+		<!-- banana 模块 -->
+		<div th:include="temp1/public/public::banana"></div>
+
+		<!-- 内容模块 -->
+		<div id="container" style="background-color: #f5f5f5;">
+			<div id="homemodules" style="margin: 10px 0px 40px 0px;">
+				<div class="springboard" id="homegrid">
+
+
+					<div
+						style="width: 48%; margin: 0 1% 5px; display: block; background-color: #ffffff; height: 70px;"
+						th:each="webmenu:${session.weiwebmenu}">
+						<a th:href="|@{/weiweb/list/}${webmenu.id}|"> <span
+							style="float: left;"> <img
+								style="width: 60px; height: 60px;"
+								th:src="|@{/}${webmenu?.img?.savePath}${webmenu?.img?.generateName}|"
+								alt="" />
+
+						</span> <span
+							style="float: left; font-size: 16px; margin-top: 22px; margin-left: 15px; color: #000000;">
+								[[${webmenu.name}]] </span>
+
+						</a>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- 底部模块 -->
+			<div th:include="temp1/public/public::footer"></div>
+
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+</body>
+
+</html>

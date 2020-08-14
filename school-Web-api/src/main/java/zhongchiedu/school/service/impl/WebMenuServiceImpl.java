@@ -7,12 +7,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
@@ -21,6 +23,8 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.WebMenuService;
+import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.service.impl.MultiMediaServiceImpl;
 /**  
 * <p>Title: WebMenuServiceImpl</p>  
 * <p>Description: </p>  
@@ -31,6 +35,10 @@ import zhongchiedu.school.service.WebMenuService;
 @Slf4j
 public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements WebMenuService {
 
+	
+	@Autowired
+	private MultiMediaServiceImpl multiMediaSerice;
+	
 	
 	@Override
 	public Pagination<WebMenu> findPagination(Integer pageNo, Integer pageSize) {
@@ -51,11 +59,15 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 	}
 
 	@Override
-	public List<WebMenu> findWebMenu(String parentId,Integer type) {
+	public List<WebMenu> findWebMenu(String parentId,boolean weiWeb,Integer type) {
 		Query query= new Query();
 		if(Common.isNotEmpty(type)) {
 			query.addCriteria(Criteria.where("type").is(type));
 		}
+		if(weiWeb) {
+			query.addCriteria(Criteria.where("weiWeb").is(weiWeb));
+		}
+		
 		query.addCriteria(Criteria.where("parentId").is(parentId));
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("isDelete").is(false));
@@ -64,14 +76,27 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 	}
 
 	@Override
-	public void saveOrUpdate(WebMenu webMenu) {
+	public void saveOrUpdate(WebMenu webMenu,MultipartFile[] img,String oldImg,String imgPath,String dir) {
+		WebMenu ed= null;
 		if(Common.isNotEmpty(webMenu)) {
 			if(webMenu.getType() == 0) {
 				webMenu.setParentId("0");
 			}
+			
+			List<MultiMedia>  pic = this.multiMediaSerice.uploadPictures(img, dir, imgPath, "WEBMENUIMG", 300, 300);
+
+			if(Common.isNotEmpty(webMenu.getId())) {
+				ed = this.findOneById(webMenu.getId(), WebMenu.class);
+				if(Common.isNotEmpty(ed)) {
+					webMenu.setImg(Common.isNotEmpty(oldImg) ? ed.getImg() : null);
+				}
+			}
+			if(pic.size()>0) {
+				webMenu.setImg(pic.get(0));
+			}
 			if(Common.isNotEmpty(webMenu.getId())) {
 				//update
-				WebMenu ed = this.findOneById(webMenu.getId(), WebMenu.class);
+				//WebMenu ed = this.findOneById(webMenu.getId(), WebMenu.class);
 				//webMenu.setFirstLevel(Common.isNotEmpty(ed.getFirstLevel())?ed.getFirstLevel():null);
 				BeanUtils.copyProperties(webMenu, ed);
 				this.save(webMenu);

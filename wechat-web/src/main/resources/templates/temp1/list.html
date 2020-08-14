@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="app" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<title>[[${session.weiweb?.name}]]</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link th:href="@{/assets/web/css/g.css}" rel="stylesheet" media="all"
+	type="text/css" />
+<link th:href="@{/assets/web/css/idangerous.swiper.css}"
+	rel="stylesheet" media="all" type="text/css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/web/css/thems.css}">
+<script type="text/javascript"
+	th:src="@{/assets/web/js/jquery-1.8.3.min.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/web/css/reset.css}" />
+<script type="text/javascript" th:src="@{/assets/web/js/banner.js}"></script>
+<style type="text/css">
+.img_text {
+	z-index: 999;
+	position: relative;
+	margin-top: -30px;
+	color: #fff;
+	background-color: #000;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+}
+
+body {
+	font-family: "Microsoft Yahei";
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+	background: #ffffff;
+}
+
+.logoImg {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	z-index: 9999;
+}
+
+.bodybg {
+	background-image:
+		url('${pageContext.request.contextPath}/files/${ac.indexBgImg}');
+	background-repeat: repeat-y;
+	background-size: 100%;
+}
+
+.botton {
+	line-height: 150%;
+	font-size: 11px;
+	color: #333;
+	width: 100%;
+	text-align: center;
+	background: #eee;
+	padding: 8px 0;
+	text-decoration: none;
+}
+}
+</style>
+<script language="javascript">
+	$(function() {
+		$('#owl-demo').owlCarousel({
+			items : 1,
+			navigation : true,
+			navigationText : [ "上一个", "下一个" ],
+			autoPlay : true,
+			stopOnHover : true
+		}).hover(function() {
+			$('.owl-buttons').show();
+		}, function() {
+			$('.owl-buttons').hide();
+		});
+	});
+</script>
+<body>
+
+
+	<!-- top 模块 
+		<div class="dc_headerLogo"
+			style="*margin: 0 auto; *max-width: 640px; *width: 100%;">
+			<div
+				style="height: 48px; font-size: 20px; color: #ffffff; padding-top: 16px;">
+				${ac.name}</div>
+		</div>-->
+	<!-- banana 模块 -->
+	<div th:include="temp1/public/public::banana"></div>
+	<div th:include="temp1/public/public::menu"></div>
+
+	<section>
+		<ul class="list_ul list_ul_news" style="padding: 0px;">
+
+			<th:block th:each="news:${pageList?.datas}">
+				<li
+					style="height: 20px; border-bottom: #CCC 1px solid; padding: 15px; margin: 0px 0; background-color: #ffffff">
+					<a class="tbox" th:href="|@{/weiweb/news/}${news.id}|">
+						<p style="width: 100%">
+							<span style="float: left;">
+								[[${#strings.abbreviate(news.title,16)}]] </span> <span
+								style="float: right; padding-right: 15px;">
+								[[${#dates.format(news.createTime,'yyyy-MM-dd')}]] </span>
+						</p>
+				</a>
+				</li>
+			</th:block>
+
+		</ul>
+		<div style="text-align: center; margin-top: 10px;">
+			<a
+				th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{/weiweb/list/}+${webMenu.id}+'?pageNo='+${pageList?.upPage}">上一页</a>
+			<span style="font-size: 8px;">第 [[${pageList.pageNo}]]页 － 每页
+				[[${pageList.pageSize}]]条 － 共 [[${pageList.totalPage}]]页</span> <a
+				th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/weiweb/list/}+${webMenu.id}+'?pageNo='+${pageList?.nextPage}">下一页</a>
+		</div>
+
+	</section>
+
+
+
+	<!-- 底部模块 -->
+	<div th:include="temp1/public/public::footer"></div>
+
+
+
+
+
+
+</body>
+
+</html>

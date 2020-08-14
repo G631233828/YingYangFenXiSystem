@@ -1,5 +1,7 @@
 package zhongchiedu.wechat.handler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +13,8 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
+import me.chanjar.weixin.mp.builder.outxml.NewsBuilder;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.wechat.builder.TextBuilder;
 
@@ -41,9 +45,9 @@ public class MsgHandler extends AbstractHandler {
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
-
+      
         //TODO 组装回复消息
-        String content = "收到信息内容：" + Common.toJson(wxMessage);
+       String content = "收到信息内容：" + Common.toJson(wxMessage);
 
         return new TextBuilder().build(content, wxMessage, weixinService);
 
