@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>[[${session.settings?.title}]]</title>
+<meta name="renderer" content="webkit">
+<meta name="force-rendering" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	th:src="@{/assets/websites/fushanweb/css/reset.css}">
+<link th:src="@{/assets/websites/fushanweb/css/index.css}"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	th:src="@{/assets/websites/fushanweb/css/floatad.css}">
+<link th:src="@{/assets/websites/fushanweb/css/flexslider.css}"
+	rel="stylesheet">
+<script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/stats.js}" charset="UTF-8"></script>
+</head>
+<body>
+
+	<div class="wrap">
+		<div th:replace="websites/fushanweb/public/public::top"></div>
+	</div>
+
+
+	<!--学校标题-->
+		<div th:replace="websites/fushanweb/public/public::top"></div>
+
+		<div id="banner_tabs" class="flexslider"
+			style="width: 1200px; margin: 0 auto; height: 340px;">
+			<ul class="slides">
+
+				<li th:each="bananas:${session.settings?.listBanana}"><img
+					width="100%" alt height="100%"
+					th:src="|@{/}${bananas?.savePath}${bananas?.generateName}|">
+
+				</li>
+			</ul>
+
+			<ol id="bannerCtrl" class="flex-control-nav flex-control-paging">
+				<li th:each="bananas:${session.settings?.listBanana}"><a>1</a>
+				</li>
+			</ol>
+		</div>
+</body>
+
+</html>

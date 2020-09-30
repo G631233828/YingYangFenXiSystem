@@ -20,6 +20,7 @@
     border-radius: 4px;
     margin: 20px;
     border: 1px solid #ededed;
+    margin-top:0px;
 }
 /**
  * VIDEO
@@ -47,7 +48,7 @@ iframe, embed, object {
 .tag-nest {
     border-bottom: 1px dashed #EDEDED;
     border-top: 1px dashed #EDEDED;
-    margin: 20px 0;
+  /*   margin: 20px 0; */
     padding: 15px 20px;
 }
 .tag-nest i {
@@ -155,7 +156,7 @@ iframe, embed, object {
 }
 .img-responsive-media {
     display: block;
-    height: auto;
+    height: 184.66px;
     width: 100%;
 }
 /**

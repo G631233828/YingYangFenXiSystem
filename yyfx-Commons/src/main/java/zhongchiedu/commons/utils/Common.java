@@ -215,6 +215,17 @@ public class Common {
 		return formatDate + random + extension;
 	}
 	
+	/**
+	 * 获取时间戳
+	 * @param fileName
+	 * @return
+	 */
+	public static String generatedate() {
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String formatDate = format.format(new Date());
+		return formatDate;
+	}
+	
 	
 	/**
 	 * 传入日期 进行比较相差天数

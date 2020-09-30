@@ -32,6 +32,8 @@ public class Contents {
 	public static final String WEIWEBMENU="weiwebmenu";//微网站菜单
 	public static final String WEIWEB="weiweb";//微网站菜单
 	
+	public static final String REMEN = "remen";//新闻热门推荐
+	
 	
 
 	/**

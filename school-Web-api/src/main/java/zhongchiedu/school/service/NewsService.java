@@ -22,7 +22,6 @@ public interface NewsService extends GeneralService<News> {
 
 	String delete(String id);
 
-
 	void updateNewsVisit(String id);
 	
 	News findNewsById(String id);

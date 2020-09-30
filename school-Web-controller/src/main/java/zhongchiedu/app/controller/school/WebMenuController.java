@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.service.PhotoGalleryService;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 
@@ -35,12 +36,13 @@ public class WebMenuController {
 
 	@Autowired
 	private WebMenuService webMenuService;
+	
 
 	@GetMapping("webMenus")
 	@RequiresPermissions(value = "webmenu:list")
 	@SystemControllerLog(description = "查询所有资源")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
+			@RequestParam(value = "pageSize", defaultValue = "200") Integer pageSize, HttpSession session) {
 		// 分页查询数据
 		log.info("查询所有资源");
 		Pagination<WebMenu> pagination = this.webMenuService.findPagination(pageNo, pageSize);
@@ -98,14 +100,6 @@ public class WebMenuController {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
 		return "school/webMenu/add";
 	}
 
@@ -124,8 +118,8 @@ public class WebMenuController {
 	@SystemControllerLog(description = "添加资源")
 	public String addWebMenu(@ModelAttribute("webMenu") WebMenu webMenu,
 			@RequestParam(defaultValue = "", value = "oldImg") String oldImg,
-			@RequestParam("img") MultipartFile[] img) {
-		this.webMenuService.saveOrUpdate(webMenu, img, oldImg, imgPath, dir);
+			@RequestParam(defaultValue = "", value = "imgFile") MultipartFile[] imgFile) {
+		this.webMenuService.saveOrUpdate(webMenu, imgFile, oldImg, imgPath, dir);
 		return "redirect:/school/webMenus";
 	}
 	
@@ -139,8 +133,8 @@ public class WebMenuController {
 	@SystemControllerLog(description = "修改资源")
 	public String editWebMenu(@ModelAttribute("webMenu") WebMenu webMenu,
 			@RequestParam(defaultValue = "", value = "oldImg") String oldImg,
-			@RequestParam("img") MultipartFile[] img) {
-		this.webMenuService.saveOrUpdate(webMenu, img, oldImg, imgPath, dir);
+			@RequestParam(defaultValue = "", value= "imgFile") MultipartFile[] imgFile) {
+		this.webMenuService.saveOrUpdate(webMenu, imgFile, oldImg, imgPath, dir);
 		return "redirect:/school/webMenus";
 	}
 
@@ -181,5 +175,13 @@ public class WebMenuController {
 		List<WebMenu> list = this.webMenuService.findWebMenuByFirstLevel(firstLevel);
 		return list!=null?BasicDataResult.build(200, "success",list):BasicDataResult.build(400, "error",null);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

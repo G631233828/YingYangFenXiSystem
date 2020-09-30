@@ -85,22 +85,7 @@ canvas#canvas4 {
 												</div>
 											</div>
 
-											<div class="form-group">
-												<label class="col-lg-1 control-label">菜单Url：</label>
-												<div class="col-lg-6">
-													<input class="form-control" id="resUrl"
-														placeholder="请输入菜单权限Url" name="resUrl"
-														th:value="${webMenu!=null}?${webMenu.resUrl}"
-														required="required">
-												</div>
-											</div>
 
-
-											<!-- 
-							1.创建主题   不显示其他隐藏填写内容
-							2.创建一级菜单  显示主题选项 一级菜单进行绑定
-							3.创建二级菜单  显示主题选项 选择主题之后选择主题下对应一级菜单
-							 -->
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">菜单类别：</label>
@@ -124,8 +109,51 @@ canvas#canvas4 {
 											</div>
 
 
+
+
+
+
+											<div class="form-group" id="showexternalLink"
+												th:style="${webMenu?.externalLink == true}?'display:block;':'display:none;'">
+												<label class="col-lg-1 control-label">是否外部链接：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select id="externalLink" name="externalLink"
+															class="form-control" onchange="return setUrl()">
+															<option value="false"
+																th:selected="${webMenu?.externalLink == false}">否</option>
+															<option value="true"
+																th:selected="${webMenu?.externalLink == true}">是</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="form-group" id="menuUrl"
+												th:style="${webMenu?.externalLink  eq true}?'display:block;':'display:none;'">
+												<label class="col-lg-1 control-label">菜单Url：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="resUrl"
+														placeholder="请输入菜单权限Url" name="resUrl"
+														th:value="${webMenu!=null}?${webMenu.resUrl}"
+														required="required">
+												</div>
+											</div>
+
+
+
+											<!-- 
+							1.创建主题   不显示其他隐藏填写内容
+							2.创建一级菜单  显示主题选项 一级菜单进行绑定
+							3.创建二级菜单  显示主题选项 选择主题之后选择主题下对应一级菜单
+							 -->
+
+
+
+
 											<div class="form-group" id="parent"
-												th:style="${webMenu?.parentId!='0'}?'display:block;':'display:none;'">
+												th:style="${webMenu?.parentId!='0'&&webMenu!=null}?'display:block;':'display:none;'">
 												<label class="col-lg-1 control-label">所属主题：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
@@ -156,7 +184,7 @@ canvas#canvas4 {
 													</div>
 												</div>
 											</div>
-
+											<!-- 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">是否文章</label>
 												<div class="col-lg-6">
@@ -170,15 +198,16 @@ canvas#canvas4 {
 													</div>
 												</div>
 											</div>
+ -->
 
-
-											<div class="form-group">
-												<label class="col-lg-1 control-l8olbel">同步至微网站</label>
+											<div class="form-group" id="showweiWeb"
+												th:style="${webMenu?.weiWeb == true}?'display:block;':'display:none;'">
+												<label class="col-lg-1 control-l8olbel">是否创建微网站</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
 														<select name="weiWeb" id="weiWeb" class="form-control"
-															required>
-															<option value="">----选择是否同步到微网站----</option>
+															onchange="return weiweb()" required>
+															<option value="">----选择是否创建微网站----</option>
 															<option value="true"
 																th:selected="${webMenu?.weiWeb == true}">是</option>
 															<option value="false"
@@ -188,10 +217,11 @@ canvas#canvas4 {
 												</div>
 											</div>
 
-											<div class="form-group">
+											<div class="form-group" id="weiwebImg"
+												th:style="${webMenu?.img !=null}?'display:block;':'display:none;'">
 												<label class="col-lg-1 control-label">图标：</label>
 												<div class="col-lg-6" id="imgfile">
-													<input id="img" name="img" type="file">
+													<input id="imgFile" name="imgFile" type="file">
 												</div>
 											</div>
 											<input type="hidden"
@@ -217,7 +247,15 @@ canvas#canvas4 {
 												</div>
 											</div>
 
-
+											<div class="form-group">
+												<label class="col-lg-1 control-label">排序：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="sort"
+														placeholder="请输入排序" name="sort"
+														th:value="${webMenu!=null}?${webMenu.sort}"
+														required="required">
+												</div>
+											</div>
 
 
 											<div class="form-group">
@@ -298,7 +336,7 @@ var picimg;
 	
 	
 	/*]]>*/
-	$("#img").fileinput({
+	$("#imgFile").fileinput({
 			maxFileCount : 1, //表示允许同时上传的最大文件个数
 			allowedFileExtensions : [ 'jpg', 'gif', 'png', 'jpeg','ico' ],//接收的文件后缀
 			showUpload: false,
@@ -312,7 +350,7 @@ var picimg;
 			],
 	}); 
 	
-	$("#img .fileinput-remove-button").click(function(e){
+	$("#imgFile .fileinput-remove-button").click(function(e){
 	 	$("#oldimg").val(""); 
 	})
 	

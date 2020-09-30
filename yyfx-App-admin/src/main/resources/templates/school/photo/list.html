@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/assets/css/media.css}">
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='website')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							<div class="title-alt">
+								<div>
+
+									<!-- <shiro:hasPermission name="indexSetting:add"> -->
+									<button class="btn btn-default btn-sm"
+										onclick="return createActivity()">
+										<i class="glyphicon glyphicon-plus"> </i> 新建相册
+									</button>
+									<!-- 	</shiro:hasPermission>
+
+									<shiro:hasPermission name="indexSetting:edit"> -->
+									<button class="btn btn-primary btn-sm"
+										onclick="return toeditActivity()">
+										<i class="fa fa-edit"> </i>修改相册
+									</button>
+									<!-- </shiro:hasPermission>
+
+									<shiro:hasPermission name="indexSetting:delete"> -->
+									<button class="btn btn-danger btn-sm"
+										th:onclick="|return del('','@{photo}')|">
+										<i class="fa fa-trash-o"> </i>删除
+									</button>
+									<!-- </shiro:hasPermission> -->
+
+								</div>
+
+								<div class="titleClose">
+									<a class="gone" href="#tableStaticClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#tableStatic"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+							<div class="body-nest" id="tableStatic">
+								<label style="margin-top: 0px;">全选</label>
+								<div class="checkbox checkbox-inline" style="margin-top: 0px;">
+									<input type="checkbox" id="checkall" name="checkall" /> <label
+										for="checkall"></label>
+								</div>
+								<section id="flip-scroll">
+
+									<div class="social-wrap">
+
+										<th:block th:each="photo:${pageList?.datas}">
+
+									
+											<div class="col-md-2">
+											<input type="checkbox" name="ids" th:id="${photo?.id}"
+													class="numeric" th:value="${photo?.id}"> <label
+													th:for="${photo?.id}"></label>
+												<div class="well-media">
+													<div class="vendor">
+														<a rel="group" href="#" th:onclick="|window.location.href='@{photos}/${photo?.id}'|" > <img
+															style="width: 200px; height: 200px;"
+															class="img-responsive-media"
+															th:src="@{/assets/img/empty_folder.png}"
+															alt="">
+														</a>
+													</div>
+													<div class="video-text" style="margin-top:-20px">
+														<p>[[${#strings.abbreviate(photo?.name,30)}]]</p>
+													</div>
+
+
+												</div>
+											</div>
+
+
+
+
+
+
+
+										</th:block>
+
+									</div>
+
+
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList.pageSize}行 － 当前页${pageList.pageNo}页 － 共${pageList.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/photo?pageNo=}+${pageList.upPage}">上一页</a>
+													</li>
+													<li th:each="page:${pageList.navigatepageNums}"
+														th:class="${page  == pageList.pageNo}?active:''"><a
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/photo?pageNo=}+${page}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
+														<a
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/photo?pageNo=}+${pageList.nextPage}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+									</div>
+								</section>
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+
+			<div th:replace="public/public::myModal"></div>
+			<div th:replace="public/public::myMessageModal"></div>
+
+
+
+			<!-- 创建活动 -->
+			<div aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+				class="modal fade bs-example-modal-lg" style="display: none;"
+				id="createActivity">
+				<div class="modal-dialog modal-lg"
+					style="margin-top: 10%; width: 800px; height: 400px;">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">×</button>
+							<h4>创建活动</h4>
+						</div>
+						<div class="content-wrap">
+
+							<div class="body-nest" id="Blank_Page_Content">
+								<div class="row">
+									<!-- edit form column -->
+									<div class="col-md-12 personal-info">
+
+										<form class="form-horizontal" id="activityForm"
+											th:action="@{/school/photo}" method="post">
+											<div class="form-group">
+												<label class="col-lg-2 control-label">图册名称：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="name" placeholder="请输入图册名称"
+														name="name" required="required">
+												</div>
+											</div>
+											<div id="setid"></div>
+											<div class="form-group">
+												<label class="col-lg-2 control-label">创建人：</label>
+												<div class="col-lg-6">
+													<input class="form-control" id="author"
+														placeholder="请输入创建人" name="author" required="required">
+												</div>
+											</div>
+
+
+											<div class="form-group">
+												<label class="col-lg-1 control-label"></label>
+												<div class="col-md-8">
+													<button type="submit" class="btn btn-success">修改</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<!-- 创建活动end -->
+
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+	<div th:replace="public/public_js::validator"></div>
+
+
+	<script type="text/javascript" th:inline="javascript"
+		th:src="@{/js/school/photo/photo.js}"></script>
+
+
+	<script type="text/javascript">
+		function toPhotoGallery(o) {
+			window.location.href = "/photos/" + o
+		}
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

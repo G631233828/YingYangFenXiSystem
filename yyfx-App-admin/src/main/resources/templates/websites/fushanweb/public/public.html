@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<body>
+
+	<!-- nav和logo框架 -->
+	<div th:fragment="top">
+		<!--学校标题-->
+		<div class="schoolName">
+			<div class="container">
+				<div class="school-logo">
+					<span class="school_logo"> <img
+						th:src="@{/assets/websites/fushanweb/images/4102logo.png}">
+					</span>
+					<!-- <img src="/assets/portal/shfszd/images/logo.png" alt=""> -->
+				</div>
+				<div class="school-title">
+					<span class="name_pic"> <img
+						th:src="@{/assets/websites/fushanweb/images/schoolName.png}">
+					</span>
+				</div>
+			</div>
+		</div>
+		<div id="smoothmenu1" class="ddsmoothmenu hq_nav">
+			<ul>
+				<li><a th:href="@{/web/index}">首页</a></li>
+
+
+				<li th:each="webmenu:${session.webmenu}"
+					th:if="${webmenu.type == 1}"><a
+					th:href="|@{/web/list/}${webmenu.id}|">[[${webmenu.name}]]</a>
+					<ul>
+						<li th:each="webmenu2:${session.webmenu}"
+							th:if="${webmenu2.firstLevel eq webmenu.id }"><a
+							th:href="|@{/web/list/}${webmenu2.id}|">[[${webmenu2.name}]]</a></li>
+					</ul></li>
+
+
+			</ul>
+			<br style="clear: left">
+		</div>
+		<script th:src="@{/assets/websites/fushanweb/js/jquery.min.js}"
+			type="text/javascript" charset="utf-8"></script>
+		<script th:src="@{/assets/websites/fushanweb/js/ddsmoothmenu.js}"></script>
+		<script type="text/javascript" th:inline="javascript">
+             ddsmoothmenu.init({
+                 mainmenuid: "smoothmenu1", //menu DIV id
+                 orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+                 classname: 'ddsmoothmenu', //class added to menu's outer DIV
+                 //customtheme: ["#1c5a80", "#18374a"],
+                 contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+             })
+
+             function nav_change(href, text) {
+                 var $url = location.href;
+                 if ($url.indexOf(href) > -1) {
+                     $(".nav_item:contains(" + text + ")").addClass("_active").siblings(".nav_item").removeClass("_active");
+                 }
+             }
+             
+             var list = null;
+             /* <![CDATA[ */
+        	 list = [[${session.webmenu}]];
+        			   nav_change("/web/index", "首页");
+        	 if(list!=null){
+        		 for(var i = 0 ;i<list.length;i++){
+        			   nav_change("/web/list/"+list[i].id,list[i].name);
+        			}
+        	 }
+        	
+        /* ]]> */
+
+             $(document).ready(function() {
+                 $("#smoothmenu1 img").each(function() {
+                     $('#smoothmenu1 img').error(function() {
+                         $(this).hide();
+                     })
+                 })
+             });
+         </script>
+
+
+	</div>
+
+
+
+
+	<div th:fragment="breadcrumb">
+
+		<ol class="breadcrumb">
+			<li>当前位置：<a th:href="@{/web/index}">首页</a><span class="divider">/</span></li>
+			<li><a href="#">[[${one?.name}]]</a></li>
+			<th:block th:if="${two != null}">
+				<li><span class="divider">/</span><a href="#">[[${two?.name}]]</a></li>
+			</th:block>
+		</ol>
+	</div>
+
+
+<!-- 快速导航 -->
+	<div th:fragment="menus">
+		<div class="main_info_nav" id="main_info_nav">
+			<th:block th:each="menu:${webMenusleft}">
+				<a th:href="|@{/web/list/}${menu.id}|"><b
+					th:class="${menu.id eq webMenu.id}?'show_category main_info_nav_active':'show_category'"
+					th:title="${menu?.name}">[[${menu?.name}]]</b></a>
+			</th:block>
+		</div>
+	</div>
+	
+	
+	<div th:fragment="remen">
+				<div class="remen_dianji">
+						<h3>
+							<span class="icon icon-rss icon-large icon_margin"></span>每月热门点击
+						</h3>
+						<th:block th:each="news,newsStat:${session.remen}">
+						<p>
+							<a th:href="|@{/web/news/}${news.id}|"><b class="top3">[[${newsStat.count}]]</b><span
+								class="list_title yichu">[[${news.title}]]</span></a>
+						</p>
+						</th:block>
+						
+
+					</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+	<div th:fragment="footer">
+		<div class="copys">
+			<div class="copys_info">
+				<div class="left center" style="padding-top: 13px;">
+					<p class="p1">电话：[[${session.settings?.connectPhone}]]</p>
+					<p> 地址：[[ ${session.settings?.address}]]</p>
+					<p>[[${session.settings?.coryright}]]</p>
+					<p style="cursor: pointer;"
+						th:onclick="|window.open(http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${session.settings?.recordNumber})|">
+						沪公网安备 <img th:src="@{/assets/websites/fushanweb/mages/ba.png}"
+							style="width: 16px; height: 20px; vertical-align: bottom; margin-top: 0px">
+						[[${session.settings?.recordNumber}]] 号&nbsp;
+					</p>
+				</div>
+				<div class="left yc_ewm">
+					<img
+						th:src="|@{/}${session.settings?.qRcode?.savePath}${session.settings?.qRcode?.generateName}|">
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>

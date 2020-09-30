@@ -2,6 +2,9 @@ package zhongchiedu.app.controller.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +19,9 @@ import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.IndexSettingService;
 import zhongchiedu.school.service.NewsService;
+import zhongchiedu.school.service.PhotoGalleryService;
 import zhongchiedu.school.service.WebMenuService;
+import zhongchiedu.system.pojo.MultiMedia;
 
 @RequestMapping("/web")
 @Controller
@@ -30,6 +35,8 @@ public class WebController {
 	@Autowired
 	private IndexSettingService indexSettingService;
 	
+	@Autowired
+	private PhotoGalleryService photoGalleryService;
 
 	@RequestMapping(value = "/index")
 	public String toindex(Model model) {
@@ -37,8 +44,20 @@ public class WebController {
 		model.addAttribute("indexs", indexs);
 		List<News> newslist = this.newsService.findNewsByNewsIds(indexs);
 		model.addAttribute("newslist", newslist);
-		return "web/index";
+		List<MultiMedia> imgs = this.photoGalleryService.findImgs(20);
+		
+		
+		return "websites/fushanweb/index";
 	}
+	
+//	@RequestMapping(value = "/index2")
+//	public String toindex2(Model model) {
+//		List<IndexSetting> indexs = this.indexSettingService.findIndexSetting();
+//		model.addAttribute("indexs", indexs);
+//		List<News> newslist = this.newsService.findNewsByNewsIds(indexs);
+//		model.addAttribute("newslist", newslist);
+//		return "websites/fushanweb/index";
+//	}
 	
 //	@RequestMapping("aaa/{name}/{value}")
 //	//@RequiresPermissions(value = "webmenu:edit")
@@ -57,7 +76,7 @@ public class WebController {
 	
 	@RequestMapping(value = "/list/{menuId}")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 			@PathVariable(value = "menuId",required = true)String menuId) {
 		//1.获取相同目录的菜单
 		WebMenu webMenu = this.webMenuService.findWebMenuById(menuId);
@@ -82,15 +101,23 @@ public class WebController {
 		model.addAttribute("webMenu", webMenu);
 		
 	
-		return "web/list";
+		return "websites/fushanweb/list";
 	}
 	
 	
 	@RequestMapping(value = "/news/{newsId}")
-	public String findNews(Model model,@PathVariable(value="newsId",required = true)String newsId) {
+	public String findNews(HttpSession session,HttpServletRequest request,Model model,@PathVariable(value="newsId",required = true)String newsId) {
 		
 		News news = this.newsService.findNewsById(newsId);
 		if(Common.isNotEmpty(news)) {
+			
+			String ip = request.getRemoteAddr();
+			String getIp = (String) session.getAttribute(ip + "_" + newsId);
+			if(Common.isEmpty(getIp)) {
+				//刷新浏览量
+				this.newsService.updateNewsVisit(newsId);
+				session.setAttribute(ip + "_" + newsId, ip + "_" + newsId);
+			}
 			List<WebMenu> webMenusleft = this.webMenuService.findWebMenuByFirstLevel(news.getWebMenu().getFirstLevel());
 			model.addAttribute("webMenusleft", webMenusleft);
 			model.addAttribute("news", news);
@@ -99,7 +126,7 @@ public class WebController {
 			model.addAttribute("one", news.getSupMenu());
 		}
 		
-		return "web/article";
+		return "websites/fushanweb/article";
 	}
 	
 	

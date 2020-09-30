@@ -230,5 +230,7 @@
 		<module>school-Web-api</module>
 		<module>wechat-api</module>
 		<module>wechat-web</module>
+		<module>school-Web-controller</module>
+		<module>yyfx-System-controller</module>
 	</modules>
 </project>

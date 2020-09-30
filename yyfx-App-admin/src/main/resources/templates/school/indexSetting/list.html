@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
-	th:href="@{/assets/js/progindexSettings-bar/number-pb.css}">
+	th:href="@{/assets/js/progindexSetting?s-bar/number-pb.css}">
 <link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
 
 <style type="text/css">
@@ -104,45 +104,52 @@ canvas#canvas4 {
 															for="checkall"></label>
 													</div>
 												</th>
-												<th class="numeric">菜单名称</th>
-												<th class="numeric">排序</th>
-												<th class="numeric">排版</th>
+												<th class="numeric">菜单</th>
+												<th class="numeric">栏目名称</th>
+												<th class="numeric">加载数量</th>
+												<th class="numeric">加载方式</th>
 												<th class="numeric">使用状态</th>
 												<th class="numeric">操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<!-- 目录 -->
-											<th:block th:each="indexSetting:${pageList.datas}">
+											<th:block th:each="indexSetting:${pageList?.datas}" th:if="${indexSetting?.webMenu!=null}">
 												<tr>
 													<td class="numeric">
 														<div class="checkbox checkbox-inline"
 															style="margin-top: 0px;">
-															<input type="checkbox" name="ids" th:id="${indexSetting.id}"
-																class="numeric" th:value="${indexSetting.id}"> <label
-																th:for="${indexSetting.id}"></label>
+															<input type="checkbox" name="ids" th:id="${indexSetting?.id}"
+																class="numeric" th:value="${indexSetting?.id}"> <label
+																th:for="${indexSetting?.id}"></label>
 														</div>
 													</td>
-													<td class="numeric">[[${indexSetting.webMenu.name }]]</td>
-													<td class="numeric"><input type="text" th:id="|${indexSetting.id}_sort|"
-													th:onblur="|return toSort('${indexSetting.id}')|"
-													style="width: 50px" th:value="${indexSetting.sort}"
-													class="form-control">
+													<td class="numeric">[[${indexSetting?.firstLevel?.name}]]</td>
+													<td class="numeric">
+														<th:block th:each="menus:${indexSetting?.webMenu}">
+															[[${menus.name}]] &nbsp;&nbsp;
+														</th:block>
 													</td>
-													<td class="numeric" th:text="${indexSetting.isArticle eq 'true' ?'列表':'图文'}"></td>
-													<td class="numeric" th:id="disBtn+${indexSetting.id}"
-														th:utext="${indexSetting.isDisable eq true }?|<button type='button' onclick=toDisable('${indexSetting.id}','school/indexSetting') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${indexSetting.id}','school/indexSetting') class='btn btn-success'>启用</button>|"></td>
+													<td class="numeric">[[${indexSetting?.num}]]</td>
+<!-- 													<td class="numeric"><input type="text" th:id="|${indexSetting?.id}_sort|"
+													th:onblur="|return toSort('${indexSetting?.id}')|"
+													style="width: 50px" th:value="${indexSetting?.sort}"
+													class="form-control">
+													</td> -->
+													<td class="numeric" th:text="${indexSetting?.random eq 'true' ?'随机':'最新'}"></td>
+													<td class="numeric" th:id="disBtn+${indexSetting?.id}"
+														th:utext="${indexSetting?.isDisable eq true }?|<button type='button' onclick=toDisable('${indexSetting?.id}','school/indexSetting') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${indexSetting?.id}','school/indexSetting') class='btn btn-success'>启用</button>|"></td>
 
 													<td class="numeric">
-														<!--  <shiro:hasPermission name="indexSetting:edit">  -->
+														<!--  <shiro:hasPermission name="indexSetting?:edit">  -->
 														<button class="btn btn-primary btn-xs"
-															th:onclick="|return toeditPage('${indexSetting.id}','indexSetting')|">
+															th:onclick="|return toeditPage('${indexSetting?.id}','indexSetting')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
 														 <!-- </shiro:hasPermission> 
-														  <shiro:hasPermission name="indexSetting:delete"> -->
+														  <shiro:hasPermission name="indexSetting?:delete"> -->
 														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{/indexSetting/}${indexSetting.id}','')|">
+															th:onclick="|return del('@{/school/indexSetting/}${indexSetting?.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
 														 <!--  </shiro:hasPermission> -->
@@ -172,16 +179,16 @@ canvas#canvas4 {
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/indexSettings?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/indexSetting?s?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/indexSettings?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/indexSetting?s?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/indexSettings?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/indexSetting?s?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>

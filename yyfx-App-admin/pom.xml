@@ -16,7 +16,7 @@
 		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
-			<artifactId>school-Web-api</artifactId>
+			<artifactId>school-Web-controller</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -26,7 +26,7 @@
 		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
-			<artifactId>yyfx-System-api</artifactId>
+			<artifactId>yyfx-System-controller</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

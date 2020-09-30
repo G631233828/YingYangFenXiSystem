@@ -164,6 +164,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			query.addCriteria(Criteria.where("isDelete").is(false));
 			query.addCriteria(Criteria.where("isDisable").is(false));
 			query.addCriteria(Criteria.where("_id").is(new ObjectId(id)));
+			
 		}
 
 		return this.findOneByQuery(query, News.class);
@@ -213,9 +214,10 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 		List<News> news = new ArrayList<News>();
 
 		for (IndexSetting index : indexs) {
-			list.add(new ObjectId(index.getWebMenu().getId()));
+			for(WebMenu menu: index.getWebMenu()) {
+				list.add(new ObjectId(menu.getId()));
+			}
 		}
-
 		List<News> getNews = null;
 		
 		for(ObjectId id:list) {

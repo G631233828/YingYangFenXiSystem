@@ -43,7 +43,7 @@ public class IndexSettingController {
 	private @Autowired SiteTemplateService siteTemplateService;
 
 	@GetMapping("indexSettings")
- @RequiresPermissions(value = "indexSettings:list")
+	@RequiresPermissions(value = "indexSettings:list")
 	@SystemControllerLog(description = "查询所有资源")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -87,16 +87,17 @@ public class IndexSettingController {
 
 		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, 0);
 		model.addAttribute("webMenus", webMenus);
-
+		
+		
 		IndexSetting indexSetting = this.indexSettingService.findOneById(id, IndexSetting.class);
 		model.addAttribute("indexSetting", indexSetting);
-
-		List<WebMenu> firstLevel = this.webMenuService.findWebMenu(indexSetting.getWebMenu().getParentId(), false,1);
+		model.addAttribute("parentId", indexSetting.getWebMenu().get(0).getParentId());
+		
+		List<WebMenu> firstLevel = this.webMenuService.findWebMenu(indexSetting.getWebMenu().get(0).getParentId(), false,1);
 		model.addAttribute("firstLevel", firstLevel);
 
 		// 获取当前所有的一级菜单根据indexSetting.firstLevel
-		List<WebMenu> secondLevel = this.webMenuService
-				.findWebMenuByFirstLevel(indexSetting.getWebMenu().getFirstLevel());
+		List<WebMenu> secondLevel = this.webMenuService.findWebMenuByFirstLevel(indexSetting.getWebMenu().get(0).getFirstLevel());
 		model.addAttribute("secondLevel", secondLevel);
 
 		return "school/indexSetting/add";
@@ -110,7 +111,7 @@ public class IndexSettingController {
 		log.info("删除" + id);
 		this.indexSettingService.delete(id);
 		log.info("删除" + id + "成功");
-		return "redirect:/admin/indexSettings";
+		return "redirect:/school/indexSettings";
 	}
 
 	@PostMapping("/indexSetting")

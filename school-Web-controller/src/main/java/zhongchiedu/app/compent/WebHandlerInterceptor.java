@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,18 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.Settings;
 import zhongchiedu.school.pojo.SiteTemplate;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.SettingsService;
 import zhongchiedu.school.service.SiteTemplateService;
 import zhongchiedu.school.service.WebMenuService;
-import zhongchiedu.system.pojo.Role;
-import zhongchiedu.system.pojo.SysRole;
-import zhongchiedu.system.pojo.SysUser;
-import zhongchiedu.system.pojo.User;
-import zhongchiedu.system.service.RoleService;
-import zhongchiedu.system.service.SysRoleService;
 
 /**
  * 前台拦截器， 可以添加黑名单
@@ -49,6 +48,9 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 	@Autowired
 	private WebMenuService webMenuService;
 	
+	@Autowired
+	private NewsService newsService;
+	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
@@ -67,7 +69,19 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 				 session.setAttribute(Contents.WEBMENU, webMenus);
 			}
 		}
-		  
+		
+		//热门新闻
+		List<News> news = (List<News>) session.getAttribute(Contents.REMEN);
+		
+		if(Common.isEmpty(news)||news.size()<=0) {
+			Query query = new Query();
+			 query.addCriteria(Criteria.where("isDelete").is(false));
+			 query.addCriteria(Criteria.where("isDisable").is(false));
+			 query.with(new Sort(new Order(Direction.DESC ,"views")));
+			 news = this.newsService.find(query, News.class);
+			 session.setAttribute(Contents.REMEN, news);
+		}
+		
 		Settings settings = this.settingsService.findOneByQuery(new Query(), Settings.class);
 		session.setAttribute(Contents.SETTINGS, settings);
 		

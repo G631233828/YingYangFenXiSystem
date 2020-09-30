@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -21,6 +22,7 @@ import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.IndexSettingService;
+import zhongchiedu.school.service.WebMenuService;
 
 /**
  * <p>
@@ -35,7 +37,14 @@ import zhongchiedu.school.service.IndexSettingService;
  */
 @Service
 @Slf4j
-public class IndexSettingServiceImpl extends GeneralServiceImpl<IndexSetting> implements IndexSettingService {@Override
+public class IndexSettingServiceImpl extends GeneralServiceImpl<IndexSetting> implements IndexSettingService {
+	
+	
+	@Autowired
+	private WebMenuService webMenuService;
+	
+	
+	
 	
 	
 	public Pagination<IndexSetting> findPagination(Integer pageNo, Integer pageSize) {
@@ -68,6 +77,11 @@ public class IndexSettingServiceImpl extends GeneralServiceImpl<IndexSetting> im
 	public void saveOrUpdate(IndexSetting indexSetting) {
 		
 		if(Common.isNotEmpty(indexSetting)) {
+			
+			List<WebMenu> webMenus = this.webMenuService.findWebMenuInIds(indexSetting.getMenuIds());
+			if(Common.isNotEmpty(webMenus)) {
+				indexSetting.setWebMenu(webMenus);
+			}
 		
 			if(Common.isNotEmpty(indexSetting.getId())) {
 				//update

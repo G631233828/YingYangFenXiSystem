@@ -39,6 +39,7 @@ public interface WebMenuService  extends GeneralService<WebMenu>{
 	
 	List<WebMenu> findWebMenuByFirstLevel(String id);
 	
+	List<WebMenu> findWebMenuInIds(String menuIds);
 	
 	
 }
