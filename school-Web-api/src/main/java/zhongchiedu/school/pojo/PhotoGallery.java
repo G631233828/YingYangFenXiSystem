@@ -33,7 +33,8 @@ public class PhotoGallery extends GeneralBean<PhotoGallery> {
 	@DBRef
 	private List<MultiMedia> imgs;//上传的图片
 	@DBRef
-	private List<MultiMedia> recommend;
+	private MultiMedia recommend;
+	private boolean showInIndex;//是否首页显示
 	
 	
 }

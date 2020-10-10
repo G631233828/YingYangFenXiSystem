@@ -82,7 +82,7 @@ public class MultiMediaServiceImpl  extends GeneralServiceImpl<MultiMedia> imple
 				Map<String,Object> map = this.fileOperateUtil.upload(m, uploadPath, m.getOriginalFilename());
 				String compName =  map.get(Contents.FILENAME).toString();
 				imageTool.compressPic(uploadPath,uploadPath,compName,"comp_"+compName,640,320,true);
-				multi.setCompressPicName(compName);
+				multi.setCompressPicName("comp_"+compName);
 				multi.setOriginalName(m.getOriginalFilename());
 				multi.setGenerateName(map.get(Contents.FILENAME).toString());
 				multi.setSavePath(path);

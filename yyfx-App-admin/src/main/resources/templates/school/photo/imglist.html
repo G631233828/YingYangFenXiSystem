@@ -108,9 +108,9 @@ canvas#canvas4 {
 										<i class="fa fa-trash-o"> </i>删除
 									</button>
 									<!-- </shiro:hasPermission> -->
-									<button class="btn btn-primary btn-sm"
+									<button class="btn btn-primary btn-sm" style="background-color:#FAAB01; "
 										th:onclick="|return toRecommend('${photo?.id}')|">
-										<i class="fa fa-edit"> </i>设置推荐
+										<i class="fa fa-edit"> </i>设置封面
 									</button>
 
 
@@ -165,6 +165,10 @@ canvas#canvas4 {
 													</div>
 
 													<div class="pull-right">
+														<th:block th:each="rec:${photo?.recommend}" th:if="${rec.id == photos.id}">
+														<i class="fa fa-star" style="color: #FAAB01;">封面</i>
+														</th:block>
+														
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{/school/photo/}${photo?.id}/${photos?.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
@@ -319,11 +323,13 @@ canvas#canvas4 {
 		th:src="@{/js/school/photo/photo.js}"></script>
 	<script th:src="@{/plugs/bootstrap-fileinput/js/fileinput.js}"
 		type="text/javascript"></script>
+	<script th:src="@{/plugs/bootstrap-fileinput/js/fileinput_locale_zh.js}"
+		type="text/javascript"></script>
 
 	<script type="text/javascript" th:inline="javascript">
 		$("#file").fileinput({
 			language : 'zh',
-			//uploadUrl : getRootPath() + '/school/photo/upload',
+			uploadUrl :'#',
 			overwriteInitial : false, //不覆盖已经显示的图片
 			//uploadAsync: true,              //异步上传
 			dropZoneTitle : "上传图片！",
@@ -358,20 +364,20 @@ canvas#canvas4 {
 				});
 			}
 
-			else if (a > 3) {
+			else if (a > 1) {
 				swal({
 					type : "warning",
 					title : "",
-					text : "一个相册最多可以推荐3张图片做封面!!",
+					text : "一个相册最多可以设置1张图片做封面!!",
 				});
 			} else {
-				var delids = $("input[name='ids']:checked");
-				var str = "";
+				var delids = $("input[name='ids']:checked").val();
+		/* 		var str = "";
 				$(delids).each(function() {
 					str += this.value + ",";
-				});
+				}); */
 
-				window.location.href =  getRootPath() + "/school/photo/toRecommend/" + o+"/"+str;
+				window.location.href =  getRootPath() + "/school/photo/toRecommend/" + o+"?imgids="+delids;
 			}
 		}
 	</script>

@@ -88,18 +88,18 @@
 				<div class="pagination">
 					<a
 						th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.upPage}"
-						data-ci-pagination-page="2" rel="prev">上一页</a>
+						th:data-ci-pagination-page="${pageList?.upPage}" rel="prev">上一页</a>
 					<th:block th:each="page:${pageList?.navigatepageNums}">
 						<a
 							th:class="${page  == pageList?.pageNo}?'current':'site-list-page-nums'"
 							th:href="${page eq pageList?.pageNo}?'javascript:void(0)':@{/web/list/}+${webMenu.id}+'?pageNo='+${page}"
-							data-ci-pagination-page="${page}" rel="start">[[${page}]]</a>
+							th:data-ci-pagination-page="${page}" rel="start">[[${page}]]</a>
 					</th:block>
 					<a
 						th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.nextPage}"
-						data-ci-pagination-page="4" rel="next">下一页</a><a
+						th:data-ci-pagination-page="${pageList?.nextPage}" rel="next">下一页</a><a
 						th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.totalPage}"
-						data-ci-pagination-page="16">末页</a>
+						th:data-ci-pagination-page="${pageList?.totalPage}">末页</a>
 				</div>
 			</div>
 

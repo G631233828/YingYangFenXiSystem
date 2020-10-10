@@ -65,6 +65,8 @@ function toeditActivity() {
 					if(data.status == 200){
 						$("#name").val(data.data.name);
 						$("#author").val(data.data.author);
+						var showInindex = data.data.showInIndex;
+						$("select option[value='"+showInindex+"']").attr("selected","selected"); 
 						$("#setid").html('<input type="hidden" id ="id" name="id" value='+data.data.id+ '>')
 						$("#createActivity").modal('show');
 					}else{

@@ -27,7 +27,9 @@ public interface PhotoGalleryService extends GeneralService<PhotoGallery> {
 	
 	void photoGalleryImgUpload(String id,MultipartFile[] file);
 	
-	List<MultiMedia> findImgs(Integer num);
+	List<PhotoGallery> findImgs(Integer num);
+	
+	void toRecommend(String id,String imgids);
 	
 	
 	

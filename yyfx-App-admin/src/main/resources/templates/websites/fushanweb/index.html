@@ -71,7 +71,7 @@
 						<b class="left">学校公告</b> <a class="right"
 							th:each="news:${newslist}"
 							th:if="${news?.webMenu?.name eq '学校公告'}"
-							th:href="|@{/web/list/}${news?.webMenu?.id}|">MORE</a>
+							th:href="|@{/web/list/}${news?.webMenu?.id}|">更多内容</a>
 					</div>
 					<marquee direction="up" behavior="scroll" onmouseover="this.stop()"
 						onmouseout="this.start()" style="height: 275px">
@@ -91,7 +91,7 @@
 				<div class="notice left">
 					<div class="notice_title">
 						<b class="left">校园新闻</b>
-						<!-- <span class="right">MORE</span> -->
+						<!-- <span class="right">更多内容</span> -->
 					</div>
 					<!--图片轮播-->
 					<div class="info_top_banner left">
@@ -203,7 +203,7 @@
 							<b class="left">教师发展</b> <a class="right"
 								th:each="news:${newslist}"
 								th:if="${news?.supMenu?.name eq '教师发展'}"
-								th:href="|@{/web/list/}${news?.webMenu?.id}|">MORE</a>
+								th:href="|@{/web/list/}${news?.webMenu?.id}|">更多内容</a>
 
 						</div>
 						<div class="jsfz">
@@ -227,71 +227,31 @@
 				<div class="left" style="width: 439px">
 					<!-- 班级圈 -->
 					<div class="notice_title">
-						<b class="left">班级圈</b> <span class="right"
-							onclick="window.open('/portal/classcircle')">MORE</span>
+						<b class="left">证大之星</b> <span class="right"
+							onclick="window.open('/portal/classcircle')">更多内容</span>
 					</div>
 					<div class="bjq">
 						<div class="study-res">
-							<dl>
-								<dt class="teacher-item hover"
-									onclick="window.open('/portal/classcircle/index')">
-									<div style="overflow: hidden;">
-										<div class="teacher-header">
-											<span class="tx_default_12"><img
-												onerror="this.style='display:none'"
-												src="images/f_famale.png"></span>
-										</div>
-										<div class="teacher-info">
-											<p style="line-height: 34px; width: 272px; font-size: 18px"
-												class="left"></p>
-											<p style="line-height: 34px;" class="right">2020-09-10</p>
-										</div>
-									</div>
-									<p class="teacher-detail">疫情结束了，大家要感谢为疫情做出贡献的人！--王珩宇</p>
-								</dt>
-								<dt class="teacher-item hover"
-									onclick="window.open('/portal/classcircle/index')">
-									<div style="overflow: hidden;">
-										<div class="teacher-header">
-											<span class="tx_default_12"><img
-												onerror="this.style='display:none'"
-												src="images/f_famale.png"></span>
-										</div>
-										<div class="teacher-info">
-											<p style="line-height: 34px; width: 272px; font-size: 18px"
-												class="left"></p>
-											<p style="line-height: 34px;" class="right">2020-06-08</p>
-										</div>
-									</div>
-									<p class="teacher-detail">少先队入队仪式二（4）班今天是2020年6月8日，一个特别激动人心的日子。今天我们二（4）班全体学生</p>
-								</dt>
-								<dt class="teacher-item hover"
-									onclick="window.open('/portal/classcircle/index')">
-									<div style="overflow: hidden;">
-										<div class="teacher-header">
-											<span class="tx_default_12"><img
-												onerror="this.style='display:none'"
-												src="images/f_famale.png"></span>
-										</div>
-										<div class="teacher-info">
-											<p style="line-height: 34px; width: 272px; font-size: 18px"
-												class="left"></p>
-											<p style="line-height: 34px;" class="right">2020-02-07</p>
-										</div>
-									</div>
-									<p class="teacher-detail">多彩的秋天杨泽恩二（6）班一个秋高气爽的早晨，一片金灿灿的叶子从树上飘落。大雁排着队向南飞去。小熊拿着扫把走出家门，看着那满园秋色，不禁吟诵到：“自古逢秋悲</p>
-								</dt>
-							</dl>
+							<th:block th:each="news:${newslist}"
+							th:if="${news?.webMenu?.name eq '校园新闻'}">
+							<div class="newslist">
+								<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
+									class="jt"> <a th:href="|@{/web/news/}${news.id}|"
+									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
+									<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+								</a>
+							</div>
+						</th:block>
 						</div>
 
 					</div>
-					<div>
-						<!-- 校长信箱 -->
+					<!-- <div>
+						校长信箱
 						<div class="xzxx" onclick="window.open('/portal/mailbox')"></div>
-						<!-- 福山邮局 -->
+						福山邮局
 						<div class="fsyj"
 							onclick="window.open('http://fushanedu.cn/fsyj/fsyj.aspx')"></div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 
@@ -304,66 +264,39 @@
 			<div class="schoolAlbum">
 				<div class="notice_title">
 					<b class="left">精彩瞬间</b> <span class="right"
-						onclick="window.open('/portal/album')">MORE</span>
+						th:onclick="|window.open('@{/web/listImgs}')|">更多内容</span>
 				</div>
 				<div class="tc">
 					<dl id="roll">
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/de7a59a5319a4d2388342f51ff311cd4.jpeg" class="hover"
-								onclick="window.open('album/detail/8853')">
-							</span>
-							<p class="tc_title">2020暑假雏鹰假日小队活动掠影</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/5a81cda9864a44fd9789d3f9b9ead706.jpeg" class="hover"
-								onclick="window.open('album/detail/8852')">
-							</span>
-							<p class="tc_title">2020暑假劳动教育掠影</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/c4d1aaa95de64ea1a332fa4c9b975175.jpeg" class="hover"
-								onclick="window.open('album/detail/8720')">
-							</span>
-							<p class="tc_title">2020.6.15 毕业典礼</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/80e53d9e09a14960ae81715ca926ea5b.jpeg" class="hover"
-								onclick="window.open('album/detail/8687')">
-							</span>
-							<p class="tc_title">2020.6.8 二年级入队仪式</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/4b9fc690965545c99ccc1c9b3d8e2d6b.jpeg" class="hover"
-								onclick="window.open('album/detail/7671')">
-							</span>
-							<p class="tc_title">2019.12.17 沪语推广讲座</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/315cb5c0b8104a12ad4eb08565dd8175.jpeg" class="hover"
-								onclick="window.open('album/detail/7653')">
-							</span>
-							<p class="tc_title">2019.12.16 儿童团入团仪式</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/af8ffec6bd8f459cab8ac2406aafbba6.jpeg" class="hover"
-								onclick="window.open('album/detail/7621')">
-							</span>
-							<p class="tc_title">2019.11.27 家校联合会会议</p>
-						</dd>
-						<dd class="left">
-							<span class="img_default_tc"> <img
-								src="images/2111caeffb1042d5a73b6a53a3bc1181.jpeg" class="hover"
-								onclick="window.open('album/detail/7615')">
-							</span>
-							<p class="tc_title">2019.11.25 福山证大大讲堂</p>
-						</dd>
+						<th:block th:each="img:${imgs}">
+							<dd class="left">
+								<span class="img_default_tc">
+								 <th:block
+										th:if="${img?.recommend != null}">
+										<img
+											th:src="|@{/}${img?.recommend?.savePath}${img?.recommend?.compressPicName}|"
+											class="hover"
+											th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+									</th:block> 
+									<th:block th:if="${img?.recommend == null}">
+											
+										<th:block th:if="${img?.imgs == null}">
+											<img th:src="@{/assets/websites/fushanweb/images/nopic.jpg}"
+												class="hover"
+												th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+										</th:block>
+										<th:block th:if="${img?.imgs !=null}">
+											<img
+												th:src="|@{/}${img?.imgs[0]?.savePath}${img?.imgs[0]?.compressPicName}|"
+												class="hover"
+												th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+										</th:block>
+									</th:block>
+								</span>
+								<p class="tc_title">[[${img?.name}]]</p>
+							</dd>
+						</th:block>
+
 					</dl>
 				</div>
 			</div>

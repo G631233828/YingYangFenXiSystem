@@ -98,7 +98,6 @@ public class PhotoGalleryController {
 	}
 	
 	
-	@DeleteMapping("/photo/{id}/{imgids}")
 //	@RequiresPermissions(value = "news:delete")
 //	@SystemControllerLog(description = "删除")
 	public String delete(@PathVariable String id,@PathVariable String imgids) {
@@ -121,12 +120,14 @@ public class PhotoGalleryController {
 	//3.需要添加推荐图片，此处是队友的接口
 	//4.首页中需要将推荐图片显示出来
 	//5.添加后台登陆需要验证码
-	@RequestMapping(value = "/photo/toRecommend/{id}/{imgids}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	public String toRecommend(@RequestParam(value = "id", defaultValue = "") String id, @RequestParam(value = "imgids", defaultValue = "") String imgids) {
+	@RequestMapping(value = "/photo/toRecommend/{id}")
+	public String toRecommend(@PathVariable(value = "id") String id, @RequestParam(value = "imgids", defaultValue = "") String imgids) {
 
 		System.out.println(id);
+		System.out.println(imgids);
+		this.photoGalleryService.toRecommend(id, imgids);
 		
-		return null;
+		 return "redirect:/school/photos/"+id;
 		//return this.photoGalleryService.ajaxFindPhotoGalleryById(id);
 	}
 	

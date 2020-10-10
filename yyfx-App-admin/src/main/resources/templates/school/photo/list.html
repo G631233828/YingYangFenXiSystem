@@ -73,7 +73,7 @@ canvas#canvas4 {
 										<i class="fa fa-trash-o"> </i>删除
 									</button>
 									<!-- </shiro:hasPermission> -->
-
+													
 								</div>
 
 								<div class="titleClose">
@@ -116,7 +116,7 @@ canvas#canvas4 {
 														</a>
 													</div>
 													<div class="video-text" style="margin-top:-20px">
-														<p>[[${#strings.abbreviate(photo?.name,30)}]]</p>
+														<p><i class="fa fa-star" th:if="${photo?.showInIndex}" style="color: #FAAB01;"></i>[[${#strings.abbreviate(photo?.name,30)}]]</p>
 													</div>
 
 
@@ -219,6 +219,18 @@ canvas#canvas4 {
 												<div class="col-lg-6">
 													<input class="form-control" id="author"
 														placeholder="请输入创建人" name="author" required="required">
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-lg-2 control-label">显示到首页：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="showInIndex" id="showInIndex" class="form-control" required>
+															<option value="false">否</option>
+															<option value="true">是</option>
+														</select>
+													</div>
 												</div>
 											</div>
 
