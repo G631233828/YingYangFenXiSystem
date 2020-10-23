@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import zhongchiedu.app.compent.LoginHandlerInterceptor;
-import zhongchiedu.app.compent.WebHandlerInterceptor;
 
 @Configuration
 public class MVCConfig extends WebMvcConfigurerAdapter {
@@ -34,6 +33,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	private String ueditor;
 	@Value("${upload.ueditordir}")
 	private String ueditordir;
+	
 	
 	 @Override
 	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -72,12 +72,16 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 		return new LoginHandlerInterceptor();
 	}
 	
-	@Bean
-	public WebHandlerInterceptor webHandlerInterceptor() {
-		return new WebHandlerInterceptor();
-	}
+//	@Bean
+//	public WebHandlerInterceptor webHandlerInterceptor() {
+//		return new WebHandlerInterceptor();
+//	}
 	
-	
+//	@Bean
+//	public ErrorIpHandlerInterceptor errorIpHandlerInterceptor() {
+//		return new ErrorIpHandlerInterceptor();
+//	}
+//	
 	/**
 	 * shiro 界面整合 thymeleaf
 	 * @return
@@ -98,7 +102,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 			public void addViewControllers(ViewControllerRegistry registry) {
 				registry.addViewController("/login").setViewName("index");
 				registry.addViewController("/toindex").setViewName("index");
-				registry.addViewController("/").setViewName("/web/index");
+//				registry.addViewController("/").setViewName("/web/index");
 //				registry.addViewController("/").setViewName("/website/index");
 			}
 
@@ -108,8 +112,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
 				//registry.addInterceptor(sessionInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login");
-				registry.addInterceptor(loginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login");
-				registry.addInterceptor(webHandlerInterceptor()).addPathPatterns("/web/**").excludePathPatterns("/assets/**");
+				//registry.addInterceptor(errorIpHandlerInterceptor()).addPathPatterns("/**");
+				registry.addInterceptor(loginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login","/web/**","/assets/**","/upload/**","/error/**");
+				//registry.addInterceptor(webHandlerInterceptor()).addPathPatterns("/web/**").excludePathPatterns("/assets/**");
 			}
 			
 		};

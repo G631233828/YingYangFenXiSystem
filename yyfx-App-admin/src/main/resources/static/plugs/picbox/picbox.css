@@ -10,7 +10,7 @@ body {
 }
 a {
 	font-weight: bold;
-	color: #f00;
+	/* color: #f00; 系统菜单导航的样式冲突 */
 }
 #pbOverlay, #pbImage, #pbBottom, #pbCloseBtn {
 	position: fixed;

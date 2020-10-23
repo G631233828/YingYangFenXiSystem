@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class XssFilter implements Filter {
 
     //是否过滤富文本内容
-    private static boolean IS_INCLUDE_RICH_TEXT = true;
+    private static boolean IS_INCLUDE_RICH_TEXT = false;
 
     public List<String> excludes = new ArrayList<>();
 
@@ -32,6 +32,8 @@ public class XssFilter implements Filter {
             return;
         }
         XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request, IS_INCLUDE_RICH_TEXT);
+       
+        
         filterChain.doFilter(xssRequest, response);
     }
 

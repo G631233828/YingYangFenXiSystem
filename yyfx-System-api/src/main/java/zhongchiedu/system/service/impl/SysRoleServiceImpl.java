@@ -198,6 +198,8 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 			if (Common.isNotEmpty(sysRole.getId())) {
 				// update
 				SysRole ed = this.findOneById(sysRole.getId(), SysRole.class);
+				sysRole.setSysresource(ed.getSysresource());
+				sysRole.setSysMenuAuthority(ed.getSysMenuAuthority());
 				BeanUtils.copyProperties(sysRole, ed);
 				this.save(sysRole);
 				log.info("角色修改成功{}", sysRole.getId());
@@ -441,6 +443,8 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 					}
 					sysRole.setSysMenuAuthority(newRoleAuth);
 					this.save(sysRole);
+					//更新角色版本
+					uploadRoleVersion(sysRole.getId());
 				}
 				
 				

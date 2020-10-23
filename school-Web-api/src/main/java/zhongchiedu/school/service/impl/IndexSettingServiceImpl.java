@@ -23,6 +23,7 @@ import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.IndexSettingService;
 import zhongchiedu.school.service.WebMenuService;
+import zhongchiedu.system.log.annotation.SystemServiceLog;
 
 /**
  * <p>
@@ -42,7 +43,6 @@ public class IndexSettingServiceImpl extends GeneralServiceImpl<IndexSetting> im
 	
 	@Autowired
 	private WebMenuService webMenuService;
-	
 	
 	
 	

@@ -71,7 +71,7 @@
         }
 
     </style>
-    <title>Error</title>
+    <title>您未被授权！</title>
 </head>
 <body>
 
@@ -79,15 +79,15 @@
     403
 </p>
 
-<p class="not-found">Not<br/>Permission</p>
+<p class="not-found">您<br/>未被授权</p>
 
 <div class="clear"></div>
 <div class="content">
-   You do not have permission to visit
+   你没有权限来访问此页面，如有疑问请联系管理员！
     <br>
-   <a th:href="@{/toindex}">Go Home</a> or <br>
+    <br>
+   <a th:href="@{/tologin}">访问首页</a> <br>
 
-    <form>Search<br><input autofocus type="text" name="search"/></form>
 </div>
 </body>
 </html>

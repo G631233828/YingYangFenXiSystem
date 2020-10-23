@@ -53,26 +53,26 @@ canvas#canvas4 {
 							<div class="title-alt">
 								<div>
 
-									<!-- <shiro:hasPermission name="indexSetting:add"> -->
+								<shiro:hasPermission name="photo:add">
 									<button class="btn btn-default btn-sm"
 										onclick="return createActivity()">
 										<i class="glyphicon glyphicon-plus"> </i> 新建相册
 									</button>
-									<!-- 	</shiro:hasPermission>
+									</shiro:hasPermission>
 
-									<shiro:hasPermission name="indexSetting:edit"> -->
+									<shiro:hasPermission name="photo:edit">
 									<button class="btn btn-primary btn-sm"
 										onclick="return toeditActivity()">
 										<i class="fa fa-edit"> </i>修改相册
 									</button>
-									<!-- </shiro:hasPermission>
+									</shiro:hasPermission>
 
-									<shiro:hasPermission name="indexSetting:delete"> -->
+									<shiro:hasPermission name="photo:delete">
 									<button class="btn btn-danger btn-sm"
 										th:onclick="|return del('','@{photo}')|">
 										<i class="fa fa-trash-o"> </i>删除
 									</button>
-									<!-- </shiro:hasPermission> -->
+									 </shiro:hasPermission> 
 													
 								</div>
 

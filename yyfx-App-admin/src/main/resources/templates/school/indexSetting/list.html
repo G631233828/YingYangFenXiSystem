@@ -54,26 +54,26 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-									<!-- <shiro:hasPermission name="indexSetting:add"> -->
+									 <shiro:hasPermission name="indexSettings:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/school/indexSetting}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission>
+									</shiro:hasPermission>
 
-									<shiro:hasPermission name="indexSetting:edit"> -->
+									<shiro:hasPermission name="indexSettings:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','indexSetting')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-									<!-- </shiro:hasPermission>
+									 </shiro:hasPermission>
 
-									<shiro:hasPermission name="indexSetting:delete"> -->
+									<shiro:hasPermission name="indexSettings:delete"> 
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{indexSetting}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
-									<!-- </shiro:hasPermission> -->
+									</shiro:hasPermission> 
 
 								</div>
 
@@ -141,18 +141,18 @@ canvas#canvas4 {
 														th:utext="${indexSetting?.isDisable eq true }?|<button type='button' onclick=toDisable('${indexSetting?.id}','school/indexSetting') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${indexSetting?.id}','school/indexSetting') class='btn btn-success'>启用</button>|"></td>
 
 													<td class="numeric">
-														<!--  <shiro:hasPermission name="indexSetting?:edit">  -->
+														<shiro:hasPermission name="indexSettings:edit">  
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${indexSetting?.id}','indexSetting')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-														 <!-- </shiro:hasPermission> 
-														  <shiro:hasPermission name="indexSetting?:delete"> -->
+														 </shiro:hasPermission> 
+														  <shiro:hasPermission name="indexSettings:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{/school/indexSetting/}${indexSetting?.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-														 <!--  </shiro:hasPermission> -->
+														 </shiro:hasPermission>
 													</td>
 												</tr>
 											</th:block>

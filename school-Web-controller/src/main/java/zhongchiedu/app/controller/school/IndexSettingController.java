@@ -44,7 +44,7 @@ public class IndexSettingController {
 
 	@GetMapping("indexSettings")
 	@RequiresPermissions(value = "indexSettings:list")
-	@SystemControllerLog(description = "查询所有资源")
+	@SystemControllerLog(description = "查询所有首页配置")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
 		// 分页查询数据
@@ -59,7 +59,7 @@ public class IndexSettingController {
 	 * 跳转到添加页面
 	 */
 	@GetMapping("/indexSetting")
-	// @RequiresPermissions(value = "sysresource:add")
+	 @RequiresPermissions(value = "indexSettings:add")
 	public String addIndexSettingPage(Model model) {
 
 		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, 0);
@@ -82,7 +82,8 @@ public class IndexSettingController {
 	 * @return
 	 */
 	@GetMapping("/indexSetting/{id}")
-	// @RequiresPermissions(value = "sysresource:edit")
+	@RequiresPermissions(value = "indexSettings:edit")
+	@SystemControllerLog(description = "编辑首页配置")
 	public String toeditPage(@PathVariable String id, Model model) {
 
 		List<WebMenu> webMenus = this.webMenuService.findWebMenu("0",false, 0);
@@ -105,8 +106,8 @@ public class IndexSettingController {
 	}
 
 	@DeleteMapping("/indexSetting/{id}")
-	// @RequiresPermissions(value = "sysresource:delete")
-	@SystemControllerLog(description = "删除")
+	@RequiresPermissions(value = "indexSettings:delete")
+	@SystemControllerLog(description = "删除首页配置")
 	public String delete(@PathVariable String id) {
 		log.info("删除" + id);
 		this.indexSettingService.delete(id);
@@ -115,16 +116,16 @@ public class IndexSettingController {
 	}
 
 	@PostMapping("/indexSetting")
-	// @RequiresPermissions(value = "sysresource:add")
-	@SystemControllerLog(description = "添加资源")
+	@RequiresPermissions(value = "indexSettings:add")
+	@SystemControllerLog(description = "添加首页配置")
 	public String addIndexSetting(@ModelAttribute("indexSetting") IndexSetting indexSetting) {
 		this.indexSettingService.saveOrUpdate(indexSetting);
 		return "redirect:/school/indexSettings";
 	}
 
 	@PutMapping("/indexSetting")
-	@RequiresPermissions(value = "sysresource:edit")
-	@SystemControllerLog(description = "修改资源")
+	@RequiresPermissions(value = "indexSettings:edit")
+	@SystemControllerLog(description = "修改首页配置")
 	public String editIndexSetting(@ModelAttribute("indexSetting") IndexSetting indexSetting) {
 		this.indexSettingService.saveOrUpdate(indexSetting);
 		return "redirect:/school/indexSettings";

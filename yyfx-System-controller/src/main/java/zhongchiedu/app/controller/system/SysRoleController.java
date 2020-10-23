@@ -59,7 +59,6 @@ public class SysRoleController {
 	@SystemControllerLog(description = "查询所有角色")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
-		
 		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 		// 分页查询数据
 		log.info("查询所有角色");
@@ -109,6 +108,7 @@ public class SysRoleController {
 	 * @return
 	 */
 	@GetMapping("/sysRole")
+	@RequiresPermissions(value = "sysrole:add")
 	public String addSysRolePage() {
 		return "system/sysRole/add";
 	}

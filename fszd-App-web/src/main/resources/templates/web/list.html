@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1, user-scalable=no"
+	name="viewport">
+<title>[[${session.settings?.title}]]</title>
+  <link rel="shortcut icon" th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|"  type="image/x-icon" />
+<meta name="keywords">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/reset.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/index.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/website/css/page.css}">
+</head>
+
+<body>
+	<!-- 头部框架 -->
+	<div class="headerPage">
+		<!-- BANNER框架 -->
+		<div class="bannerPage">
+			<img alt
+				th:src="|@{/}${session.settings?.banana?.savePath}${session.settings?.banana?.generateName}|">
+
+		</div>
+		<div class="bannerPageMobile">
+			<img alt
+				th:src="|@{/}${session.settings?.banana?.savePath}${session.settings?.banana?.generateName}|">
+
+		</div>
+		<!-- nav和logo框架 -->
+		<div th:replace="web/public/public::top"></div>
+
+
+	</div>
+
+
+	<!-- 主体内容框架 -->
+	<div class="subjectContent">
+		<div class="subjectContentContainer">
+
+
+			<div th:replace="web/public/public::subjectContentContainerPosition"></div>
+
+			<!--      <div class="subjectContentContainerPosition">
+                <span>您的位置：</span>
+                <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/index.html">首页 &gt; </a>
+                <a href="/api/po/sites/a59f8895-297e-49ce-b07c-68955251229a/41ab413e-9f6a-4d11-9887-7c1cc1b98e61/list.html">支部建设 &gt; </a>
+                <a class="address">党建动态</a>
+            </div>
+             -->
+
+			<div class="subjectContentContainerContent">
+				<div th:replace="web/public/public::classification"></div>
+
+
+				<!-- <div class="classification">
+                    <ul>
+                        <li class="classificationLiCurrent">
+                            <a href="#" class="classificationACurrent">党建动态</a>
+                        </li>
+                        <li>
+                            <a href="#">廉政建设</a>
+                        </li>
+
+                    </ul>
+                </div> -->
+
+
+
+				<div class="list site-list-data">
+					<ul class="site-list-news">
+
+
+						<th:block th:each="news:${pageList?.datas}">
+
+							<li><a th:href="|@{/web/news/}${news.id}|" target="_blank"><span
+									style="">[[${news.title}]]</span>
+									<p>[[${#dates.format(news.createTime,'yyyy-MM-dd
+										HH:mm:ss')}]]</p></a></li>
+
+						</th:block>
+					</ul>
+
+
+
+					<div class="page site-list-page">
+						<dl>
+
+							<dd
+								th:class="${pageList?.pageNo } eq 1 ? 'site-list-page-prepage disabled':'site-list-page-prepage'">
+								<a
+									th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.upPage}">上一页</a>
+							</dd>
+
+							<dd th:each="page:${pageList?.navigatepageNums}"
+								th:class="${page  == pageList?.pageNo}?'site-list-page-nums curr':'site-list-page-nums'">
+								<a
+									th:href="${page eq pageList?.pageNo}?'javascript:void(0)':@{/web/list/}+${webMenu.id}+'?pageNo='+${page}">[[${page}]]</a>
+							</dd>
+							<dd
+								th:class="${pageList?.pageNo eq pageList?.totalPage}?'site-list-page-nextpage disabled':'site-list-page-nextpage'">
+								<a
+									th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.nextPage}">下一页</a>
+							</dd>
+
+						</dl>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="subjectContentMobile">
+		<div class="subjectContentContainerMobile">
+			<div class="subjectContentContainerContentMobile">
+				<div th:replace="web/public/public::classificationMobile"></div>
+
+				<!--  <div class="classificationMobile">
+                    <ul>
+                        <li class="classificationLiCurrentMobile">
+                            <a href="#">党建动态</a>
+                        </li>
+                        <li>
+                            <a href="#">廉政建设</a>
+                        </li>
+
+                    </ul>
+                </div> -->
+				<div class="listMobile site-list-data">
+					<ul class="site-list-news">
+					
+					<th:block th:each="news:${pageList?.datas}">
+
+							<li><a th:href="|@{/web/news/}${news.id}|" target="_blank"><span
+									style="">[[${news.title}]]</span>
+									<p>[[${#dates.format(news.createTime,'yyyy-MM-dd
+										HH:mm:ss')}]]</p></a></li>
+
+						</th:block>
+
+					</ul>
+
+
+
+
+
+					<div class="pageMobile site-list-page">
+
+
+						<dl>
+
+							<dd
+								th:class="${pageList?.pageNo } eq 1 ? 'site-list-page-prepage disabled':'site-list-page-prepage'">
+								<a
+									th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.upPage}">上一页</a>
+							</dd>
+
+							<dd th:each="page:${pageList?.navigatepageNums}"
+								th:class="${page  == pageList?.pageNo}?'site-list-page-nums curr':'site-list-page-nums'">
+								<a
+									th:href="${page eq pageList?.pageNo}?'javascript:void(0)':@{/web/list/}+${webMenu.id}+'?pageNo='+${page}">[[${page}]]</a>
+							</dd>
+							<dd
+								th:class="${pageList?.pageNo eq pageList?.totalPage}?'site-list-page-nextpage disabled':'site-list-page-nextpage'">
+								<a
+									th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/list/}+${webMenu.id}+'?pageNo='+${pageList?.nextPage}">下一页</a>
+							</dd>
+
+						</dl>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 页脚底部框架 -->
+	<div th:replace="web/public/public::footer"></div>
+
+
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/website/js/site.js}"></script>
+	<script type="text/javascript"
+		data-site-id="a59f8895-297e-49ce-b07c-68955251229a"
+		data-category-id="95e6b96e-aedc-4a74-9c20-c65ecfdab56f"
+		th:src="@{/assets/website/js/site-list.js}"></script>
+
+
+</body>
+
+</html>

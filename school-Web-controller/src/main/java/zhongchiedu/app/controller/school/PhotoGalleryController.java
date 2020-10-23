@@ -37,7 +37,7 @@ public class PhotoGalleryController {
 	
 	
 	@GetMapping("photo")
-	//@RequiresPermissions(value = "webmenu:list")
+	@RequiresPermissions(value = "photo:list")
 	@SystemControllerLog(description = "查询所有相册")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -52,7 +52,7 @@ public class PhotoGalleryController {
 
 	
 	@PostMapping("/photo")
-//	@RequiresPermissions(value = "news:add")
+	@RequiresPermissions(value = "photo:add")
 	@SystemControllerLog(description = "添加相冊")
 	public String addPhotoGallery(HttpServletRequest request, @ModelAttribute("photoGallery") PhotoGallery photoGallery) {
 		this.photoGalleryService.SaveOrUpdate(photoGallery);
@@ -61,7 +61,7 @@ public class PhotoGalleryController {
 	
 	
 	@GetMapping("/photos/{id}")
-	//@RequiresPermissions(value = "news:edit")
+	@RequiresPermissions(value = "photo:edit")
 	@SystemControllerLog(description = "查看所有相片")
 	public String toeditNews(Model model,@PathVariable (name = "id")String id) {
 		
@@ -86,26 +86,21 @@ public class PhotoGalleryController {
 	
 	
 	@PostMapping("/photo/upload")
-//	@RequiresPermissions(value = "news:add")
-//	@SystemControllerLog(description = "添加文章")
+	@RequiresPermissions(value = "photo:upload")
+	@SystemControllerLog(description = "上传图片")
 	public String uploadImg(HttpServletRequest request,
 			@RequestParam("file")MultipartFile[] file,String id
 			) {
-		
 		 this.photoGalleryService.photoGalleryImgUpload(id, file);
-		
 		 return "redirect:/school/photos/"+id;
 	}
 	
 	
-//	@RequiresPermissions(value = "news:delete")
-//	@SystemControllerLog(description = "删除")
+	@RequiresPermissions(value = "photo:delete")
+	@SystemControllerLog(description = "删除相册")
 	public String delete(@PathVariable String id,@PathVariable String imgids) {
-		
 		this.photoGalleryService.delete(id, imgids);
-		
 		 return "redirect:/school/photos/"+id;
-		//return "redirect:/school/findNews?webMenuId="+news.getWebMenu().getId();
 	}
 	
 	
@@ -113,22 +108,13 @@ public class PhotoGalleryController {
 	
 	
 
-	
-	//TODO
-	//1.后台上传图片已经完成
-	//2.需要优化提示，优化代码
-	//3.需要添加推荐图片，此处是队友的接口
-	//4.首页中需要将推荐图片显示出来
-	//5.添加后台登陆需要验证码
-	@RequestMapping(value = "/photo/toRecommend/{id}")
-	public String toRecommend(@PathVariable(value = "id") String id, @RequestParam(value = "imgids", defaultValue = "") String imgids) {
 
-		System.out.println(id);
-		System.out.println(imgids);
+	@RequestMapping(value = "/photo/toRecommend/{id}")
+	@RequiresPermissions(value = "photo:edit")
+	@SystemControllerLog(description = "设置推荐")
+	public String toRecommend(@PathVariable(value = "id") String id, @RequestParam(value = "imgids", defaultValue = "") String imgids) {
 		this.photoGalleryService.toRecommend(id, imgids);
-		
 		 return "redirect:/school/photos/"+id;
-		//return this.photoGalleryService.ajaxFindPhotoGalleryById(id);
 	}
 	
 	

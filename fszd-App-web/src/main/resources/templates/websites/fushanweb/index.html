@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>[[${session.settings?.title}]]</title>
+<meta name="renderer" content="webkit">
+<meta name="force-rendering" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" th:if="${session.settings?.icon !=null}"
+	th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|"
+	type="image/x-icon" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/reset.css}">
+<link th:href="@{/assets/websites/fushanweb/css/index.css}"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/floatad.css}">
+<link th:href="@{/assets/websites/fushanweb/css/flexslider.css}"
+	rel="stylesheet">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/ddsmoothmenu.css}">
+<!-- <script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/jquery.min.js}"></script> -->
+<script th:src="@{/assets/websites/fushanweb/js/pop-up.js}"
+	type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/assets/websites/fushanweb/js/jsencrypt.min.js}"
+	type="text/javascript" charset="utf-8"></script>
+</head>
+<style>
+.flexslider .slides a img {
+	width: 100%;
+	/*object-fit: fill;
+		    object-fit: contain;
+		    object-fit: scale-down;*/
+}
+</style>
+
+<body>
+	<!-- 上海福山证大外国语小学 -->
+	<div class="wrap">
+		<!--菜单栏-->
+		<div th:replace="websites/fushanweb/public/public::top"></div>
+
+		<div id="banner_tabs" class="flexslider"
+			style="width: 1200px; margin: 0 auto; height: 340px;">
+			<ul class="slides">
+
+				<li th:each="bananas:${session.settings?.listBanana}"><img
+					width="100%" alt height="100%"
+					th:src="|@{/}${bananas?.savePath}${bananas?.generateName}|">
+
+				</li>
+			</ul>
+
+			<ol id="bannerCtrl" class="flex-control-nav flex-control-paging">
+				<li th:each="bananas,bananasStat:${session.settings?.listBanana}"><a>[[${bananasStat.count}]]</a>
+				</li>
+			</ol>
+		</div>
+
+
+		<!--主要内容白-->
+		<div class="container">
+			<div class="content_top">
+				<!-- 学校公告 -->
+				<div class="xxgg left">
+					<div class="notice_title">
+						<b class="left">学校公告</b> <a class="right"
+							th:each="news:${newslist}"
+							th:if="${news?.webMenu?.name eq '学校公告'}"
+							th:href="|@{/web/list/}${news?.webMenu?.id}|">更多内容</a>
+					</div>
+					<marquee direction="up" behavior="scroll" onmouseover="this.stop()"
+						onmouseout="this.start()" style="height: 275px">
+						<dl>
+							<dt th:each="news:${newslist}"
+								th:if="${news?.webMenu?.name eq '学校公告'}">
+								<span class="ggrq left">[[${#dates.format(news.createTime,'MM-dd')}]]</span>
+								<a th:href="|@{/web/news/}${news.id}|" target="_blank">
+									<div class="circleprogress" style="margin-top: 22px;"></div> <span
+									class="gg_title">[[${#strings.abbreviate(news?.title,12)}]]</span>
+								</a>
+							</dt>
+						</dl>
+					</marquee>
+				</div>
+				<!-- 校园新闻 -->
+				<div class="notice left">
+					<div class="notice_title">
+						<b class="left">校园新闻</b>
+						<!-- <span class="right">更多内容</span> -->
+					</div>
+					<!--图片轮播-->
+					<div class="info_top_banner left">
+						<div id="info_top_banner" class="flexslider left"
+							style="height: 270px;">
+							<ul class="slides">
+								<li th:each="news:${newslist}"
+									th:if="${news?.webMenu?.name eq '校园新闻'}"><a
+									th:title="${news?.title}" target="_blank"
+									th:href="|@{/web/news/}${news.id}|"> <img width="100%"
+										height="296px" alt
+										th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.generateName}|">
+								</a></li>
+							</ul>
+							<ol id="info_top_bannerCtrl"
+								class="flex-control-nav flex-control-paging">
+								<li th:each="news,newsStat:${newslist}"
+									th:if="${news?.webMenu?.name eq '校园新闻'}"><a>[[${news.title}]][[${newsStat.count}]]</a></li>
+
+							</ol>
+						</div>
+					</div>
+					<div class="left" style="margin-left: 20px; width: 440px;">
+						<th:block th:each="news:${newslist}"
+							th:if="${news?.webMenu?.name eq '校园新闻'}">
+							<div class="newslist">
+								<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
+									class="jt"> <a th:href="|@{/web/news/}${news.id}|"
+									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
+									<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+								</a>
+							</div>
+						</th:block>
+					</div>
+				</div>
+				<!-- 广告条 -->
+				<div id="banner_tabs2" class="flexslider">
+					<ul class="slides">
+						<li><a title href="#" target="_blank"> <img alt
+								height="96px"
+								th:style="|background: url(@{/assets/websites/fushanweb/images/bant.png}) no-repeat center;|"
+								th:src="@{/assets/websites/fushanweb/images/alpha.png}">
+						</a></li>
+					</ul>
+
+					<ol id="adCtrl" class="flex-control-nav flex-control-paging">
+						<li><a></a></li>
+
+					</ol>
+				</div>
+			</div>
+
+			<!-- 第二部分 -->
+			<div class="middle_box">
+				<div class="left" style="width: 270px">
+					<!-- 历史上的今天 -->
+					<div class="history">
+
+						<img th:src="@{/assets/websites/fushanweb/images/history.png}">
+						<marquee class="history_" direction="up" behavior="scroll"
+							onmouseover="this.stop()" onmouseout="this.start()"
+							scrollamount="3" style="height: 214px"> </marquee>
+						</div>
+					<!-- 网站推荐 -->
+					<div class="recommend">
+						<img th:src="@{/assets/websites/fushanweb/images/recommend.png}">
+						<div class="recom_detail"
+							onclick="window.open('http://www.pudong-edu.sh.cn/Web/PDJY/460001.htm')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom1.png}">
+							浦东教育
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('http://jsyx.pudong-edu.sh.cn/cms/index.html')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom2.png}">
+							浦东教师研修社区
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('http://jfy.pudong-edu.sh.cn/')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom3.png}">
+							浦东教育发展研究院
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('http://xfyh.21shte.net/')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom4.png}">
+							上海教师教育平台
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('https://home.slz.cnpereading.com/slz-portal/#/login3/CHNT98G')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom5.png}">
+							学乐英语在线阅读
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('http://www.chinaedu.edu.cn/')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom6.png}">
+							中国教育信息网
+						</div>
+						<div class="recom_detail"
+							onclick="window.open('http://so.eduyun.cn/national/index')">
+							<img th:src="@{/assets/websites/fushanweb/images/recom7.png}">
+							国家基础教育资源网
+						</div>
+					</div>
+				</div>
+				<div class="left box">
+					<div>
+						<!-- 教师发展 -->
+						<div class="notice_title">
+							<b class="left">教师发展</b> <a class="right"
+								th:each="news:${newslist}"
+								th:if="${news?.supMenu?.name eq '教师发展'}"
+								th:href="|@{/web/list/}${news?.webMenu?.id}|">更多内容</a>
+
+						</div>
+						<div class="jsfz">
+							<div class="list">
+								<dl>
+									<dt th:each="news:${newslist}"
+										th:if="${news?.supMenu?.name eq '教师发展'}">
+										<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
+											class="jt"> <a th:href="|@{/web/news/}${news.id}|"
+											target="_blank"> <span class="new_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
+											<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+										</a>
+									</dt>
+
+								</dl>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="left" style="width: 439px">
+					<!-- 班级圈 -->
+					<div class="notice_title">
+						<b class="left">证大之星</b> <span class="right"
+							onclick="window.open('#')">更多内容</span>
+					</div>
+					<div class="bjq">
+						<div class="study-res">
+							<th:block th:each="news:${newslist}"
+							th:if="${news?.webMenu?.name eq '校园新闻'}">
+							<div class="newslist">
+								<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
+									class="jt"> <a th:href="|@{/web/news/}${news.id}|"
+									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
+									<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+								</a>
+							</div>
+						</th:block>
+						</div>
+
+					</div>
+			
+				</div>
+			</div>
+
+			<img th:src="@{/assets/websites/fushanweb/images/banner1.png}">
+
+
+
+
+
+			<div class="schoolAlbum">
+				<div class="notice_title">
+					<b class="left">精彩瞬间</b> <span class="right"
+						th:onclick="|window.open('@{/web/listImgs}')|">更多内容</span>
+				</div>
+				<div class="tc">
+					<dl id="roll">
+						<th:block th:each="img:${imgs}">
+							<dd class="left">
+								<span class="img_default_tc">
+								 <th:block
+										th:if="${img?.recommend != null}">
+										<img
+											th:src="|@{/}${img?.recommend?.savePath}${img?.recommend?.compressPicName}|"
+											class="hover"
+											th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+									</th:block> 
+									<th:block th:if="${img?.recommend == null}">
+											
+										<th:block th:if="${img?.imgs == null}">
+											<img th:src="@{/assets/websites/fushanweb/images/nopic.jpg}"
+												class="hover"
+												th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+										</th:block>
+										<th:block th:if="${img?.imgs !=null}">
+											<img
+												th:src="|@{/}${img?.imgs[0]?.savePath}${img?.imgs[0]?.compressPicName}|"
+												class="hover"
+												th:onclick="|window.open('@{/web/imgs/}${img?.id}')|">
+										</th:block>
+									</th:block>
+								</span>
+								<p class="tc_title">[[${img?.name}]]</p>
+							</dd>
+						</th:block>
+
+					</dl>
+				</div>
+			</div>
+
+		</div>
+
+		<div th:replace="websites/fushanweb/public/public::footer"></div>
+	</div>
+</body>
+
+
+<script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/script.js}"></script>
+
+<script th:src="@{/assets/websites/fushanweb/js/floatingAd.js}"></script>
+<script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/jquery.SuperSlide.2.1.1.js}"></script>
+<script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/slider.js}"></script>
+
+<script type="text/javascript">
+	/*导航栏*/
+	$(document).ready(function() {
+		$(".navbg").capacityFixed();
+		$("#navul > li").not(".navhome").hover(function() {
+			$(this).addClass("navmoon");
+		}, function() {
+			$(this).removeClass("navmoon");
+		});
+
+		$("#navul li ul li:last-child").css('border-bottom', 'none'); //去除最后一栏的虚线边框
+		$(".teacher-item:last-child").css('border-bottom', 'none'); //去除学习资源库最后一栏的虚线边框
+	});
+	// 历史上的今天
+	function Appendzero(obj) {
+		if (obj < 10)
+			return "0" + "" + obj;
+		else
+			return obj;
+	}
+	var myDate = new Date();
+	var month = myDate.getMonth() + 1; //获取当前月份(0-11,0代表1月)
+	month = Appendzero(month);
+	var date = myDate.getDate(); //获取当前日(1-31)
+	date = Appendzero(date);
+	var tody = month + "" + date;
+	$(function() {
+		$.ajax({
+			url : "https://baike.baidu.com/cms/home/eventsOnHistory/" + month
+					+ '.json',
+			type : "get",
+			dataType : "json",
+			success : function(data) {
+				$('.history_').empty();
+				var html = '';
+				$.each(data, function(index, item) {
+					var data_ = item;
+					data_[tody].forEach(function(e) {
+						html += '<p>' + e.title + '</p>'
+					});
+				});
+				$('.history_').html(html);
+			}
+		});
+	});
+	/*banner轮播*/
+	$(function() {
+		var bannerSlider = new Slider($('#banner_tabs'), {
+			time : 5000,
+			delay : 400,
+			event : 'hover',
+			auto : true,
+			mode : 'fade',
+			controller : $('#bannerCtrl'),
+			activeControllerCls : 'active'
+		});
+	});
+	//新闻聚汇轮播
+	$(function() {
+		var bannerSlider = new Slider($('#info_top_banner'), {
+			time : 5000,
+			delay : 400,
+			event : 'hover',
+			auto : true,
+			mode : 'fade',
+			controller : $('#info_top_bannerCtrl'),
+			activeControllerCls : 'active'
+		});
+	});
+	// 广告条轮播
+	$(function() {
+		var bannerSlider = new Slider($('#banner_tabs2'), {
+			time : 5000,
+			delay : 400,
+			event : 'hover',
+			auto : true,
+			mode : 'fade',
+			controller : $('#adCtrl'),
+			activeControllerCls : 'active'
+		});
+	});
+	$(function() {
+		var bannerSlider = new Slider($('#sx_img'), {
+			time : 5000,
+			delay : 400,
+			event : 'hover',
+			auto : true,
+			mode : 'fade',
+			controller : $('#sx_bannerCtrl'),
+			activeControllerCls : 'active'
+		});
+	});
+
+	/* 走马灯*/
+	jQuery(".schoolAlbum").slide({
+		mainCell : "dl",
+		vis : 4,
+		prevCell : ".next",
+		nextCell : ".prev",
+		effect : "leftMarquee",
+		interTime : 20,
+		autoPlay : true,
+		trigger : "click"
+	});
+
+	//飘窗
+	$(".remove_piao").click(function() {
+		$(".left_ban").remove();
+	});
+
+	//飘窗
+	$(function() {
+		$
+				.floatingAd({
+					delay : 30,
+					isLinkClosed : false,
+					ad : [
+							{
+								headFilter : 0.3,
+								'img' : '../assets/websites/fushanweb/images/piaochuang.png',
+								'linkUrl' : '###',
+								'z-index' : 100,
+								'title' : '',
+								'imgHeight' : '',
+								'imgWidth' : '',
+								'closed-icon' : '../assets/websites/fushanweb/images/close.png'
+							}, ],
+					onClose : function(elem) {
+						//						showTips('关闭成功',1000,1);
+					}
+				});
+	});
+	// 关键字搜索
+	$('#search_btn').click(function() {
+		$("#search_box input").each(function() {
+			if ($(this).css("display") != 'none') {
+				key = $(this).val();
+			}
+		});
+		var key = $('#search_key').val();
+		if (key == "") {
+			showTips("请输入搜索内容~");
+			return false;
+		} else {
+			window.open('/portal/search?type=1&key=' + key);
+		}
+	});
+	$(document).ready(function() {
+		$("#banner_tabs li").each(function() {
+			if ($(this).show()) {
+				var banner_img = $(this).find(".banner_img").height();
+				$("#banner_tabs").height(banner_img)
+			}
+		});
+
+	});
+	$(window).resize(function() {
+		$("#banner_tabs li").each(function() {
+
+			if ($(this).show()) {
+				var banner_img = $(this).find(".banner_img").height();
+				$("#banner_tabs").height(banner_img)
+			}
+		});
+	});
+</script>
+</html>

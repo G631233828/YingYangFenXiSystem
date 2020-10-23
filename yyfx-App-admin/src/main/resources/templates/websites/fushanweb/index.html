@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon"
+<link rel="shortcut icon" th:if="${session.settings?.icon !=null}"
 	th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|"
 	type="image/x-icon" />
 <link rel="stylesheet" type="text/css"
@@ -18,12 +18,11 @@
 	th:href="@{/assets/websites/fushanweb/css/floatad.css}">
 <link th:href="@{/assets/websites/fushanweb/css/flexslider.css}"
 	rel="stylesheet">
-<script type="text/javascript"
-	th:src="@{/assets/websites/fushanweb/js/stats.js}" charset="UTF-8"></script>
+
 <link rel="stylesheet" type="text/css"
 	th:href="@{/assets/websites/fushanweb/css/ddsmoothmenu.css}">
-<script type="text/javascript"
-	th:src="@{/assets/websites/fushanweb/js/jquery.min.js}"></script>
+<!-- <script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/jquery.min.js}"></script> -->
 <script th:src="@{/assets/websites/fushanweb/js/pop-up.js}"
 	type="text/javascript" charset="utf-8"></script>
 <script th:src="@{/assets/websites/fushanweb/js/jsencrypt.min.js}"
@@ -154,8 +153,7 @@
 						<marquee class="history_" direction="up" behavior="scroll"
 							onmouseover="this.stop()" onmouseout="this.start()"
 							scrollamount="3" style="height: 214px"> </marquee>
-						<!--<iframe src="http://www.todayonhistory.com/code/5.html?w=250&h=200&bky=dotted&bks=0&bkc=#C1C1C1&fs=14&fc=#565656&hg=20&ie=0&xhx=none&sd=800&px=1&len=0&sk=2&n=0" width="250" height="200" scrolling="no" frameborder="0" allowtransparency="true"  style="border: 0px dotted #C1C1C1"></iframe>-->
-					</div>
+						</div>
 					<!-- 网站推荐 -->
 					<div class="recommend">
 						<img th:src="@{/assets/websites/fushanweb/images/recommend.png}">
@@ -245,13 +243,7 @@
 						</div>
 
 					</div>
-					<!-- <div>
-						校长信箱
-						<div class="xzxx" onclick="window.open('/portal/mailbox')"></div>
-						福山邮局
-						<div class="fsyj"
-							onclick="window.open('http://fushanedu.cn/fsyj/fsyj.aspx')"></div>
-					</div> -->
+		
 				</div>
 			</div>
 
@@ -310,8 +302,7 @@
 
 <script type="text/javascript"
 	th:src="@{/assets/websites/fushanweb/js/script.js}"></script>
-<script type="text/javascript"
-	th:src="@{/assets/websites/fushanweb/js/template.js}"></script>
+
 <script th:src="@{/assets/websites/fushanweb/js/floatingAd.js}"></script>
 <script type="text/javascript"
 	th:src="@{/assets/websites/fushanweb/js/jquery.SuperSlide.2.1.1.js}"></script>
@@ -319,12 +310,6 @@
 	th:src="@{/assets/websites/fushanweb/js/slider.js}"></script>
 
 <script type="text/javascript">
-	model.show_less(".news_title", 22); //限制字数
-	model.show_less(".gg_title", 12); //限制字数
-	model.show_less(".tc_title", 15); //限制字数
-	model.show_less(".new_title", 18); //限制字数
-	model.show_less(".new_detail", 51); //限制字数
-	model.show_less(".teacher-detail", 51); //限制字数
 	/*导航栏*/
 	$(document).ready(function() {
 		$(".navbg").capacityFixed();
@@ -443,13 +428,13 @@
 					ad : [
 							{
 								headFilter : 0.3,
-								'img' : 'https://cdn.u-jy.cn/8effd44cb67246839d6b966358127dc2.png',
+								'img' : '../assets/websites/fushanweb/images/piaochuang.png',
 								'linkUrl' : '###',
 								'z-index' : 100,
 								'title' : '',
 								'imgHeight' : '',
 								'imgWidth' : '',
-								'closed-icon' : '/assets/websites/fushanweb/images/close.png'
+								'closed-icon' : '../assets/websites/fushanweb/images/close.png'
 							}, ],
 					onClose : function(elem) {
 						//						showTips('关闭成功',1000,1);

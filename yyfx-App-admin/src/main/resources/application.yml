@@ -42,11 +42,17 @@ upload:
   ueditor: upload/ueditor/
 #图片列表配置
   ueditordir: E:/upload
+  
+#配置白名单
+white:  ips:  - 127.0.0.1
+  - localhost
+  - 192.168.50.14  
+  
+ #配置是否启用ip过滤
+ipfilter:  system: true
+  web: true
+abnormal:  name:  - script
 
-
-
-
- 
 
 
 

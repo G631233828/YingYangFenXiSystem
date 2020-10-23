@@ -28,7 +28,8 @@ public final class Base64Uploader {
 				(String) conf.get("filename"));
 		
 		savePath = savePath + suffix;
-		String physicalPath = (String) conf.get("rootPath") + savePath;
+		//String physicalPath = (String) conf.get("rootPath") + savePath;
+		String physicalPath = (String)conf.get("basePath") + savePath;
 
 		State storageState = StorageManager.saveBinaryFile(data, physicalPath);
 

@@ -25,6 +25,7 @@ import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.pojo.SysRole;
 import zhongchiedu.system.service.impl.MultiMediaServiceImpl;
 
 /**
@@ -104,10 +105,12 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 				// WebMenu ed = this.findOneById(webMenu.getId(), WebMenu.class);
 				// webMenu.setFirstLevel(Common.isNotEmpty(ed.getFirstLevel())?ed.getFirstLevel():null);
 				BeanUtils.copyProperties(webMenu, ed);
+				uploadWebMenuVersion(webMenu.getId());
 				this.save(webMenu);
 				log.info("资源修改成功{}", webMenu.getId());
 			} else {
 				// insert
+				uploadWebMenuVersion(webMenu.getId());
 				this.insert(webMenu);
 				log.info("添加资源按钮{}", webMenu);
 			}
@@ -126,6 +129,7 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 		}
 		sys.setIsDisable(sys.getIsDisable().equals(true) ? false : true);
 		this.save(sys);
+		uploadWebMenuVersion(id);
 		return BasicDataResult.build(200, sys.getIsDisable().equals(true) ? "禁用成功" : "启用成功", sys.getIsDisable());
 
 	}
@@ -142,6 +146,7 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 				de.setIsDelete(true);
 				this.save(de);
 			}
+			uploadWebMenuVersion(id);
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -203,4 +208,46 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 
 	}
 
+	
+	
+	
+
+	/**
+	 * 更新网站菜单版本
+	 */
+	public void uploadWebMenuVersion(String id) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				uploadWebMenuVersionByThread(id);
+			}
+		}).start();
+	}
+
+	/**
+	 * 菜单版本+1
+	 * 
+	 * @param id
+	 */
+	public synchronized void uploadWebMenuVersionByThread(String id) {
+		WebMenu menu = this.findOneById(id, WebMenu.class);
+		WebMenu supMenu = null;
+		if(menu.getParentId()!="0") {
+			supMenu = this.findOneById(menu.getParentId(), WebMenu.class);
+		}
+		if(Common.isNotEmpty(supMenu)) {
+			menu = supMenu;
+		}
+		 menu.setVersion( menu.getVersion() + 1);
+		this.save(menu);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -54,26 +54,27 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-									<!-- <shiro:hasPermission name="webMenu:add"> -->
+									<
+									<shiro:hasPermission name="webMenu:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/school/webMenu}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								<!-- 	</shiro:hasPermission>
+									</shiro:hasPermission>
 
-									<shiro:hasPermission name="webMenu:edit"> -->
+									<shiro:hasPermission name="webMenu:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','webMenu')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-									<!-- </shiro:hasPermission>
+									</shiro:hasPermission>
 
-									<shiro:hasPermission name="webMenu:delete"> -->
+									<shiro:hasPermission name="webMenu:delete">
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{webMenu}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
-									<!-- </shiro:hasPermission> -->
+									</shiro:hasPermission>
 
 								</div>
 
@@ -143,17 +144,18 @@ canvas#canvas4 {
 													</th:block>
 
 													<td class="numeric">[[${res.description }]]</td>
-													<td class="numeric">
-														 <shiro:hasPermission name="webMenu:edit"> 
-														<button class="btn btn-primary btn-xs"
-															th:onclick="|return toeditPage('${res.id}','webMenu')|">
-															<i class="fa fa-edit"> </i>编辑
-														</button> </shiro:hasPermission>  <shiro:hasPermission name="webMenu:delete">
-														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{/webMenu/}${res.id}','')|">
-															<i class="fa fa-trash-o"> </i>删除
-														</button>  </shiro:hasPermission>
-													</td>
+													<td class="numeric"><shiro:hasPermission
+															name="webMenu:edit">
+															<button class="btn btn-primary btn-xs"
+																th:onclick="|return toeditPage('${res.id}','webMenu')|">
+																<i class="fa fa-edit"> </i>编辑
+															</button>
+														</shiro:hasPermission> <shiro:hasPermission name="webMenu:delete">
+															<button class="btn btn-danger btn-xs"
+																th:onclick="|return del('@{/webMenu/}${res.id}','')|">
+																<i class="fa fa-trash-o"> </i>删除
+															</button>
+														</shiro:hasPermission></td>
 												</tr>
 												<!-- 一级菜单 -->
 												<th:block th:each="res2:${pageList.datas}"
@@ -199,52 +201,52 @@ canvas#canvas4 {
 																</button>
 															</shiro:hasPermission></td>
 													</tr>
-													
+
 													<!-- 二级菜单 -->
 													<th:block th:each="res3:${pageList.datas}"
-													th:if="${res3.firstLevel eq  res2.id}">
-													<tr th:if="${res3.type eq 2}">
-														<td class="numeric">
-															<div th:class="|checkbox checkbox-inline ${res2.id}|"
-																style="margin-top: 0px; margin-left: 20px;">
-																<input type="checkbox" name="ids" th:id="${res3.id}"
-																	class="numeric" th:value="${res3.id}"> <label
-																	th:for="${res3.id}"></label>
-															</div>
-														</td>
-														<td class="numeric">[[${res3.name }]]</td>
-														<td class="numeric">[[${res3.resUrl }]]</td>
-														<td class="numeric"
-															th:text="${res3.type eq 0}  ?'主题':${res3.type eq 1?'一级菜单':'二级菜单'}"></td>
-														<td class="numeric" th:id="disBtn+${res3.id}"
-															th:utext="${res3.isDisable eq true }?|<button type='button' onclick=toDisable('${res3.id}','school/webMenu') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res3.id}','school/webMenu') class='btn btn-success'>启用</button>|"></td>
-
-														<th:block th:each="oper:${operationlist}">
+														th:if="${res3.firstLevel eq  res2.id}">
+														<tr th:if="${res3.type eq 2}">
 															<td class="numeric">
-																<div class="checkbox checkbox-inline"
-																	style="margin-top: 0px;">
-																	<input type="checkbox" th:id="|${res3.id}_${oper.id}|"
-																		th:onchange="|return sysOperationAuthority('${res3.id}_${oper.id}');|"
-																		th:name="|${res3.id}_${oper.id}|" style="zoom: 100%;" />
+																<div th:class="|checkbox checkbox-inline ${res2.id}|"
+																	style="margin-top: 0px; margin-left: 20px;">
+																	<input type="checkbox" name="ids" th:id="${res3.id}"
+																		class="numeric" th:value="${res3.id}"> <label
+																		th:for="${res3.id}"></label>
 																</div>
 															</td>
-														</th:block>
-														<td class="numeric">[[${res3.description }]]</td>
-														<td class="numeric"><shiro:hasPermission
-																name="webMenu:edit">
-																<button class="btn btn-primary btn-xs"
-																	th:onclick="|return toeditPage('${res3.id}','webMenu')|">
-																	<i class="fa fa-edit"> </i>编辑
-																</button>
-															</shiro:hasPermission> <shiro:hasPermission name="webMenu:delete">
-																<button class="btn btn-danger btn-xs"
-																	th:onclick="|return del('@{webMenu/}${res3.id}','')|">
-																	<i class="fa fa-trash-o"> </i>删除
-																</button>
-															</shiro:hasPermission></td>
-													</tr>
-												</th:block>
-													
+															<td class="numeric">[[${res3.name }]]</td>
+															<td class="numeric">[[${res3.resUrl }]]</td>
+															<td class="numeric"
+																th:text="${res3.type eq 0}  ?'主题':${res3.type eq 1?'一级菜单':'二级菜单'}"></td>
+															<td class="numeric" th:id="disBtn+${res3.id}"
+																th:utext="${res3.isDisable eq true }?|<button type='button' onclick=toDisable('${res3.id}','school/webMenu') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${res3.id}','school/webMenu') class='btn btn-success'>启用</button>|"></td>
+
+															<th:block th:each="oper:${operationlist}">
+																<td class="numeric">
+																	<div class="checkbox checkbox-inline"
+																		style="margin-top: 0px;">
+																		<input type="checkbox" th:id="|${res3.id}_${oper.id}|"
+																			th:onchange="|return sysOperationAuthority('${res3.id}_${oper.id}');|"
+																			th:name="|${res3.id}_${oper.id}|" style="zoom: 100%;" />
+																	</div>
+																</td>
+															</th:block>
+															<td class="numeric">[[${res3.description }]]</td>
+															<td class="numeric"><shiro:hasPermission
+																	name="webMenu:edit">
+																	<button class="btn btn-primary btn-xs"
+																		th:onclick="|return toeditPage('${res3.id}','webMenu')|">
+																		<i class="fa fa-edit"> </i>编辑
+																	</button>
+																</shiro:hasPermission> <shiro:hasPermission name="webMenu:delete">
+																	<button class="btn btn-danger btn-xs"
+																		th:onclick="|return del('@{webMenu/}${res3.id}','')|">
+																		<i class="fa fa-trash-o"> </i>删除
+																	</button>
+																</shiro:hasPermission></td>
+														</tr>
+													</th:block>
+
 												</th:block>
 											</th:block>
 

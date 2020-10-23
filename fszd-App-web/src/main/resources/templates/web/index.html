@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>[[${session.settings?.title}]]</title>
+<meta name="renderer" content="webkit">
+<meta name="force-rendering" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/websites/fushanweb/css/reset.css}">
+<link th:href="@{/assets/websites/fushanweb/css/index.css}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/websites/fushanweb/css/floatad.css}">
+<link th:href="@{/assets/websites/fushanweb/css/flexslider.css}" rel="stylesheet">
+<script type="text/javascript" th:src="@{/assets/websites/fushanweb/js/stats.js}" charset="UTF-8"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/websites/fushanweb/css/ddsmoothmenu.css}">
+<script type="text/javascript" th:src="@{/assets/websites/fushanweb/js/jquery.min.js}"></script>
+<script th:src="@{/assets/websites/fushanweb/js/pop-up.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/assets/websites/fushanweb/js/jsencrypt.min.js}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<!-- 头部框架 -->
+	<div class="header">
+		<div class="banner site-banner">
+			<div class="fullwidthbanner site-banner-cont" data-banner-time="4000">
+				<ul>
+					<li th:each="bananas:${session.settings?.listBanana}"
+						data-masterspeed="300" data-slotamount="15"
+						data-transition="3dcurtain-horizontal"><img 
+						th:alt="|@{/}${bananas?.savePath}${bananas?.generateName}|"
+						th:src="|@{/}${bananas?.savePath}${bananas?.generateName}|">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- nav和logo框架 -->
+		<div th:replace="web/public/public::top"></div>
+
+
+	</div>
+	<!-- 主体内容框架 -->
+	<div class="subjectContent site-body" id="body">
+		<div class="subjectContentContainer">
+
+
+			<th:block th:each="index,num:${indexs}">
+
+
+				<th:block th:if="${num.count%3 ==1}">
+					<div class="subjectContentContainerTop">
+				</th:block>
+				<th:block th:if="${index.isArticle == 'true'}">
+
+					<div th:class="|${num.count % 3 == 2 ?'news': num.count % 3 == 1?'demeanor': 'notices'} site-layout site-layout${num.count % 3 ==0 ?'3':num.count }|"
+						data-id="97930059-d6bf-4cb8-92ec-f3021dad908c">
+						<div class="site-word">
+							<div class="title">
+								<span>[[${index?.webMenu?.name}]]</span>
+								<p>News</p>
+								<a th:href="|@{/web/list/}${index?.webMenu?.id}|">更多</a>
+							</div>
+							<div class="content">
+								<div class="noticesContent">
+									<ul>
+									
+
+										<li th:each="news:${newslist}" th:if="${news?.webMenu?.id == index?.webMenu?.id}">
+										<a target="_blank" th:href="|@{/web/news/}${news.id}|"
+											th:title="${news.title}"> <span
+												style="color:" th:text="${#strings.abbreviate(news.title,28)}"></span>
+												<p>[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</p>
+										</a>
+										</li>
+									
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</th:block>
+				<th:block th:if="${index.isArticle == 'false'}">
+
+			<div th:class="|${num.count % 3 == 2 ?'news': num.count % 3 == 1?'demeanor': 'notices'} site-layout site-layout${num.count % 3 ==0 ?'3':num.count }|"
+						data-id="97930059-d6bf-4cb8-92ec-f3021dad908c">
+						<div class="site-imgplay">
+							<div class="title">
+								<span>[[${index?.webMenu?.name}]]</span>
+								<p>Campus elegance</p>
+							</div>
+							<div class="content">
+								<div class="demeanorImg">
+									<div class="rslides-wrap">
+										<ul class="rslides">
+										
+									 <li th:each="news:${newslist}" th:if="${news?.webMenu?.id == index?.webMenu?.id}">
+									 
+										<a target="_blank" th:href="|@{/web/news/}${news.id}|" 	th:title="${news?.title}">
+											 <img alt th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.generateName}|">
+											 <span
+												style="color:" th:text="${#strings.abbreviate(news?.title,28)}"></span>
+										</a>
+											<p class="caption" style="color:" th:text="${#strings.abbreviate(news.title,20)}"></p>
+										</li>
+										
+
+
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+				</th:block>
+				<th:block th:if="${num.count%3 ==1}">
+		</div>
+
+		</th:block>
+		</th:block>
+
+
+
+
+	
+
+		<!-- 底部bottom icons -->
+		<div class="subjectContentContainerBomttom">
+			<div class="icons site-layout site-layout4"
+				data-id="7749b9f6-b219-4085-82b9-1e6fc67ba17f">
+				<div class="site-imglink">
+					<ul>
+						<li><a href="#" title="校长信箱"> <img alt
+								th:src="@{/assets/website/images/ffba3d78-e5ec-4600-9ef8-0427cafbacb9.png}">
+
+						</a></li>
+						<li><a href="#" title="教务平台"> <img
+								th:src="@{/assets/website/images/9eef1201-1984-4e77-ad12-26f41f94763f.png}">
+
+						</a></li>
+						<li><a href="#" title="素质评价"> <img alt
+								th:src="@{/assets/website/images/dd79ca99-0e51-4497-9664-ff94901ddb1f.png}">
+
+						</a></li>
+						<li><a href="#" title="文明创建"> <img alt
+								th:src="@{/assets/website/images/147dbeeb-f6bf-409a-9efe-f88db5fd2855.png}">
+
+						</a></li>
+						<li><a href="#" title="语言文字"> <img alt
+								th:src="@{/assets/website/images/18dad033-0be0-4155-ad6e-d87e715899e5.png}">
+
+						</a></li>
+						<li><a href="#" title="招生平台"> <img alt
+								th:src="@{/assets/website/images/7f55a38a-e1e6-4aed-85cf-98762cf14235.png}">
+
+						</a></li>
+						<li><a href="#" title="办公平台"> <img alt
+								th:src="@{/assets/website/images/8893e7e1-47f0-4ea3-b5d2-9cd5315849dd.png}">
+
+						</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		<!--   <div class="links site-layout site-layout5" data-id="f6859014-7694-45c9-b4fa-99e24bd16647" style="position: relative;text-align: center;z-index: 9;">
+                <div class="site-select">
+                    <span class="select-title">友情链接</span>
+
+
+                    <select onchange="if(this.value){window.open(this.value)}">
+                        <option value>--友情链接--</option>
+                        <option value="#">上海师范大学附属中学</option>
+                    </select>
+
+
+                </div>
+            </div> -->
+	</div>
+	</div>
+	<!-- 页脚底部框架 -->
+	<div th:replace="web/public/public::footer"></div>
+
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.themepunch.plugins.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jquery.themepunch.revolution.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/responsiveslides.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/ckplayer.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/assets/website/js/jq_scroll.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/website/js/site.js}"></script>
+	<script type="text/javascript"
+		data-site-id="a59f8895-297e-49ce-b07c-68955251229a"
+		th:src="@{/assets/website/js/jquery.sitefloat.plugins.js}"></script>
+
+</body>
+
+</html>

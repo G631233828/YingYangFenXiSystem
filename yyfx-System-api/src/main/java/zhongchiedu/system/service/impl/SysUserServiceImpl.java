@@ -87,10 +87,15 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 			query.addCriteria(Criteria.where("sysSchool.$id").is(new ObjectId(user.getSysSchool().getId())));
 		}else if(userType_.equals(UserType.SYSTEM)) {
 			//获取所有超级管理员用户，学校管理员
-			Criteria ca = new Criteria();
-			Criteria ca2 = new Criteria();
-			ca.andOperator(Criteria.where("userType").is(UserType.SCHOOL_ADMIN));
-			ca2.andOperator(Criteria.where("userType").is(UserType.SYSTEM));
+//			Criteria ca = new Criteria();
+//			Criteria ca2 = new Criteria();
+//			ca.andOperator(Criteria.where("userType").is(UserType.SCHOOL_ADMIN));
+//			ca2.andOperator(Criteria.where("userType").is(UserType.SYSTEM));
+//			query.addCriteria(ca.orOperator(ca2));
+			List<String> type = new ArrayList<String>();
+			type.add(UserType.SCHOOL_ADMIN);
+			type.add(UserType.SYSTEM);
+			query.addCriteria(Criteria.where("userType").in(type));
 		}else {
 			return new Pagination<SysUser>();
 		}
@@ -178,7 +183,8 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 		//3.学校管理员添加其他账户
 		if(userType_.equals(UserType.SYSTEM)) {
 			
-			if(Common.isEmpty(user.getSysSchool().getName())) {
+			
+			if(Common.isEmpty(user.getSysSchool().getId())) {
 				user.setSysSchool(null);
 				user.setUserType(UserType.SYSTEM);
 				//创建管理员

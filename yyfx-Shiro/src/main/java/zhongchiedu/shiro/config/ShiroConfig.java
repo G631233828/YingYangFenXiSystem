@@ -204,7 +204,8 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/assets/**", "anon");
 		filterChainDefinitionMap.put("/web/**", "anon");
-		filterChainDefinitionMap.put("/tologin", "user,addPrincipal");
+		filterChainDefinitionMap.put("/error/**", "anon");
+		filterChainDefinitionMap.put("/tologin", "anon");
 		filterChainDefinitionMap.put("index", "user,addPrincipal");
 		filterChainDefinitionMap.put("toindex", "user,addPrincipal");
 		filterChainDefinitionMap.put("/img/**", "anon");

@@ -94,24 +94,29 @@ public class SystemUserRealm extends AuthorizingRealm {
 			SysUser suser = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 			if (Common.isNotEmpty(suser)) {
 				SysUser u = this.SysUserService.findOneById(suser.getId(), SysUser.class);
-				// 获取角色拥有的所有菜单权限
-				List<SysResource> rs = u.getRole().getSysresource();
-				List<SysMenuAuthority> sm = u.getRole().getSysMenuAuthority();
-				
 				// 权限信息对象info 用来存放查出的所有用户role以及权限permission
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-				// 设置权限名称
-				info.addRole(u.getRole().getRoleName());
-				Set<String> permissionkeys = new HashSet<String>();
+				//判断是否是删除或禁用的角色
+				if(!u.getRole().getIsDelete()&&!u.getRole().getIsDisable()) {
+					// 获取角色拥有的所有菜单权限
+					List<SysResource> rs = u.getRole().getSysresource();
+					List<SysMenuAuthority> sm = u.getRole().getSysMenuAuthority();
+					// 设置权限名称
+					info.addRole(u.getRole().getRoleName());
+					
+					Set<String> permissionkeys = new HashSet<String>();
 
-				for (SysMenuAuthority s : sm) {
-					permissionkeys.add(s.getResKey());
-				}
-				for (SysResource r : rs) {
-					permissionkeys.add(r.getResKey());
-				}
+					for (SysMenuAuthority s : sm) {
+						permissionkeys.add(s.getResKey());
+					}
+					for (SysResource r : rs) {
+						permissionkeys.add(r.getResKey());
+					}
 
-				info.addStringPermissions(permissionkeys);
+					info.addStringPermissions(permissionkeys);
+				}
+				
+			
 
 				return info;
 			}
@@ -159,7 +164,10 @@ public class SystemUserRealm extends AuthorizingRealm {
 		
 			if (Common.isNotEmpty(u)) {
 				session.setAttribute(Contents.SYSUSER_SESSION, suser);
-				session.setAttribute(Contents.SYSRESOURCE_SESSION, Common.isNotEmpty(u.getRole())?u.getRole().getSysresource():"");
+				if(!u.getRole().getIsDelete()&&!u.getRole().getIsDisable()) {
+					session.setAttribute(Contents.SYSRESOURCE_SESSION, Common.isNotEmpty(u.getRole())?u.getRole().getSysresource():"");
+				}
+				
 				return new SimpleAuthenticationInfo(suser.getAccountName(), suser.getPassWord(), getName());
 			}
 		}

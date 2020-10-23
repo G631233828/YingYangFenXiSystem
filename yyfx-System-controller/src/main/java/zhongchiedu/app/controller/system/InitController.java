@@ -334,7 +334,7 @@ public class InitController {
 		    role.setRoleKey("supermanager");
 		    role.setDescription("超级管理员");
 		    role.setRoleName("超级管理员");
-		    role.setCreateTime(new Date());
+		   // role.setCreateTime(new Date());
 		    role.setIsDisable(false);
 		    role.setResource(list);
 		    this.roleService.insert(role);
@@ -346,7 +346,7 @@ public class InitController {
 		    user.setAccountName("admin");
 		    user.setCardId("123456");
 		    user.setCardType("身份证");
-		    user.setCreateTime(new Date());
+		   // user.setCreateTime(new Date());
 		    user.setPassWord("123456");
 		    user.setIsDisable(false);
 		    user.setLastLoginIp(null);

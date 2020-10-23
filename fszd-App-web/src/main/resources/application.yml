@@ -1,0 +1,58 @@
+
+        
+#配置项目访问路径
+#server:servlet:context-path:/
+#启动端口
+server:
+  port: 80
+  tomcat:
+    uri-encoding: UTF-8
+#配置项目的国际化
+spring:
+  messages:
+    basename: i18n:login
+  servlet:
+    multipart:
+      max-file-size: 500MB  #设置上传大小
+      max-request-size: 500MB #设置所有文件最大内存 
+#禁用缓存
+  thymeleaf:
+    cache: true
+  mvc:
+    date-format: yyyy-MM-dd  profiles:    active:    - mongodb  http:    encoding:      force: true      charset: UTF-8
+      enabled: true
+#spring:profiles:active:mongodb
+#文件保存路径
+filepath: E:/img
+#设置上传图片路径
+#upload-dir:E:/
+#upload-imgpath:upload/image/
+#video:savePath:upload/ueditor/
+#文件上传
+upload:
+  savedir: E:/
+  imgpath: upload/images/
+  kinderitor: upload/kinderitor/
+  ueditor: upload/ueditor/
+#图片列表配置
+  ueditordir: E:/upload
+
+ #配置是否启用ip过滤
+ipfilter:  web: true
+abnormal:  name:  - script
+
+ 
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+

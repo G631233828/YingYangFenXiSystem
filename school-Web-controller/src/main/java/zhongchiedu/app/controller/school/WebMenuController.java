@@ -40,11 +40,11 @@ public class WebMenuController {
 
 	@GetMapping("webMenus")
 	@RequiresPermissions(value = "webmenu:list")
-	@SystemControllerLog(description = "查询所有资源")
+	@SystemControllerLog(description = "查询所有菜单")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "200") Integer pageSize, HttpSession session) {
 		// 分页查询数据
-		log.info("查询所有资源");
+		log.info("查询所有菜单");
 		Pagination<WebMenu> pagination = this.webMenuService.findPagination(pageNo, pageSize);
 		model.addAttribute("pageList", pagination);
 
@@ -80,6 +80,7 @@ public class WebMenuController {
 	 */
 	@GetMapping("/webMenu/{id}")
 	@RequiresPermissions(value = "webmenu:edit")
+	@SystemControllerLog(description = "修改菜单")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改菜单" + id);
 		// 获取所有的启用的资源目录

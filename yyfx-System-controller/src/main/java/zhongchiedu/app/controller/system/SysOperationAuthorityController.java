@@ -70,6 +70,7 @@ public class SysOperationAuthorityController {
 	 */
 	@GetMapping("/sysOperation/{id}")
 	@RequiresPermissions(value = "sysoperation:edit")
+	@SystemControllerLog(description = "修改按钮配置")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改按钮权限"+id);
 		SysOperationAuthority sysOperationAuthority = this.sysOperationAuthorityService.findOneById(id, SysOperationAuthority.class);
@@ -92,6 +93,7 @@ public class SysOperationAuthorityController {
 	 * @return
 	 */
 	@GetMapping("/sysOperation")
+	@RequiresPermissions(value = "sysoperation:add")
 	public String addSysOperationPage() {
 		return "system/sysOperationAuthority/add";
 	}

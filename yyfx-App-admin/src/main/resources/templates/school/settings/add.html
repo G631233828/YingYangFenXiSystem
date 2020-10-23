@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head th:include="public/public_css::pub_css"></head>
 <head>
@@ -87,8 +88,7 @@
 
 											<input type="hidden"
 												th:value="${settings!=null&&settings.icon!=null}?${settings.icon.id}"
-												name="oldIcon" id="settingsicon">
-										 <input
+												name="oldIcon" id="settingsicon"> <input
 												type="hidden" name="id"
 												th:value="${settings!=null}?${settings.id}">
 
@@ -99,24 +99,24 @@
 													<input id="file" name="filebananas" type="file" multiple>
 												</div>
 											</div>
-											
-											
+
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label">信息页Banana：</label>
 												<div class="col-lg-6">
-													<input id="filebanana" name="filebanana" type="file" >
+													<input id="filebanana" name="filebanana" type="file">
 												</div>
 											</div>
 											<input type="hidden"
 												th:value="${settings!=null&&settings?.banana!=null}?${settings?.banana?.id}"
 												name="oldbanana" id="oldbanana">
-											
-											
-											
-											
-											
-											
-											
+
+
+
+
+
+
+
 
 
 											<div class="form-group">
@@ -146,7 +146,7 @@
 														th:value="${settings!=null}?${settings.address}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 邮编：</label>
 												<div class="col-lg-6">
@@ -155,7 +155,7 @@
 														th:value="${settings!=null}?${settings.postCode}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 联系电话：</label>
 												<div class="col-lg-6">
@@ -164,7 +164,7 @@
 														th:value="${settings!=null}?${settings.connectPhone}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 电子邮箱：</label>
 												<div class="col-lg-6">
@@ -173,7 +173,7 @@
 														th:value="${settings!=null}?${settings.email}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 沪备案号：</label>
 												<div class="col-lg-6">
@@ -182,7 +182,7 @@
 														th:value="${settings!=null}?${settings.recordNumber}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 工信部备案号：</label>
 												<div class="col-lg-6">
@@ -191,7 +191,7 @@
 														th:value="${settings!=null}?${settings.gxbRecordNumber}">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-1 control-label"> 版权：</label>
 												<div class="col-lg-6">
@@ -200,18 +200,18 @@
 														th:value="${settings!=null}?${settings.coryright}">
 												</div>
 											</div>
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 											<!-- 									<div class="form-group">
@@ -228,10 +228,14 @@
 											<div class="form-group">
 												<label class="col-lg-1 control-label"></label>
 												<div class="col-md-8">
-													<button type="submit" class="btn btn-success"
-														th:text="${settings!=null?'修改':'添加'}"></button>
-													<span></span> <input th:if="${settings} eq null"
-														class="btn btn-default" value="重置" type="reset">
+													<shiro:hasPermission name="photo:edit">
+														<button type="submit" class="btn btn-success"
+															th:text="${settings!=null?'修改':'添加'}"></button>
+
+														<span></span>
+														<input th:if="${settings} eq null" class="btn btn-default"
+															value="重置" type="reset">
+													</shiro:hasPermission>
 												</div>
 											</div>
 										</form>

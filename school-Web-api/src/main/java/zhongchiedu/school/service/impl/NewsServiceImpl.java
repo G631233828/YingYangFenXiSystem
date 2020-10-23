@@ -1,7 +1,11 @@
 package zhongchiedu.school.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +33,7 @@ import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.WebMenu;
 import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.WebMenuService;
+import zhongchiedu.system.log.annotation.SystemServiceLog;
 import zhongchiedu.system.pojo.MultiMedia;
 import zhongchiedu.system.service.MultiMediaService;
 
@@ -58,6 +63,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 	}
 
 	@Override
+	@SystemServiceLog(description = "创建新闻出现错误")
 	public void SaveOrUpdateNews(News news, MultipartFile[] filenews, String oldnewsImg, String path, String dir,
 			String editorValue) {
 		if (Common.isNotEmpty(news)) {
@@ -164,7 +170,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			query.addCriteria(Criteria.where("isDelete").is(false));
 			query.addCriteria(Criteria.where("isDisable").is(false));
 			query.addCriteria(Criteria.where("_id").is(new ObjectId(id)));
-			
+
 		}
 
 		return this.findOneByQuery(query, News.class);
@@ -209,18 +215,17 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 
 	@Override
 	public List<News> findNewsByNewsIds(List<IndexSetting> indexs) {
-
 		Set<ObjectId> list = new HashSet();
 		List<News> news = new ArrayList<News>();
 
 		for (IndexSetting index : indexs) {
-			for(WebMenu menu: index.getWebMenu()) {
+			for (WebMenu menu : index.getWebMenu()) {
 				list.add(new ObjectId(menu.getId()));
 			}
 		}
 		List<News> getNews = null;
-		
-		for(ObjectId id:list) {
+
+		for (ObjectId id : list) {
 			Query query = new Query();
 			query.limit(20);
 			query.with(new Sort(new Order(Direction.DESC, "createTime")));
@@ -228,11 +233,26 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			query.addCriteria(Criteria.where("isDisable").is(false));
 			query.addCriteria(Criteria.where("webMenu.$id").is(id));
 			getNews = this.find(query, News.class);
-			if (getNews.size()>0) {
+			if (getNews.size() > 0) {
 				news.addAll(getNews);
 			}
 		}
 		return news;
 	}
+
+	@Override
+	public List<News> findNewsByDate(String date) {
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("createTime").gte(new Date(date)).lt(Common.dateplus(1)));
+		List<News> news = this.find(query, News.class);
+		return news;
+	}
+
+//	public static void main(String[] args) {
+//		System.out.println(Common.fromStringToDate(Common.getDateNow()));
+//	}
 
 }

@@ -7,7 +7,7 @@ $().ready(function() {
 				required : true,
 				minlength : 2,
 				remote : {
-					url : "sysRole/ajaxgetRepletes",
+					url : getRootPath()+"/admin/sysRole/ajaxgetRepletes",
 					type : "POST",
 					data : {
 						roleName : function() {

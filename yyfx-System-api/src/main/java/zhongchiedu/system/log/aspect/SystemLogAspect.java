@@ -26,6 +26,7 @@ import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 import zhongchiedu.system.log.annotation.SystemServiceLog;
 import zhongchiedu.system.pojo.Log;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.pojo.User;
 import zhongchiedu.system.service.LogService;
 
@@ -60,7 +61,8 @@ public class SystemLogAspect {
         HttpServletRequest request = requestAttributes.getRequest();
         HttpSession session = request.getSession();    
         //读取session中的用户    
-        User user = (User) session.getAttribute(Contents.USER_SESSION);    
+//        User user = (User) session.getAttribute(Contents.USER_SESSION);    
+        SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
         //请求的IP    
         String ip = request.getRemoteAddr();    
          try {    
@@ -102,7 +104,8 @@ public class SystemLogAspect {
         HttpSession session = request.getSession();    
         Gson gson = new Gson();
         //读取session中的用户    
-        User user = (User) session.getAttribute(Contents.USER_SESSION);    
+//        User user = (User) session.getAttribute(Contents.USER_SESSION);
+        SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
         //获取请求ip    
         String ip = request.getRemoteAddr();    
         //获取用户请求方法的参数并序列化为JSON格式字符串    

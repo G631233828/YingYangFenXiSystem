@@ -31,4 +31,6 @@ public class WebMenu  extends GeneralBean<WebMenu>{
 	private boolean weiWeb= false;//是否再同步到微网站
 	@DBRef
 	private MultiMedia  img; //微网站菜单图标
+	private int version = 0;//webmenu设置版本号
+	
 }

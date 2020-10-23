@@ -54,26 +54,26 @@ canvas#canvas4 {
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-									 <shiro:hasPermission name="sysusers:add">
+									<shiro:hasPermission name="sysusers:add">
 										<button class="btn btn-default btn-sm"
 											th:onclick="|window.location.href='@{/admin/sysUser}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
-								 </shiro:hasPermission> 
+									</shiro:hasPermission>
 
 									<shiro:hasPermission name="sysusers:edit">
 										<button class="btn btn-primary btn-sm"
 											onclick="return toeditPage('','sysUser')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
-									 </shiro:hasPermission> 
+									</shiro:hasPermission>
 
-									 <shiro:hasPermission name="sysusers:delete">
+									<shiro:hasPermission name="sysusers:delete">
 										<button class="btn btn-danger btn-sm"
 											th:onclick="|return del('','@{sysUser}')|">
 											<i class="glyphicon glyphicon-user"> </i>删除
 										</button>
-									</shiro:hasPermission> 
+									</shiro:hasPermission>
 
 								</div>
 
@@ -114,7 +114,8 @@ canvas#canvas4 {
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="user:${pageList.datas}">
+											<tr th:each="user:${pageList.datas}"
+												th:if="|${user?.id != session.sysuser_session?.id}&&${user?.userType!='system'}|">
 												<td class="numeric">
 													<div class="checkbox checkbox-inline"
 														style="margin-top: 0px;">
@@ -123,30 +124,34 @@ canvas#canvas4 {
 															th:for="${user.id}"></label>
 													</div>
 												</td>
-												<td class="numeric">[[${user.userName }]]</td>
-												<td class="numeric">[[${user.accountName }]]</td>
+												<td class="numeric">[[${user?.userName }]]</td>
+												<td class="numeric">[[${user?.accountName }]]</td>
 												<td class="numeric"
-													th:text="${user.role!=null?user.role.roleName:''}">[[${user.role.roleName
+													th:text="${user?.role!=null?user?.role?.roleName:''}">[[${user?.role?.roleName
 													}]]</td>
 												<td class="numeric" th:id="disBtn+${user.id}"
-													th:utext="${user.isDisable eq true }?|<button type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-success'>启用</button>|"></td>
-												<td class="numeric">[[${user.lastLoginTime }]]</td>
-												<td class="numeric">[[${user.lastLoginIp }]]</td>
-												<td class="numeric">
-												 <shiro:hasPermission name="sysusers:edit">
+													th:utext="${user.isDisable eq true }?|<button ${user?.id == session.sysuser_session?.id ?'disabled=disabled':'' }  type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-danger'>禁用</button>|:|<button ${user?.id == session.sysuser_session?.id ?'disabled=disabled':''} type='button' onclick=toDisable('${user.id}','admin/sysUser') class='btn btn-success'>启用</button>|">
+													</td>
+												
+												
+												<td class="numeric">[[${user?.lastLoginTime }]]</td>
+												<td class="numeric">[[${user?.lastLoginIp }]]</td>
+												<td class="numeric"><shiro:hasPermission
+														name="sysusers:edit">
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${user.id}','sysUser')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
 
-													 </shiro:hasPermission>
-													<shiro:hasPermission name="sysusers:delete"> 
-														<button class="btn btn-danger btn-xs"
-															th:onclick="|return del('@{sysUser/}${user.id}','')|">
-															<i class="fa fa-trash-o"> </i>删除
-														</button>
-													 </shiro:hasPermission> 
-													</td>
+													</shiro:hasPermission>
+													 <th:block th:if="${user?.id != session.sysuser_session?.id}">
+														<shiro:hasPermission name="sysusers:delete">
+															<button class="btn btn-danger btn-xs"
+																th:onclick="|return del('@{sysUser/}${user.id}','')|">
+																<i class="fa fa-trash-o"> </i>删除
+															</button>
+														</shiro:hasPermission>
+													</th:block></td>
 											</tr>
 
 

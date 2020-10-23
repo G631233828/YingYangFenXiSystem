@@ -65,6 +65,7 @@ public class SysSchoolController {
 	 */
 	@GetMapping("/sysSchool/{id}")
 	@RequiresPermissions(value = "sysschool:edit")
+	@SystemControllerLog(description = "修改学校")
 	public String toeditPage(@PathVariable String id, Model model) {
 		log.info("修改学校"+id);
 		SysSchool sysSchool = this.sysSchoolService.findOneById(id, SysSchool.class);
@@ -85,6 +86,7 @@ public class SysSchoolController {
 	 * 
 	 * @return
 	 */
+	@RequiresPermissions(value = "sysschool:add")
 	@GetMapping("/sysSchool")
 	public String addSysSchoolPage() {
 		return "system/sysSchool/add";

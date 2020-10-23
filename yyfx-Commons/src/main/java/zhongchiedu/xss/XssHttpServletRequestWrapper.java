@@ -12,6 +12,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     HttpServletRequest orgRequest = null;
 
     private boolean isIncludeRichText = false;
+    
 
     public XssHttpServletRequestWrapper(HttpServletRequest request, boolean isIncludeRichText) {
         super(request);
@@ -19,6 +20,55 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         this.isIncludeRichText = isIncludeRichText;
     }
 
+    
+//    
+//  @Override
+//  public String getParameter(String name) {
+//      if (("content".equals(name) || name.endsWith("WithHtml")) && !isIncludeRichText) {
+//          return super.getParameter(name);
+//      }
+//      name = XssFilterUtil.clean(name);
+//      String value = super.getParameter(name);
+//      if (StringUtils.isNotBlank(value)) {
+//      	String oldvalue = value;
+//      	String newvalue = XssFilterUtil.clean(value);
+//      	if(!oldvalue.equals(newvalue)) {
+//      		 orgRequest.setAttribute("isErrorIp", "false");
+//      	}
+//          value = newvalue;
+//      }
+//      return value;
+//  }
+//  
+//  @Override
+//  public String[] getParameterValues(String name) {
+//      String[] arr = super.getParameterValues(name);
+//      if (arr != null) {
+//          for (int i = 0; i < arr.length; i++) {
+//          	String a = arr[i];
+//          	String b =  XssFilterUtil.clean(arr[i]);
+//          	if(!a.equals(b)) {
+//          	   orgRequest.setAttribute("isErrorIp", "false");
+//          	}
+//              arr[i] = XssFilterUtil.clean(arr[i]);
+//          }
+//      }
+//   
+//      return arr;
+//  }  
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+    
+    
+    
+    
     /**
      * 覆盖getParameter方法，将参数名和参数值都做xss过滤.
      * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取
@@ -26,7 +76,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     @Override
     public String getParameter(String name) {
-        if (("content".equals(name) || name.endsWith("WithHtml")) && !isIncludeRichText) {
+        if (("editorValue".equals(name)||"content".equals(name) || name.endsWith("WithHtml")) && !isIncludeRichText) {
             return super.getParameter(name);
         }
         name = XssFilterUtil.clean(name);
@@ -39,6 +89,9 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String[] getParameterValues(String name) {
+    	if("editorValue".equals(name)) {
+    		return super.getParameterValues(name);
+    	}
         String[] arr = super.getParameterValues(name);
         if (arr != null) {
             for (int i = 0; i < arr.length; i++) {
