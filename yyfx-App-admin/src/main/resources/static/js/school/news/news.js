@@ -18,7 +18,7 @@
 			messages : {
 				title : {
 					required : a + "请输入新闻标题",
-					minlength : a + "用户名必须两个字符以上"
+					minlength : a + "新闻标题必须两个字符以上"
 				},
 				author : {
 					required : a + "请输入作者",

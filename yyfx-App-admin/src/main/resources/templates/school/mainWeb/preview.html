@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<!-- <head th:include="school/mainWeb/public/public_css::pub_css"></head> -->
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+
+</head>
+
+<body>
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="school/mainWeb/public/public_top::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<div class="row" th:fragment="title">
+				<div id="paper-top">
+					<div class="col-lg-3">
+						<h2 class="tittle-content-header">
+							<i class="icon-window"></i> [[${webMenu.name}]]
+						</h2>
+					</div>
+
+				</div>
+			</div>
+			<a class="btn btn-info btn-block" style="width: 100px;" onclick="javascript:history.back()" ><i class="fontawesome-arrow-left"></i>返回</a>
+			<div class="content-wrap">
+			
+			
+				<div class="row" th:utext="${news.content}">
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+
+
+
+</body>
+
+
+</html>

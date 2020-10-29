@@ -34,9 +34,11 @@ public interface NewsService extends GeneralService<News> {
 	
 	List<News> findNewsByDate(String date);
 	
+	BasicDataResult toRelease(String id);
 	
+	public Pagination<News> findPaginationAudit( Integer pageNo, Integer pageSize);
 
-	
+	void ToAudit(String id,String type);
 	
 	
 	

@@ -124,8 +124,8 @@
 													<td class="numeric">[[${news.views}]]</td>
 													<td class="numeric" th:id="disBtn+${news.id}"
 														th:utext="${news.isDisable eq true }?|<button type='button' onclick=toDisable('${news.id}','news') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${news.id}','news') class='btn btn-success'>启用</button>|"></td>
-													<td class="numeric"><!-- <shiro:hasPermission
-															name="news:edit"> -->
+													<td class="numeric">
+													 <shiro:hasPermission name="news:edit">
 															<button class="btn btn-primary btn-xs"
 																th:onclick="|return toeditPage('${news.id}','news')|">
 																<i class="fa fa-edit"> </i>编辑

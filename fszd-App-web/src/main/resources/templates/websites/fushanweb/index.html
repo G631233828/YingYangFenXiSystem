@@ -77,7 +77,7 @@
 						<dl>
 							<dt th:each="news:${newslist}"
 								th:if="${news?.webMenu?.name eq '学校公告'}">
-								<span class="ggrq left">[[${#dates.format(news.createTime,'MM-dd')}]]</span>
+								<span class="ggrq left">[[${#dates.format(news?.createTime,'MM-dd')}]]</span>
 								<a th:href="|@{/web/news/}${news.id}|" target="_blank">
 									<div class="circleprogress" style="margin-top: 22px;"></div> <span
 									class="gg_title">[[${#strings.abbreviate(news?.title,12)}]]</span>
@@ -100,9 +100,18 @@
 								<li th:each="news:${newslist}"
 									th:if="${news?.webMenu?.name eq '校园新闻'}"><a
 									th:title="${news?.title}" target="_blank"
-									th:href="|@{/web/news/}${news.id}|"> <img width="100%"
-										height="296px" alt
-										th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.generateName}|">
+									th:href="|@{/web/news/}${news.id}|"> 
+									
+									<th:block th:if="${news?.newsImg?.savePath == null}">
+											<img th:src="@{/assets/websites/fushanweb/images/nopic.jpg}"
+												class="hover">
+										</th:block>
+										<th:block th:if="${news?.newsImg?.savePath!=null}">
+											<img
+												th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.compressPicName}|"
+												class="hover">
+										</th:block>
+										
 								</a></li>
 							</ul>
 							<ol id="info_top_bannerCtrl"
@@ -119,8 +128,8 @@
 							<div class="newslist">
 								<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
 									class="jt"> <a th:href="|@{/web/news/}${news.id}|"
-									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
-									<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,25)}]]</span>
+									<span class="right">[[${#dates.format(news?.createTime,'yyyy-MM-dd')}]]</span>
 								</a>
 							</div>
 						</th:block>
@@ -131,7 +140,7 @@
 					<ul class="slides">
 						<li><a title href="#" target="_blank"> <img alt
 								height="96px"
-								th:style="|background: url(@{/assets/websites/fushanweb/images/bant.png}) no-repeat center;|"
+								th:style="|background: url(@{/assets/websites/fushanweb/images/bant2.jpg}) no-repeat center;|"
 								th:src="@{/assets/websites/fushanweb/images/alpha.png}">
 						</a></li>
 					</ul>
@@ -211,8 +220,8 @@
 										th:if="${news?.supMenu?.name eq '教师发展'}">
 										<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
 											class="jt"> <a th:href="|@{/web/news/}${news.id}|"
-											target="_blank"> <span class="new_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
-											<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+											target="_blank"> <span class="new_title">[[${#strings.abbreviate(news?.title,25)}]]</span>
+											<span class="right">[[${#dates.format(news?.createTime,'yyyy-MM-dd')}]]</span>
 										</a>
 									</dt>
 
@@ -235,8 +244,8 @@
 							<div class="newslist">
 								<img th:src="@{/assets/websites/fushanweb/images/jt.png}"
 									class="jt"> <a th:href="|@{/web/news/}${news.id}|"
-									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,30)}]]</span>
-									<span class="right">[[${#dates.format(news.createTime,'yyyy-MM-dd')}]]</span>
+									target="_blank"> <span class="news_title">[[${#strings.abbreviate(news?.title,25)}]]</span>
+									<span class="right">[[${#dates.format(news?.createTime,'yyyy-MM-dd')}]]</span>
 								</a>
 							</div>
 						</th:block>

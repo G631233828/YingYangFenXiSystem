@@ -35,6 +35,7 @@ import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.log.annotation.SystemServiceLog;
 import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.pojo.SysAudit;
 import zhongchiedu.system.service.MultiMediaService;
 
 @Service
@@ -45,6 +46,8 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 	private MultiMediaService multiMediaService;
 	@Autowired
 	private WebMenuService webMenuService;
+	@Autowired
+	private SysAudit sysAudit;
 
 	@Override
 	public Pagination<News> findPagination(String webMenuId, Integer pageNo, Integer pageSize) {
@@ -94,6 +97,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 				news.setContent(editorValue);
 			}
 			if (Common.isNotEmpty(ed)) {
+				ed.setStatus(0);
 				BeanUtils.copyProperties(news, ed);
 				this.save(ed);
 			} else {
@@ -182,6 +186,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 		Pagination<News> pagination = null;
 		Query query = new Query();
 		query.addCriteria(Criteria.where("isDelete").is(false));
+		query.addCriteria(Criteria.where("status").is(2));
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("supMenu.$id").is(new ObjectId(id)));
 		query.with(new Sort(new Order(Direction.DESC, "createDate")));
@@ -199,6 +204,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 	public Pagination<News> findNewsByWebMenuId(String id, Integer pageNo, Integer pageSize) {
 		Pagination<News> pagination = null;
 		Query query = new Query();
+		query.addCriteria(Criteria.where("status").is(2));
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("webMenu.$id").is(new ObjectId(id)));
@@ -228,6 +234,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 		for (ObjectId id : list) {
 			Query query = new Query();
 			query.limit(20);
+			query.addCriteria(Criteria.where("status").is(2));
 			query.with(new Sort(new Order(Direction.DESC, "createTime")));
 			query.addCriteria(Criteria.where("isDelete").is(false));
 			query.addCriteria(Criteria.where("isDisable").is(false));
@@ -242,13 +249,76 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 
 	@Override
 	public List<News> findNewsByDate(String date) {
-		
+
 		Query query = new Query();
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("createTime").gte(new Date(date)).lt(Common.dateplus(1)));
 		List<News> news = this.find(query, News.class);
 		return news;
+	}
+
+	@Override
+	public BasicDataResult toRelease(String id) {
+
+		if (Common.isEmpty(id)) {
+			return BasicDataResult.build(400, "未找到需要发布的内容，请刷新后重试", null);
+		}
+		News news = this.findOneById(id, News.class);
+		if (Common.isEmpty(news)) {
+			return BasicDataResult.build(400, "无法获取到资源信息，可能已经被删除", null);
+		}
+		int status = news.getStatus();
+		if (status == 1) {
+			return BasicDataResult.build(400, "发布内容已经在审核了，无需重新申请！", null);
+		} else if (status == 2) {
+			return BasicDataResult.build(400, "该条信息已经成功发布了！", null);
+		}
+		String msg="";
+		boolean flag= false;
+		if(sysAudit.isNewsAudit()) {
+			//是否开启审核
+			news.setStatus(1);
+			msg = "发布成功，请等待管理员审核！";
+		}else {
+			news.setStatus(2);
+			msg = "发布成功";
+			flag = true;
+		}
+		this.save(news);
+		return BasicDataResult.build(200,  msg, flag);
+		
+	}
+
+	@Override
+	public Pagination<News> findPaginationAudit(Integer pageNo, Integer pageSize) {
+		Pagination<News> pagination = null;
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDelete").is(false));
+		query.addCriteria(Criteria.where("status").is(1));
+		try {
+			pagination = this.findPaginationByQuery(query, pageNo, pageSize, News.class);
+		} catch (Exception e) {
+			log.info("查询所有信息失败——————————》" + e.toString());
+			e.printStackTrace();
+		}
+		return Common.isNotEmpty(pagination) ? pagination : new Pagination<News>();
+	}
+
+	@Override
+	public void ToAudit(String id, String type) {
+		// type =1 通过
+		// type =0驳回
+		if (type.equals("1") || type.equals("0")) {
+			News news = this.findOneById(id, News.class);
+			if (type.equals("1")) {
+				news.setStatus(2);
+			} else {
+				news.setStatus(3);
+			}
+			this.save(news);
+		}
+
 	}
 
 //	public static void main(String[] args) {

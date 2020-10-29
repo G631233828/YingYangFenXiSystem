@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.SiteTemplate;
@@ -34,6 +35,7 @@ import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.SiteTemplateService;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
+import zhongchiedu.system.pojo.SysUser;
 
 @Controller
 @RequestMapping("/school")
@@ -47,7 +49,7 @@ public class NewsController {
 	private @Autowired NewsService newsService;
 
 	@GetMapping("newses")
-    @RequiresPermissions(value = "news:list")
+    @RequiresPermissions(value = "sysnewss:list")
 	@SystemControllerLog(description = "跳转文章界面")
 	public String list(HttpSession session) {
 		// 获取站点模板
@@ -64,7 +66,7 @@ public class NewsController {
 	}
 
 	@GetMapping("findNews")
-	@RequiresPermissions(value = "news:list")
+	@RequiresPermissions(value = "sysnewss:list")
 	@SystemControllerLog(description = "跳转文章界面")
 	public String findNews(String webMenuId, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			Model model, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
@@ -86,7 +88,7 @@ public class NewsController {
 	
 	
 	@GetMapping("/addnews/{webMenuId}")
-	@RequiresPermissions(value = "news:add")
+	@RequiresPermissions(value = "sysnewss:add")
 	@SystemControllerLog(description = "跳转添加文章页面")
 	public String toaddNews(Model model,@PathVariable (name = "webMenuId")String webMenuId) {
 		
@@ -99,7 +101,7 @@ public class NewsController {
 	}
 	
 	@GetMapping("/editnews/{id}")
-	@RequiresPermissions(value = "news:edit")
+	@RequiresPermissions(value = "sysnewss:edit")
 	@SystemControllerLog(description = "跳转编辑文章页面")
 	public String toeditNews(Model model,@PathVariable (name = "id")String id) {
 		
@@ -118,7 +120,7 @@ public class NewsController {
 	private String dir;
 	
 	@PostMapping("/news")
-	@RequiresPermissions(value = "news:add")
+	@RequiresPermissions(value = "sysnewss:add")
 	@SystemControllerLog(description = "添加文章")
 	public String addNews(HttpServletRequest request, @ModelAttribute("news") News news,
 			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
@@ -129,7 +131,7 @@ public class NewsController {
 	}
 	
 	@PutMapping("/news")
-	@RequiresPermissions(value = "news:edit")
+	@RequiresPermissions(value = "sysnewss:edit")
 	@SystemControllerLog(description = "编辑文章")
 	public String editNews(HttpServletRequest request, @ModelAttribute("news") News news,
 			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
@@ -143,7 +145,7 @@ public class NewsController {
 	
 	
 	@DeleteMapping("/news/{id}")
-	@RequiresPermissions(value = "news:delete")
+	@RequiresPermissions(value = "sysnewss:delete")
 	@SystemControllerLog(description = "删除")
 	public String delete(@PathVariable String id) {
 		News news = this.newsService.findOneById(id, News.class);
@@ -154,6 +156,13 @@ public class NewsController {
 	}
 	
 	
+	@GetMapping("/preview/{id}")
+	public String NewsPreview(Model model,@PathVariable (name = "id")String id) {
+		News news = this.newsService.findOneById(id, News.class);
+		model.addAttribute("webMenu", news.getWebMenu());
+		model.addAttribute("news", news);
+		return "school/mainWeb/preview";
+	}
 	
 	
 	
@@ -162,6 +171,51 @@ public class NewsController {
 	public BasicDataResult toDisable(@RequestParam(value = "id", defaultValue = "") String id) {
 		return this.newsService.toDisable(id);
 	}
+	
+	
+	/**
+	 * 发布审核
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "news/release", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public BasicDataResult toRelease(@RequestParam(value = "id", defaultValue = "") String id) {
+		
+		return this.newsService.toRelease(id);
+	}
+	
+	
+	
+	
+	
+	
+	@GetMapping("newsAudit")
+	@RequiresPermissions(value = "audit:list")
+	@SystemControllerLog(description = "查询所有待审核新闻")
+	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
+			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
+
+		Pagination<News> pagination = this.newsService.findPaginationAudit(pageNo, pageSize);
+		if (pagination == null)
+			pagination = new Pagination<News>();
+
+		model.addAttribute("pageList", pagination);
+
+		return "school/audit/list";
+	}
+	
+	
+
+	@GetMapping("/audit")
+	@RequiresPermissions(value = "audit:edit")
+	@SystemControllerLog(description = "新闻审核")
+	public String toaudit(String id,String type) {
+		this.newsService.ToAudit(id, type);
+		return "redirect:/school/newsAudit";
+	}
+	
+	
 	
 	
 	

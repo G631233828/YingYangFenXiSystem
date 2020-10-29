@@ -32,6 +32,9 @@ public class News extends GeneralBean<News>{/**
 	@DBRef
 	private WebMenu supMenu;//根栏目Id
 	
+	private int status = 0;//发布状态   0草稿 1审核中   2发布成功  
+	
+	
 	
 
 }

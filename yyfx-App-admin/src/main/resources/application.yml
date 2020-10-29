@@ -51,8 +51,8 @@ white:  ips:  - 127.0.0.1
  #配置是否启用ip过滤
 ipfilter:  system: true
   web: true
-abnormal:  name:  - script
-
+#配置网站是否开始审核
+audit:  news-audit: true #开启新闻审核
 
 
 
