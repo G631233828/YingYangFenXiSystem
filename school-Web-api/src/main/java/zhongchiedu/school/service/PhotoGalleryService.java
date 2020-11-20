@@ -13,7 +13,7 @@ import zhongchiedu.system.pojo.MultiMedia;
 public interface PhotoGalleryService extends GeneralService<PhotoGallery> {
 
 	
-	Pagination<PhotoGallery> findPagination(Integer pageNo, Integer pageSize);
+	Pagination<PhotoGallery> findPagination(Integer status,Integer pageNo, Integer pageSize);
 	
 	void SaveOrUpdate(PhotoGallery photoGallery);
 	
@@ -31,7 +31,7 @@ public interface PhotoGalleryService extends GeneralService<PhotoGallery> {
 	
 	void toRecommend(String id,String imgids);
 	
-	
+	void ToAudit(String id,String type);
 	
 	
 }

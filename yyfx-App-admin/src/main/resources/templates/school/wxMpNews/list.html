@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta name="referrer" content="never">
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='website')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							<div class="title-alt">
+								<div>
+
+
+									<shiro:hasPermission name="wxMpNews:delete">
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{school/wxMpNews}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
+									<shiro:hasPermission name="wxMpNews:release">
+										<button class="btn btn-success btn-sm"
+											onclick="return release()">
+											<i class="fontawesome-external-link"> </i>同步
+										</button>
+									</shiro:hasPermission>
+
+
+								</div>
+
+								<div class="titleClose">
+									<a class="gone" href="#tableStaticClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#tableStatic"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+							<div class="body-nest" id="tableStatic">
+
+								<section id="flip-scroll">
+									<div
+										style="overflow-y: auto; overflow-x: auto; white-space: nowrap; text-overflow: ellipsis;">
+										<table
+											class="table table-bordered table-striped cf text-nowrap  table-hover">
+											<thead class="cf">
+												<tr>
+													<th class="numeric" style="width: 20px;">
+														<div class="checkbox checkbox-inline"
+															style="margin-top: 0px;">
+															<input type="checkbox" id="checkall" name="checkall" />
+															<label for="checkall"></label>
+														</div>
+													</th>
+													<th class="numeric">标题</th>
+													<th class="numeric">作者</th>
+													<th class="numeric">更新时间</th>
+													<th class="numeric">图片地址</th>
+													<th class="numeric">url</th>
+													<th class="numeric">使用状态</th>
+													<th class="numeric">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<!-- 目录 -->
+												<th:block th:each="news:${pageList.datas}">
+													<tr>
+														<td class="numeric">
+															<div class="checkbox checkbox-inline"
+																style="margin-top: 0px;">
+																<input type="checkbox" name="ids" th:id="${news.id}"
+																	class="numeric" th:value="${news.id}"> <label
+																	th:for="${news.id}"></label>
+															</div>
+														</td>
+														<td class="numeric">[[${news.title}]]</td>
+														<td class="numeric">[[${news.author}]]</td>
+														<td class="numeric">[[${#dates.format(news?.updateTime,'yyyy-MM-dd
+															HH:mm:ss')}]]</td>
+														<td class="numeric" title="${news.thumbUrl}"><a
+															th:href="${news.thumbUrl}" target="_blank">点击查看图片</a></td>
+														<td class="numeric" title="${news.url}"><a
+															th:href="${news.url}" target="_blank">点击查看内容</a></td>
+														<td class="numeric" th:id="disBtn+${news.id}"
+															th:utext="${news.isDisable eq true }?|<button type='button' onclick=toDisable('${news.id}','school/wxMpNews') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${news.id}','school/wxMpNews') class='btn btn-success'>启用</button>|"></td>
+														<td class="numeric"><shiro:hasPermission
+																name="wxMpNews:delete">
+																<button class="btn btn-danger btn-xs"
+																	th:onclick="|return del('@{school/wxMpNews/}${news.id}','')|">
+																	<i class="fa fa-trash-o"> </i>删除
+																</button>
+															</shiro:hasPermission></td>
+													</tr>
+
+												</th:block>
+
+
+											</tbody>
+										</table>
+									</div>
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList.pageSize}行
+										－ 当前页${pageList.pageNo}页 － 共${pageList.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/school/wxMpNews?pageNo=}+${pageList.upPage}">上一页</a>
+													</li>
+													<li th:each="page:${pageList.navigatepageNums}"
+														th:class="${page  == pageList.pageNo}?active:''"><a
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/school/wxMpNews?pageNo=}+${page}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
+														<a
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/school/wxMpNews?pageNo=}+${pageList.nextPage}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+									</div>
+								</section>
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+
+			<div th:replace="public/public::myModal"></div>
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+	<div th:replace="public/public_js::validator"></div>
+
+	<script type="text/javascript">
+/* 	$(".checkOperator").click(function() {
+		var selectId = $(this).attr("id");
+		var flag = $("[name="+selectId+"]:checkbox").is(':checked');
+		alert(flag)
+		$("[name="+selectId+"]:checkbox").each(function() {
+			$(this).prop("checked", flag);
+		})
+	}) */
+
+	$(".checkOperator").click(function() {
+		var flag = $("[name="+this.id+"]:checkbox").is(':checked');
+		flag = flag == false ? true : false;
+		$("[name="+this.id+"]:checkbox").prop("checked", flag);
+
+	})
+	
+	
+		function release() {
+		swal({
+			title : "发布同步请求之后会获取最新数据",
+			text : "每月调用微信同步数据接口有数量限制，请谨慎使用！",
+			type : "warning",
+			showCancelButton : true,
+			confirmButtonColor : "#DD6B55",
+			confirmButtonText : "确定",
+			cancelButtonColor: "#DD6B55",
+			cancelButtonText : "取消",
+			closeOnConfirm : true,
+			closeOnCancel : false
+		}, function(a) {
+			if (a) {
+				$.ajax({
+					type : 'POST',
+					url : getRootPath() + "/school/wxMpNews/tongbu",
+					dataType : "json",
+					success : function(data) {
+
+							jqueryAlert({
+								'icon' : getRootPath() + '/plugs/alert/img/right.png',
+								'content' : data.msg,
+								'closeTime' : 2000,
+							})
+						
+						/* 	$("#modalbody").text(data.msg);
+							$("#myModal").modal('show'); */
+					}
+				});
+			} else {
+				swal("已取消", "您取消了操作！", "error")
+			}
+		})
+	
+	
+	
+		}
+
+
+	</script>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function(){
+			var menu = /*[[${pageList.datas}]]*/;
+			if(menu != null){
+				for (var i in menu){
+
+					var items = menu[i].sysMenuAuthority;
+					for(var j in items){
+					 	var id_ ="#"+menu[i].id+"_"+items[j].sysOperationAuthority.id;
+						$(id_).prop("checked", true);  
+					}
+					}
+					
+				}
+
+	
+					
+		})
+	/*]]>*/
+
+	
+	</script>
+
+
+</body>
+
+</html>

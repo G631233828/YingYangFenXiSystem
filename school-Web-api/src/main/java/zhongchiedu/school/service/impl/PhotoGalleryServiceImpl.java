@@ -28,6 +28,7 @@ import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.PhotoGallery;
 import zhongchiedu.school.service.PhotoGalleryService;
 import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.pojo.SysAudit;
 import zhongchiedu.system.service.MultiMediaService;
 
 @Service
@@ -36,13 +37,21 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 
 	@Autowired
 	private MultiMediaService multiMediaService;
-
+	@Autowired
+	private SysAudit sysAudit;
 	@Override
-	public Pagination<PhotoGallery> findPagination(Integer pageNo, Integer pageSize) {
+	public Pagination<PhotoGallery> findPagination(Integer status,Integer pageNo, Integer pageSize) {
 		Pagination<PhotoGallery> pagination = null;
 		Query query = new Query();
+		if(status ==1) {
+			query.addCriteria(Criteria.where("status").is(1));
+			query.addCriteria(Criteria.where("showInIndex").is(true));
+		}else if(status ==2) {
+			query.addCriteria(Criteria.where("status").is(2));
+			query.addCriteria(Criteria.where("showInIndex").is(true));
+			
+		}
 		query.addCriteria(Criteria.where("isDelete").is(false));
-		query.addCriteria(Criteria.where("showInIndex").is(true));
 		try {
 			pagination = this.findPaginationByQuery(query, pageNo, pageSize, PhotoGallery.class);
 
@@ -56,10 +65,19 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 	@Override
 	public void SaveOrUpdate(PhotoGallery photoGallery) {
 		PhotoGallery ed = null;
+		
+		if(sysAudit.isNewsAudit()) {
+			//是否开启审核
+			photoGallery.setStatus(1);
+		}else {
+			photoGallery.setStatus(2);
+		}
+		
 		if (Common.isNotEmpty(photoGallery.getId())) {
 			ed = this.findOneById(photoGallery.getId(), PhotoGallery.class);
 		}
 		if (Common.isNotEmpty(ed)) {
+			photoGallery.setImgs(ed.getImgs());
 			BeanUtils.copyProperties(photoGallery, ed);
 			this.save(ed);
 		} else {
@@ -176,6 +194,7 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 				List<MultiMedia> list = photo.getImgs();
 				list.addAll(multi);
 			}
+			photo.setStatus(1);//上传照片需要重新审核
 			this.save(photo);
 
 		}
@@ -186,8 +205,9 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 	public List<PhotoGallery> findImgs(Integer num) {
 		//获取最新的20个相册
 		Query query = new Query();
-		query.limit(20);// 从多少条开始,取多少条记录
+		query.limit(num);// 从多少条开始,取多少条记录
 		query.addCriteria(Criteria.where("showInIndex").is(true));
+		query.addCriteria(Criteria.where("status").is(2));
 		query.with(new Sort(new Order(Direction.DESC, "createTime")));
 		List<PhotoGallery> photos = this.find(query, PhotoGallery.class);
 		return photos;
@@ -214,6 +234,19 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 
 		}
 
+	}
+
+	@Override
+	public void ToAudit(String id, String type) {
+		// type =1 通过
+				// type =0驳回
+				if (type.equals("1") || type.equals("0")) {
+					PhotoGallery photo = this.findOneById(id, PhotoGallery.class);
+					if (type.equals("1")) {
+						photo.setStatus(2);
+					} 
+					this.save(photo);
+				}
 	}
 
 }

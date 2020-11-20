@@ -6,7 +6,7 @@
 html,
 body {
     font-size: 100%;
-    font-family: "微软雅黑";
+    font-family: "寰蒋闆呴粦";
 }
 
 body {
@@ -49,7 +49,7 @@ textarea {
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
-    /* 关于解决输入框背景颜色 */
+    /* 鍏充簬瑙ｅ喅杈撳叆妗嗚儗鏅鑹� */
 }
 
 ::-webkit-input-placeholder {
@@ -228,7 +228,7 @@ img {
     margin-bottom: 15px;
 }
 
-/*清除浮动*/
+/*娓呴櫎娴姩*/
 .clearfix:after {
     content: ".";
     display: block;
@@ -243,7 +243,7 @@ img {
 
 .yichu {
     display: inline-block;
-    width: 57% !important;
+   /*  width: 57% !important; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -305,7 +305,7 @@ img {
     padding-bottom: 40px;
 }
 
-/*底部*/
+/*搴曢儴*/
 .footer_ {
     min-width: 1200px;
     height: 25px;
@@ -353,7 +353,7 @@ img {
     display: none;
 }
 
-/*游客登录框*/
+/*娓稿鐧诲綍妗�*/
 .form {
     width: 430px;
     height: 225px;
@@ -405,7 +405,7 @@ input {
     text-indent: 2px !important;
 }
 
-/*评论*/
+/*璇勮*/
 .comment {
     border: 1px solid #dedfe3;
     margin-top: 45px;
@@ -447,7 +447,7 @@ textarea {
     padding-top: 10px;
 }
 
-/*评论-回复*/
+/*璇勮-鍥炲*/
 .comment {
     border: 1px solid #dedfe3;
     margin-top: 45px;
@@ -517,7 +517,7 @@ textarea {
     padding: 5px 15px 5px 15px;
     float: right;
     border: none;
-    font-family: "微软雅黑";
+    font-family: "寰蒋闆呴粦";
     cursor: pointer;
     margin: 10px 0;
 }
@@ -528,7 +528,7 @@ textarea {
     padding: 5px 15px;
     float: right;
     border: none;
-    font-family: "微软雅黑";
+    font-family: "寰蒋闆呴粦";
     margin-right: 20px;
     cursor: pointer;
     width: 30px;
@@ -580,7 +580,7 @@ textarea {
     border: none;
     background-color: #fff;
     cursor: pointer;
-    font-family: "微软雅黑";
+    font-family: "寰蒋闆呴粦";
 }
 
 .huifu {
@@ -610,7 +610,7 @@ textarea {
     outline: none;
     border: none;
     font-size: 16px;
-    font-family: "微软雅黑";
+    font-family: "寰蒋闆呴粦";
     margin: 10px 0;
 }
 
@@ -653,7 +653,7 @@ textarea {
     position: absolute;
 }
 
-/*头像占位图*/
+/*澶村儚鍗犱綅鍥�*/
 .tx_default,
 .tx_default_1,
 .tx_default_2,
@@ -793,7 +793,7 @@ textarea {
     height: 100%;
 }
 
-/*首页占位图*/
+/*棣栭〉鍗犱綅鍥�*/
 .img_default_7,
 .img_default_8,
 .img_default_9,
@@ -1154,7 +1154,7 @@ textarea {
     background-image: url("../images/yc_default.png");
 }
 
-/*弹出框、遮罩层方法1*/
+/*寮瑰嚭妗嗐�侀伄缃╁眰鏂规硶1*/
 .md_tanchu_mask {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -1218,7 +1218,7 @@ textarea {
     clear: both;
 }
 
-/*搜索*/
+/*鎼滅储*/
 .search_bg {
     height: 40px;
     line-height: 40px;
@@ -1258,7 +1258,7 @@ textarea {
     cursor: pointer;
 }
 
-/*飘窗*/
+/*椋樼獥*/
 .float_ad_img {
     min-width: 200px;
     /*height: 150px;*/
@@ -1288,7 +1288,7 @@ textarea {
 }
 
 
-/* 学校新闻标题放大 */
+/* 瀛︽牎鏂伴椈鏍囬鏀惧ぇ */
 .zixun_info_head h3 {
     font-size: 18px;
 }

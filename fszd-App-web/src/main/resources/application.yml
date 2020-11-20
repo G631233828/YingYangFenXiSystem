@@ -1,5 +1,16 @@
-
-        
+wx:
+  mp:
+    configs:
+      - appId: wx40d294a89bcd9fcb
+        secret: e48b8b33730cb8bf7ed2aa26e671549b
+#        token: zhongchi
+#        aesKey: HbQ8Z0VJjGXgc5AmyuBMpqmDDj2YJJgNEPVFrDbjoZ2
+logging:
+  level:
+    org.springframework.web: INFO
+    zhongchiedu.school.service.impl: info
+    com.github.binarywang.demo.wx.mp: DEBUG
+    me.chanjar.weixin: DEBUG      
 #配置项目访问路径
 #server:servlet:context-path:/
 #启动端口
@@ -39,7 +50,6 @@ upload:
 
  #配置是否启用ip过滤
 ipfilter:  web: true
-abnormal:  name:  - script
 
  
 

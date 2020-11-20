@@ -41,5 +41,13 @@ public interface WebMenuService  extends GeneralService<WebMenu>{
 	
 	List<WebMenu> findWebMenuInIds(String menuIds);
 	
+	void updateNewsByWebMenu(WebMenu newwebmenu,WebMenu oldwebMenu);
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -29,7 +29,7 @@
 
 
 				<li th:each="webmenu:${session.webmenu}"
-					th:if="${webmenu.type == 1}"><a
+					th:if="${webmenu.type == 1 && webmenu.name !='隐藏栏目'}"><a
 					th:href="|@{/web/list/}${webmenu.id}|">[[${webmenu.name}]]</a>
 					<ul>
 						<li th:each="webmenu2:${session.webmenu}"
@@ -146,11 +146,10 @@
 					<p class="p1">电话：[[${session.settings?.connectPhone}]]</p>
 					<p> 地址：[[ ${session.settings?.address}]]</p>
 					<p>[[${session.settings?.coryright}]]</p>
-					<p style="cursor: pointer;"
-						th:onclick="|window.open(http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${session.settings?.recordNumber})|">
+					<p style="cursor: pointer;" >
 						沪公网安备 <img th:src="@{/assets/websites/fushanweb/images/ba.png}"
 							style="width: 16px; height: 20px; vertical-align: bottom; margin-top: 0px">
-						[[${session.settings?.recordNumber}]] 号&nbsp;
+						<a th:href="|http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${session.settings?.recordNumber}|" target="_black">[[${session.settings?.recordNumber}]] 号</a>&nbsp;
 					</p>
 				</div>
 				<div class="left yc_ewm">

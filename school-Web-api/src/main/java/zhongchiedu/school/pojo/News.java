@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import zhongchiedu.framework.pojo.GeneralBean;
 import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.pojo.SysUser;
 
 @Data
 @AllArgsConstructor
@@ -31,6 +32,8 @@ public class News extends GeneralBean<News>{/**
 	private String releaseDate;//发布日期
 	@DBRef
 	private WebMenu supMenu;//根栏目Id
+	@DBRef
+	private SysUser sysUser;//操作人
 	
 	private int status = 0;//发布状态   0草稿 1审核中   2发布成功  
 	

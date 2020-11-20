@@ -32,5 +32,6 @@ public class WebMenu  extends GeneralBean<WebMenu>{
 	@DBRef
 	private MultiMedia  img; //微网站菜单图标
 	private int version = 0;//webmenu设置版本号
+	private boolean login = false;//是否需要登陆查看
 	
 }

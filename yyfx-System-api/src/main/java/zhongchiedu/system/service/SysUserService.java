@@ -43,5 +43,6 @@ public interface SysUserService extends GeneralService<SysUser>{
 
 	List<SysResource> findAllSysResources(SysUser user);
 	
+	SysUser findUserByUserNamePassword(String userName,String passWord);
 	
 }

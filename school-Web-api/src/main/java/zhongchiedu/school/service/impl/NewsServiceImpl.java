@@ -1,16 +1,15 @@
 package zhongchiedu.school.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.servlet.http.HttpSession;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.school.pojo.IndexSetting;
@@ -36,6 +37,7 @@ import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.log.annotation.SystemServiceLog;
 import zhongchiedu.system.pojo.MultiMedia;
 import zhongchiedu.system.pojo.SysAudit;
+import zhongchiedu.system.pojo.SysUser;
 import zhongchiedu.system.service.MultiMediaService;
 
 @Service
@@ -50,9 +52,14 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 	private SysAudit sysAudit;
 
 	@Override
-	public Pagination<News> findPagination(String webMenuId, Integer pageNo, Integer pageSize) {
+	public Pagination<News> findPagination(String webMenuId, Integer pageNo, Integer pageSize,HttpSession session) {
 		Pagination<News> pagination = null;
 		Query query = new Query();
+		SysUser sysUser = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
+		if(sysUser.getUserType().equals(UserType.SCHOOL_USER)) {
+			query.addCriteria(Criteria.where("sysUser.$id").is(new ObjectId(sysUser.getId())));
+		}
+		
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		query.addCriteria(Criteria.where("webMenu.$id").is(new ObjectId(webMenuId)));
 		try {
@@ -68,7 +75,12 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 	@Override
 	@SystemServiceLog(description = "创建新闻出现错误")
 	public void SaveOrUpdateNews(News news, MultipartFile[] filenews, String oldnewsImg, String path, String dir,
-			String editorValue) {
+			String editorValue,HttpSession session) {
+		SysUser sysUser = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
+		if(Common.isEmpty(sysUser)) {
+			return;
+		}
+		news.setSysUser(sysUser);
 		if (Common.isNotEmpty(news)) {
 			WebMenu webMenu = this.webMenuService.findOneById(news.getWebMenu().getId(), WebMenu.class);
 			if (Common.isNotEmpty(webMenu)) {
@@ -221,24 +233,24 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 
 	@Override
 	public List<News> findNewsByNewsIds(List<IndexSetting> indexs) {
-		Set<ObjectId> list = new HashSet();
+		Set<WebMenu> list = new HashSet();
 		List<News> news = new ArrayList<News>();
 
 		for (IndexSetting index : indexs) {
 			for (WebMenu menu : index.getWebMenu()) {
-				list.add(new ObjectId(menu.getId()));
+				list.add(menu);
 			}
 		}
 		List<News> getNews = null;
 
-		for (ObjectId id : list) {
+		for (WebMenu menu : list) {
 			Query query = new Query();
-			query.limit(20);
+			query.limit(10);
 			query.addCriteria(Criteria.where("status").is(2));
 			query.with(new Sort(new Order(Direction.DESC, "createTime")));
 			query.addCriteria(Criteria.where("isDelete").is(false));
 			query.addCriteria(Criteria.where("isDisable").is(false));
-			query.addCriteria(Criteria.where("webMenu.$id").is(id));
+			query.addCriteria(Criteria.where("webMenu.$id").is(new ObjectId(menu.getId())));
 			getNews = this.find(query, News.class);
 			if (getNews.size() > 0) {
 				news.addAll(getNews);
@@ -319,6 +331,13 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 			this.save(news);
 		}
 
+	}
+
+	@Override
+	public List<News> findNewsByWebMenuId(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("webMenu.$id").is(new ObjectId(id)));
+		return this.find(query, News.class);
 	}
 
 //	public static void main(String[] args) {

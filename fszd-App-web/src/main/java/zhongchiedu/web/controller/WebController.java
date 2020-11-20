@@ -14,18 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.PhotoGallery;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.pojo.WxMpNews;
 import zhongchiedu.school.service.IndexSettingService;
 import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.PhotoGalleryService;
 import zhongchiedu.school.service.WebMenuService;
+import zhongchiedu.school.service.WxMpMaterialNewsGetService;
+import zhongchiedu.school.service.WxMpNewsService;
 import zhongchiedu.system.log.annotation.WebControllerLog;
+import zhongchiedu.system.pojo.SysUser;
 
-@RequestMapping("/web")
+@RequestMapping("/")
 @Controller
 public class WebController {
 
@@ -40,8 +45,25 @@ public class WebController {
 	@Autowired
 	private PhotoGalleryService photoGalleryService;
 
+	@Autowired
+	private WxMpNewsService wxMpNewsService;
+	@Autowired
+	private WxMpMaterialNewsGetService wxMpMaterialNewsGetService;
+
+	@GetMapping(value = "/")
+	@WebControllerLog(description = "请求网站首页")
+	public String index(Model model) {
+		// this.wxMpNewsService.getWpNews();
+//		this.wxMpMaterialNewsGetService.getWxMpMaterialNews();
+////		WxMpNews wx = this.wxMpNewsService.findBymediaId("");
+////		System.out.println(wx);
+//		c
+
+		return "redirect:/web/index";
+	}
+
 //	@RequestMapping(value = "/index")
-	@GetMapping(value = "/index")
+	@GetMapping(value = "web/index")
 	@WebControllerLog(description = "请求网站首页")
 	public String toindex(Model model) {
 		List<IndexSetting> indexs = this.indexSettingService.findIndexSetting();
@@ -50,6 +72,8 @@ public class WebController {
 		model.addAttribute("newslist", newslist);
 		List<PhotoGallery> imgs = this.photoGalleryService.findImgs(20);
 		model.addAttribute("imgs", imgs);
+		Pagination<WxMpNews> findPagination = this.wxMpNewsService.findPagination(1, 5);
+		model.addAttribute("wxnews", findPagination.getDatas());
 
 		return "websites/fushanweb/index";
 	}
@@ -77,13 +101,26 @@ public class WebController {
 //	}
 //	
 
-	@RequestMapping(value = "/list/{menuId}")
+//	@RequestMapping("web/login")
+//	public  String tologin() {
+//		return
+//	}
+
+	@RequestMapping(value = "web/list/{menuId}")
 	@WebControllerLog(description = "查看新闻列表")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-			@PathVariable(value = "menuId", required = true) String menuId) {
+			@PathVariable(value = "menuId", required = true) String menuId, HttpSession session) {
 		// 1.获取相同目录的菜单
 		WebMenu webMenu = this.webMenuService.findWebMenuById(menuId);
+		if (webMenu.isLogin()) {
+			SysUser sysUser = (SysUser) session.getAttribute(Contents.WEBSYSUSER);
+			if (Common.isEmpty(sysUser)) {
+				model.addAttribute("menuId", menuId);
+				// 前台Session为空，跳转登录界面
+				return "websites/fushanweb/login";
+			}
+		}
 		// type = 1
 		if (webMenu.getType() == 1) {
 			List<WebMenu> webMenusleft = this.webMenuService.findWebMenuByFirstLevel(webMenu.getId());
@@ -107,13 +144,21 @@ public class WebController {
 		return "websites/fushanweb/list";
 	}
 
-	@RequestMapping(value = "/news/{newsId}")
+	@RequestMapping(value = "web/news/{newsId}")
 	@WebControllerLog(description = "查看新闻")
 	public String findNews(HttpSession session, HttpServletRequest request, Model model,
 			@PathVariable(value = "newsId", required = true) String newsId) {
 
 		News news = this.newsService.findNewsById(newsId);
 		if (Common.isNotEmpty(news)) {
+			if (news.getWebMenu().isLogin()) {
+				SysUser sysUser = (SysUser) session.getAttribute(Contents.WEBSYSUSER);
+				if (Common.isEmpty(sysUser)) {
+					model.addAttribute("newsId", newsId);
+					// 前台Session为空，跳转登录界面
+					return "websites/fushanweb/login";
+				}
+			}
 
 			String ip = request.getRemoteAddr();
 			String getIp = (String) session.getAttribute(ip + "_" + newsId);
@@ -134,39 +179,45 @@ public class WebController {
 	}
 
 	// 获取图片列表
-	@RequestMapping(value = "/listImgs")
+	@RequestMapping(value = "web/listImgs")
 	@WebControllerLog(description = "查看图片列表")
 	public String listImgs(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+			@RequestParam(value = "pageSize", defaultValue = "12") Integer pageSize) {
 
 		// 获取所有相册
-		Pagination<PhotoGallery> pageList = this.photoGalleryService.findPagination(pageNo, pageSize);
+		Pagination<PhotoGallery> pageList = this.photoGalleryService.findPagination(2,pageNo, pageSize);
 		model.addAttribute("pageList", pageList);
 
 		return "websites/fushanweb/listImgs";
 	}
-	
-	
-	
-	@RequestMapping(value = "/imgs/{photoId}")
+
+	@RequestMapping(value = "web/imgs/{photoId}")
 	@WebControllerLog(description = "查看图片")
 	public String findImgs(HttpSession session, HttpServletRequest request,
 			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 			@PathVariable(value = "photoId", required = true) String photoId) {
-		//根据相册获取所有照片
+		// 根据相册获取所有照片
 		PhotoGallery photo = this.photoGalleryService.findOneById(photoId, PhotoGallery.class);
-		
+
 		model.addAttribute("photo", photo);
-		
 
 		return "websites/fushanweb/imgs";
 	}
+	
+	
+	
+	
+	@RequestMapping(value = "web/wx")
+	@WebControllerLog(description = "查看微信文章")
+	public String findWx(HttpSession session, HttpServletRequest request,
+			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
 
-	
-	
-	
-	
+		Pagination<WxMpNews> pageList = this.wxMpNewsService.findPagination(pageNo, pageSize);
+		model.addAttribute("pageList", pageList);
+		return "websites/fushanweb/wxNewsList";
+	}
 	
 	
 	

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='audit')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							
+			<div class="body-nest" id="tableStatic">
+
+								<section id="flip-scroll">
+
+									<table class="table table-bordered table-striped cf">
+										<thead class="cf">
+											<tr>
+												<th class="numeric" style="width: 20px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" id="checkall" name="checkall" /> <label
+															for="checkall"></label>
+													</div>
+												</th>
+												<th class="numeric">标题</th>
+												<th class="numeric">发布人</th>
+												<th class="numeric">状态</th>
+												<th class="numeric">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="photo:${pageList?.datas}">
+												<td class="numeric">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
+														<input type="checkbox" name="ids" th:id="${photo.id}"
+															class="numeric" th:value="${photo.id}"> <label
+															th:for="${photo.id}"></label>
+													</div>
+												</td>
+												<td class="numeric">[[${photo.name }]]</td>
+												<td class="numeric">[[${photo.author }]]</td>
+												<td class="numeric" th:id="status+${photo.id}"
+													th:utext="${photo?.status == 0?'<label style=color:blue>草稿</label>':(photo?.status)==1?'<label style=color:red>正在审核</label>':(photo?.status)==2?'<label style=color:green>已发布</label>':''}"></td>
+
+
+
+												<td class="numeric">
+											
+														<button class="btn btn-success btn-xs"
+															th:onclick="|return toaudit('${photo.id}','1')|">
+															<i class="fontawesome-ok"> </i>通过
+														</button>
+														
+														<button class="btn btn-danger btn-xs"
+															th:onclick="|return toaudit('${photo.id}','2')|">
+															<i class="fontawesome-remove"> </i>驳回
+														</button>
+													
+														<button class="btn ladda-button btn-sm"
+															th:onclick="|window.location.href='@{/school/photos/}${photo.id}'|">
+															<i class="entypo-book-open"> </i>预览
+														</button>
+													
+													
+													</td>
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList?.pageSize}行
+										－ 当前页${pageList?.pageNo}页 － 共${pageList?.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList?.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{school/photoAudit(pageNo=${pageList.upPage})}">上一页</a>
+													</li>
+													<li th:each="page:${pageList?.navigatepageNums}"
+														th:class="${page  == pageList?.pageNo}?active:''"><a
+														th:href="${page eq pageList?.pageNo}?'javascript:void(0)':@{school/photoAudit(pageNo=${page})}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList?.pageNo eq pageList?.totalPage}?disabled:''">
+														<a
+														th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{school/photoAudit(pageNo=${pageList?.nextPage})}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+										<!-- 分页结束 -->
+									</div>
+
+								</section>
+
+							</div>
+							
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+	<script type="text/javascript">
+	function toaudit(o,o2){
+		var text;
+		var title;
+		var confirmText;
+		var type;
+		if(o2=="1"){
+			text="确认发布内容无误后可通过";
+			title="审核通过之后内容将在校园网站中显示，请谨慎操作！";
+			confirmText="通过";
+			type=1;
+		}else{
+			text="驳回后需要重新发起审批";
+			title="驳回后无法发布到校园网站中显示，请谨慎操作！";
+			confirmText="驳回";
+			type=0;
+		}
+		
+		swal({
+			title : text,
+			text : title,
+			type : "warning",
+			showCancelButton : true,
+			confirmButtonColor : "#DD6B55",
+			confirmButtonText : confirmText,
+			cancelButtonColor: "#DD6B55",
+			cancelButtonText : "取消",
+			closeOnConfirm : false,
+			closeOnCancel : false
+		}, function(a) {
+			if (a) {
+				window.location.href=getRootPath() + "/school/photo/audit?id="+o+"&type="+type;
+			} else {
+				swal("已取消", "您取消了操作！", "error")
+			}
+		})
+	}
+	
+	
+	
+	</script>
+
+
+
+</body>
+
+</html>

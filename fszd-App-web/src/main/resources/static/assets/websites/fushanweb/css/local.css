@@ -1,4 +1,4 @@
-/*视频 图册 微课*/
+/*瑙嗛 鍥惧唽 寰*/
 .vedio_list p {
     background-color: #743C95;
 }
@@ -36,12 +36,12 @@
     background-color: #743C95;
 }
 
-/*导航*/
+/*瀵艰埅*/
 .header {
     /*background-color: #F4F4F4;*/
 }
 
-/*登录条*/
+/*鐧诲綍鏉�*/
 .baudu div.right span {
     background-color: #743C95;
 }
@@ -50,7 +50,7 @@
     color: #F9FB06;
 }
 
-/*导航*/
+/*瀵艰埅*/
 .nav_active {
     background-color: #89CA81;
 }
@@ -123,10 +123,10 @@
 }
 
 .form .form_cont a {
-    background-color: #743C95;
+    background-color: #765FA3;
 }
 
-/*工作室*/
+/*宸ヤ綔瀹�*/
 .workroom_l h3 {
     background-color: #743C95;
 }
@@ -155,7 +155,7 @@
     background-color: #ECECEC;
 }
 
-/*底部*/
+/*搴曢儴*/
 /*.footer{
 	background-color: #743C95;
 }*/
@@ -179,7 +179,7 @@
     color: #EC8A89;
 }
 
-/*鼠标移上变色*/
+/*榧犳爣绉讳笂鍙樿壊*/
 .blog_list p a:hover {
     color: #5EDFFF;
 }

@@ -417,6 +417,20 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 			
 			return findAllSysResources;
 		}
+
+		@Override
+		public SysUser findUserByUserNamePassword(String userName, String passWord) {
+			// TODO Auto-generated method stub
+			Query query = new Query();
+//			query.addCriteria(Criteria.where("isDisable").is(false));
+//			query.addCriteria(Criteria.where("isDelete").is(false));
+			query.addCriteria(Criteria.where("accountName").is(userName));
+			query.addCriteria(Criteria.where("passWord").is(passWord));
+			
+			return this.findOneByQuery(query, SysUser.class);
+			
+			
+		}
 	
 	
 	

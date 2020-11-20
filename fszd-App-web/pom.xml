@@ -14,26 +14,23 @@
 
 
 	<dependencies>
-<!-- 		<dependency>
-			<groupId>zhongchiedu.com.yyfx</groupId>
-			<artifactId>yyfx-Shiro</artifactId>
-			<version>${project.version}</version>
-		</dependency>  -->
-			<dependency>
+		<!-- <dependency> <groupId>zhongchiedu.com.yyfx</groupId> <artifactId>yyfx-Shiro</artifactId> 
+			<version>${project.version}</version> </dependency> -->
+		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-ehcache</artifactId>
 		</dependency>
-	 	<dependency>
+		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>school-Web-api</artifactId>
 			<version>${project.version}</version>
-		</dependency> 
+		</dependency>
 
- 		<dependency>
+		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>yyfx-System-api</artifactId>
 			<version>${project.version}</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.com.yyfx</groupId>
 			<artifactId>yyfx-Mongodb-famework</artifactId>
@@ -115,6 +112,11 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.com.yyfx</groupId>
+			<artifactId>wechat-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

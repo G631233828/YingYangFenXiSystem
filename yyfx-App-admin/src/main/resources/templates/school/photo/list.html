@@ -53,27 +53,27 @@ canvas#canvas4 {
 							<div class="title-alt">
 								<div>
 
-								<shiro:hasPermission name="photo:add">
-									<button class="btn btn-default btn-sm"
-										onclick="return createActivity()">
-										<i class="glyphicon glyphicon-plus"> </i> 新建相册
-									</button>
+									<shiro:hasPermission name="photo:add">
+										<button class="btn btn-default btn-sm"
+											onclick="return createActivity()">
+											<i class="glyphicon glyphicon-plus"> </i> 新建相册
+										</button>
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="photo:edit">
-									<button class="btn btn-primary btn-sm"
-										onclick="return toeditActivity()">
-										<i class="fa fa-edit"> </i>修改相册
-									</button>
+										<button class="btn btn-primary btn-sm"
+											onclick="return toeditActivity()">
+											<i class="fa fa-edit"> </i>修改相册
+										</button>
 									</shiro:hasPermission>
 
 									<shiro:hasPermission name="photo:delete">
-									<button class="btn btn-danger btn-sm"
-										th:onclick="|return del('','@{photo}')|">
-										<i class="fa fa-trash-o"> </i>删除
-									</button>
-									 </shiro:hasPermission> 
-													
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{photo}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
+
 								</div>
 
 								<div class="titleClose">
@@ -97,12 +97,11 @@ canvas#canvas4 {
 								</div>
 								<section id="flip-scroll">
 
-									<div class="social-wrap">
+									<div class="social-wrap" >
+										<th:block th:each="photo,photoStat:${pageList?.datas}">
 
-										<th:block th:each="photo:${pageList?.datas}">
-
-									
-											<div class="col-md-2">
+											
+											<div class="col-md-2"  style="height: 254px;margin-top: 15px;">
 											<input type="checkbox" name="ids" th:id="${photo?.id}"
 													class="numeric" th:value="${photo?.id}"> <label
 													th:for="${photo?.id}"></label>
@@ -118,20 +117,13 @@ canvas#canvas4 {
 													<div class="video-text" style="margin-top:-20px">
 														<p><i class="fa fa-star" th:if="${photo?.showInIndex}" style="color: #FAAB01;"></i>[[${#strings.abbreviate(photo?.name,30)}]]</p>
 													</div>
-
-
 												</div>
 											</div>
 
 
-
-
-
-
-
 										</th:block>
+											</div>
 
-									</div>
 
 
 
@@ -152,16 +144,16 @@ canvas#canvas4 {
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/photo?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/school/photo?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/photo?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/school/photo?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/photo?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/school/photo?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>
@@ -221,12 +213,13 @@ canvas#canvas4 {
 														placeholder="请输入创建人" name="author" required="required">
 												</div>
 											</div>
-											
+
 											<div class="form-group">
 												<label class="col-lg-2 control-label">显示到首页：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
-														<select name="showInIndex" id="showInIndex" class="form-control" required>
+														<select name="showInIndex" id="showInIndex"
+															class="form-control" required>
 															<option value="false">否</option>
 															<option value="true">是</option>
 														</select>

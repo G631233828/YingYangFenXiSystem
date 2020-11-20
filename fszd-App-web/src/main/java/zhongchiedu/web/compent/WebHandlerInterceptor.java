@@ -118,6 +118,8 @@ public class WebHandlerInterceptor implements HandlerInterceptor {
 				Query query = new Query();
 				query.addCriteria(Criteria.where("isDelete").is(false));
 				query.addCriteria(Criteria.where("isDisable").is(false));
+				query.addCriteria(Criteria.where("status").is(2));
+				query.limit(10);
 				query.with(new Sort(new Order(Direction.DESC, "views")));
 				news = this.newsService.find(query, News.class);
 				session.setAttribute(Contents.REMEN, news);

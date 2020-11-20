@@ -77,7 +77,7 @@ body {
     border-radius: 20px;
 }
 
-/*学校名称*/
+/*瀛︽牎鍚嶇О*/
 .schoolName {
     height: 140px;
     width: 1200px;
@@ -111,7 +111,7 @@ body {
     height: 52px !important;
 }
 
-/*导航栏*/
+/*瀵艰埅鏍�*/
 .col1200 {
     width: 1200px;
     margin: auto;
@@ -209,7 +209,7 @@ body {
     margin-top: 25px;
 }
 
-/*学校公告*/
+/*瀛︽牎鍏憡*/
 .xxgg {
     width: 275px;
     height: 320px;
@@ -234,7 +234,7 @@ body {
     line-height: 25px;
 }
 
-/*校园新闻*/
+/*鏍″洯鏂伴椈*/
 .info_top_banner {
     width: 436px;
     height: 100%;
@@ -303,12 +303,12 @@ body {
     color: #793D97 !important;
 }
 
-/*广告条*/
+/*骞垮憡鏉�*/
 #banner_tabs2 {
     height: 96px;
 }
 
-/*精彩瞬间*/
+/*绮惧僵鐬棿*/
 .schoolAlbum {
     height: 270px;
     margin: 13px 0px 20px 0px;
@@ -348,7 +348,7 @@ body {
     color: #3E3E3E;
 }
 
-/*中间部分*/
+/*涓棿閮ㄥ垎*/
 .middle_box {
     height: 690px;
     margin: 20px 0px 20px 0px;
@@ -480,12 +480,13 @@ body {
 }
 
 .study-res {
-    height: 300px;
+/*     height: 300px; */
     width: 400px;
     float: left;
     margin-left: 20px;
 }
-
+.xlxx,
+.jsxx,
 .xzxx,
 .fsyj {
     width: 209px;
@@ -497,12 +498,20 @@ body {
 }
 
 .xzxx {
-    margin-right: 17px;
+   /*  margin-right: 17px; */
     background-image: url("../images/xzxx.png");
+}
+.jsxx {
+   /*  margin-right: 17px; */
+    background-image: url("../images/jsxx.png");
 }
 
 .fsyj {
     background-image: url("../images/fsyj.png");
+}
+
+.xlxx {
+    background-image: url("../images/xlxx.png");
 }
 
 .bjq_ {
@@ -534,7 +543,7 @@ body {
     height: 100%;
 }
 
-/*底部*/
+/*搴曢儴*/
 .copys {
     height: 180px;
     background-color: #ECECEC;

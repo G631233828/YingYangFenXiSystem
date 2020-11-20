@@ -36,6 +36,8 @@ public class Contents {
 	
 	public static final String REMEN = "remen";//新闻热门推荐
 	
+	public static final String WEBSYSUSER ="websysuser";//前端用户登录session
+	
 	
 
 	/**

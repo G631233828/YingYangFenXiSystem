@@ -178,7 +178,7 @@ canvas#canvas4 {
 															class="form-control" required>
 															<option th:if="${listmenus !=null}" th:value="${menu.id}"
 																th:each="menu:${listmenus}"
-																th:selected="${menu.id == webMenu?.id}"
+																th:selected="${menu.id == webMenu?.firstLevel}"
 																th:text="${menu.name}">
 														</select>
 													</div>
@@ -254,6 +254,19 @@ canvas#canvas4 {
 														placeholder="请输入排序" name="sort"
 														th:value="${webMenu!=null}?${webMenu.sort}"
 														required="required">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-1 control-label">是否需要登陆</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="login" id="login"
+															class="form-control" required>
+															<option value="">----选择是否需要登陆----</option>
+															<option value="true" th:selected="${webMenu?.login eq true}">是</option>
+															<option value="false" th:selected="${webMenu?.login eq false}">否</option>
+														</select>
+													</div>
 												</div>
 											</div>
 

@@ -69,11 +69,11 @@ public class NewsController {
 	@RequiresPermissions(value = "sysnewss:list")
 	@SystemControllerLog(description = "跳转文章界面")
 	public String findNews(String webMenuId, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			Model model, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+			Model model, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,HttpSession session) {
 		
 		WebMenu webMenu = this.webMenuService.findOneById(webMenuId, WebMenu.class);
 
-		Pagination<News> pagination = this.newsService.findPagination(webMenuId, pageNo, pageSize);
+		Pagination<News> pagination = this.newsService.findPagination(webMenuId, pageNo, pageSize,session);
 		if (pagination == null)
 			pagination = new Pagination<News>();
 
@@ -124,9 +124,9 @@ public class NewsController {
 	@SystemControllerLog(description = "添加文章")
 	public String addNews(HttpServletRequest request, @ModelAttribute("news") News news,
 			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
-			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg
+			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg,HttpSession session
 			) {
-		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue);
+		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue,session);
 		return "redirect:/school/findNews?webMenuId="+news.getWebMenu().getId();
 	}
 	
@@ -135,9 +135,9 @@ public class NewsController {
 	@SystemControllerLog(description = "编辑文章")
 	public String editNews(HttpServletRequest request, @ModelAttribute("news") News news,
 			@RequestParam("filenews")MultipartFile[] filenews,String editorValue,
-			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg
+			@RequestParam(defaultValue="",value="oldnewsImg")String oldnewsImg,HttpSession session
 			) {
-		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue);
+		this.newsService.SaveOrUpdateNews(news,filenews,oldnewsImg,imgpath,dir,editorValue,session);
 		return "redirect:/school/findNews?webMenuId="+news.getWebMenu().getId();
 	}
 	

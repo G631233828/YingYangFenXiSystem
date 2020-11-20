@@ -35,6 +35,8 @@ public class PhotoGallery extends GeneralBean<PhotoGallery> {
 	@DBRef
 	private MultiMedia recommend;
 	private boolean showInIndex;//是否首页显示
+	private int status = 1;//发布状态   0草稿 1审核中   2发布成功  
+	
 	
 	
 }

@@ -2,6 +2,8 @@ package zhongchiedu.school.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import zhongchiedu.commons.utils.BasicDataResult;
@@ -9,13 +11,13 @@ import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
 import zhongchiedu.school.pojo.IndexSetting;
 import zhongchiedu.school.pojo.News;
-import zhongchiedu.system.log.annotation.SystemServiceLog;
 
 public interface NewsService extends GeneralService<News> {
 
-	Pagination<News> findPagination(String webMenuId, Integer pageNo, Integer pageSize);
+	Pagination<News> findPagination(String webMenuId, Integer pageNo, Integer pageSize,HttpSession session);
+	
 	void SaveOrUpdateNews(News news, MultipartFile[] filenews, String oldnewsImg, String path, String dir,
-			String editorValue);
+			String editorValue,HttpSession session);
 
 
 	BasicDataResult toDisable(String id);
@@ -39,6 +41,8 @@ public interface NewsService extends GeneralService<News> {
 	public Pagination<News> findPaginationAudit( Integer pageNo, Integer pageSize);
 
 	void ToAudit(String id,String type);
+	
+	List<News> findNewsByWebMenuId(String id); 
 	
 	
 	

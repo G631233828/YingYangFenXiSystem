@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1, user-scalable=no"
+	name="viewport">
+<meta name="referrer" content="never">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[[${session.settings?.title}]]</title>
+<link rel="shortcut icon" th:if="${session.settings?.icon !=null}"
+	th:href="|@{/}${session.settings?.icon?.savePath}${session.settings?.icon?.generateName}|"
+	type="image/x-icon" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/reset.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/news.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/pagination.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/local.css}">
+<link th:href="@{/assets/websites/fushanweb/css/index.css}"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/font-awesome.css}">
+<script type="text/javascript"
+	th:src="@{/assets/websites/fushanweb/js/stats.js}" charset="UTF-8"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/websites/fushanweb/css/ddsmoothmenu.css}">
+
+</head>
+<style>
+.flexslider .slides a img {
+	width: 100%;
+}
+</style>
+<body>
+
+	<div th:replace="websites/fushanweb/public/public::top"></div>
+
+	<div class="main_info clearfix">
+		<div class="container">
+
+			<ol class="breadcrumb">
+				<li>当前位置：<a th:href="@{/web/index}">首页</a><span class="divider">/</span></li>
+				<li><a href="#">微信公众号新闻</a></li>
+			</ol>
+
+
+			<div class="lanmu_info" id="lanmu_info">
+				<div class="left clearfix">
+					<div id="lanmu_info_">
+
+						<th:block th:each="news:${pageList?.datas}">
+
+							<div class="hover margin_t20"
+								th:onclick="|window.open('${news?.url}')|">
+								<h3>[[${#strings.abbreviate(news?.title,20)}]]</h3>
+								<br> <span class="img_default_13 left"> <img
+									th:src="${news?.thumbUrl}" class="left">
+
+								</span>
+								<div class="zixun_neirong">
+									<div class="show_less margin_t10">[[${news?.digest}]]</div>
+									<div class="color_gray margin_t20">
+										时间: <span>[[${#dates.format(news?.updateTime,'yyyy-MM-dd
+											HH:mm:ss')}]]</span>&nbsp;&nbsp;&nbsp;来源: <span>[[${news?.author}]]</span>
+									</div>
+								</div>
+							</div>
+
+						</th:block>
+
+
+					</div>
+				</div>
+
+
+				<div class="right">
+					<div th:replace="websites/fushanweb/public/public::remen"></div>
+				</div>
+			</div>
+		</div>
+		<div class="pages">
+			<div id="Pagination">
+				<div class="pagination">
+					<a
+						th:href="${pageList?.pageNo} eq 1?'javascript:void(0);':@{/web/wx(pageNo=${pageList?.upPage})}"
+						th:data-ci-pagination-page="${pageList?.upPage}" rel="prev">上一页</a>
+					<th:block th:each="page:${pageList?.navigatepageNums}">
+						<a
+							th:class="${page  == pageList?.pageNo}?'current':'site-list-page-nums'"
+							th:href="${page eq pageList?.pageNo}?'javascript:void(0)':@{/web/wx(pageNo=${page})}"
+							th:data-ci-pagination-page="${page}" rel="start">[[${page}]]</a>
+					</th:block>
+					<a
+						th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/wx(pageNo=${pageList?.nextPage})}"
+						th:data-ci-pagination-page="${pageList?.nextPage}" rel="next">下一页</a><a
+						th:href="${pageList?.pageNo eq pageList?.totalPage}?'javascript:void(0);':@{/web/wx(pageNo=${pageList?.totalPage})}"
+						th:data-ci-pagination-page="${pageList?.totalPage}">末页</a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="websites/fushanweb/public/public::footer"></div>
+
+
+
+
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 package zhongchiedu.school.service.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -9,6 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -22,10 +22,11 @@ import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
+import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.WebMenu;
+import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.system.pojo.MultiMedia;
-import zhongchiedu.system.pojo.SysRole;
 import zhongchiedu.system.service.impl.MultiMediaServiceImpl;
 
 /**
@@ -45,6 +46,10 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 
 	@Autowired
 	private MultiMediaServiceImpl multiMediaSerice;
+	
+	@Autowired
+	@Lazy(true)
+	private NewsService newsService;
 
 	@Override
 	public Pagination<WebMenu> findPagination(Integer pageNo, Integer pageSize) {
@@ -92,6 +97,7 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 
 				if (Common.isNotEmpty(webMenu.getId())) {
 					ed = this.findOneById(webMenu.getId(), WebMenu.class);
+					
 					if (Common.isNotEmpty(ed)) {
 						webMenu.setImg(Common.isNotEmpty(oldImg) ? ed.getImg() : null);
 					}
@@ -101,12 +107,22 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 				}
 			}
 			if (Common.isNotEmpty(webMenu.getId())) {
+				//判断firstLevel是否发生改变，如果发生改变了需要修改news 中所有WebMenu跟supMenu
+				if(webMenu.getFirstLevel()==null||!webMenu.getFirstLevel().equals(ed.getFirstLevel())) {
+					System.out.println("菜单目录发生了变化");
+					this.updateNewsByWebMenu(webMenu, ed);
+				}
 				// update
 				// WebMenu ed = this.findOneById(webMenu.getId(), WebMenu.class);
 				// webMenu.setFirstLevel(Common.isNotEmpty(ed.getFirstLevel())?ed.getFirstLevel():null);
 				BeanUtils.copyProperties(webMenu, ed);
 				uploadWebMenuVersion(webMenu.getId());
 				this.save(webMenu);
+				
+				
+				
+				
+				
 				log.info("资源修改成功{}", webMenu.getId());
 			} else {
 				// insert
@@ -240,6 +256,26 @@ public class WebMenuServiceImpl extends GeneralServiceImpl<WebMenu> implements W
 		}
 		 menu.setVersion( menu.getVersion() + 1);
 		this.save(menu);
+	}
+
+	//更新新闻的 webMenu 跟supMenu
+	@Override
+	public void updateNewsByWebMenu(WebMenu newwebmenu, WebMenu oldwebMenu) {
+		WebMenu supMenu = null;
+		String id = "";
+		if(Common.isEmpty(newwebmenu.getFirstLevel())) {
+			id= newwebmenu.getParentId();
+		}else {
+			id = newwebmenu.getFirstLevel();
+		}
+		 supMenu= this.findOneById(id, WebMenu.class);
+		List<News> getnews = this.newsService.findNewsByWebMenuId(oldwebMenu.getId());
+		for(News news:getnews) {
+			news.setWebMenu(newwebmenu);
+			news.setSupMenu(supMenu);
+			this.newsService.save(news);
+		}
+		
 	}
 	
 	
