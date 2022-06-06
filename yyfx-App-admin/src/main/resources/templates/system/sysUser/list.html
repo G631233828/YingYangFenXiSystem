@@ -50,6 +50,14 @@ canvas#canvas4 {
 
 
 					<div class="col-sm-12">
+<div class="body-nest" id="alert" th:if="${errorImport!=''}">
+							<div class="alert alert-danger">
+								<button data-dismiss="alert" class="close" type="button">×</button>
+								<th:block th:utext="${errorImport}">
+								</th:block>
+							</div>
+
+						</div>
 
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
@@ -74,6 +82,10 @@ canvas#canvas4 {
 											<i class="glyphicon glyphicon-user"> </i>删除
 										</button>
 									</shiro:hasPermission>
+									
+										<button class="btn btn-success" onclick="return batchImput()">
+												<i class="fontawesome-upload"> </i>批量导入
+											</button>
 
 								</div>
 
@@ -177,16 +189,16 @@ canvas#canvas4 {
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/sysUsers?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/admin/sysUsers?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/sysUsers?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/admin/sysUsers?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/sysUsers?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/admin/sysUsers?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>
@@ -207,10 +219,14 @@ canvas#canvas4 {
 				</div>
 			</div>
 			<div th:replace="public/public::myModal"></div>
-
+			
 		</div>
 	</div>
+	
+	<div th:replace="system/sysUser/batch::mybatch"></div>
 	<!--  END OF PAPER WRAP -->
+		<script type="text/javascript"
+		th:src="@{/plugs/prettyfile/bootstrap-prettyfile.js}"></script>
 	<!-- 右侧隐藏菜单start -->
 	<div th:replace="public/public::right"></div>
 	<!-- 右侧隐藏菜单end-->
@@ -222,7 +238,13 @@ canvas#canvas4 {
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
 	<div th:replace="public/public_js::validator"></div>
 
+<script type="text/javascript">
 
+function batchImput() {
+	$("#mybatchUpload").modal('show');
+
+}
+</script>
 
 
 </body>

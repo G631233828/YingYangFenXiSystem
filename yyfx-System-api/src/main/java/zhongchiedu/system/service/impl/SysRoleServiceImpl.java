@@ -119,7 +119,8 @@ public class SysRoleServiceImpl extends GeneralServiceImpl<SysRole> implements S
 	@Override
 	public SysRole findSysRoleByName(String name) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("name").is(name));
+		query.addCriteria(Criteria.where("roleName").is(name));
+		query.addCriteria(Criteria.where("isDisable").is(false));
 		query.addCriteria(Criteria.where("isDelete").is(false));
 		return this.findOneByQuery(query, SysRole.class);
 	}

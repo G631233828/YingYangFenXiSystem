@@ -11,6 +11,8 @@ logging:
     zhongchiedu.school.service.impl: info
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG      
+    root: info
+    org.springframework: info
 #配置项目访问路径
 #server:servlet:context-path:/
 #启动端口

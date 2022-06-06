@@ -56,7 +56,10 @@ ipfilter:  system: true
 #配置网站是否开始审核
 audit:  news-audit: true #开启新闻审核
 
-
+logging:
+  level:
+    root: info
+    org.springframework: info
 
         
         

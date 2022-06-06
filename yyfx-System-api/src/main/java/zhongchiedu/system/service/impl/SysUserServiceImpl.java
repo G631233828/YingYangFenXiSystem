@@ -3,11 +3,18 @@
  */
 package zhongchiedu.system.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
@@ -20,14 +27,19 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Common;
+import zhongchiedu.commons.utils.ExcelReadUtil;
+import zhongchiedu.commons.utils.FileOperateUtil;
 import zhongchiedu.commons.utils.UserType;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralServiceImpl;
 import zhongchiedu.system.pojo.MultiMedia;
+import zhongchiedu.system.pojo.ProcessInfo;
 import zhongchiedu.system.pojo.SysMenuAuthority;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysRole;
+import zhongchiedu.system.pojo.SysSchool;
 import zhongchiedu.system.pojo.SysUser;
+import zhongchiedu.system.service.SysSchoolService;
 import zhongchiedu.system.service.SysUserService;
 
 /**
@@ -54,7 +66,7 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 	@Autowired
 	private SysResourceServiceImpl sysResourceService;
 
-	/*
+ 	/*
 	 * <p>Title: findPagination</p> <p>Description: </p>
 	 * 
 	 * @param pageNo
@@ -434,8 +446,142 @@ public class SysUserServiceImpl extends GeneralServiceImpl<SysUser> implements S
 	
 	
 	
+		/**
+		 * 上传进度
+		 */
+		@Override
+		public ProcessInfo findproInfo(HttpServletRequest request) {
+
+			return (ProcessInfo) request.getSession().getAttribute("proInfo");
+
+		}
+
+		@Override
+		public String upload(HttpServletRequest request, HttpSession session) {
+			String error = "";
+			try {
+				Map<String, Object> map = new HashMap<String, Object>();
+				// 别名
+				String upname = File.separator + "FileUpload" + File.separator + "sysuser";
+
+				// 可以上传的文件格式
+				log.info("准备上传类目数据");
+				String filetype[] = { "xls,xlsx" };
+				List<Map<String, Object>> result = FileOperateUtil.upload(request, upname, filetype);
+				log.info("上传文件成功");
+				boolean has = (Boolean) result.get(0).get("hassuffix");
+
+				if (has != false) {
+					// 获得上传的xls文件路径
+					String path = (String) result.get(0).get("savepath");
+					File file = new File(path);
+					// 知道导入返回导入结果
+					error = this.BatchImport(file, 1, session);
+				}
+			} catch (Exception e) {
+				return e.toString();
+			}
+			return error;
+
+		}
 	
 	
-	
+		
+		public String BatchImport(File file, int row, HttpSession session) {
+			String error = "";
+			String[][] resultexcel = null;
+			try {
+				resultexcel = ExcelReadUtil.readExcel(file, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			int rowLength = resultexcel.length;
+			ProcessInfo pri = new ProcessInfo();
+			pri.allnum = rowLength;
+			
+			
+			for (int i = 1; i < rowLength; i++) {
+				Query query = new Query();
+				SysUser importUser = new SysUser();
+
+				pri.nownum = i;
+				pri.lastnum = rowLength - i;
+				session.setAttribute("proInfo", pri);
+				int j = 0;
+				try {
+
+					String userName = resultexcel[i][j].trim();//姓名
+					if (Common.isEmpty(userName)) {
+						error += "<span class='entypo-attention'></span>导入文件过程中出现姓名为空，第<b>&nbsp&nbsp" + (i + 1)
+								+ "行&nbsp&nbsp</b>请手动去修改该条信息！&nbsp&nbsp</br>";
+						continue;
+					}
+					importUser.setUserName(userName);
+					
+					String accountName = resultexcel[i][j+1].trim();// 手机号
+					if (Common.isEmpty(accountName)) {
+						error += "<span class='entypo-attention'></span>导入文件过程中出现手机号为空，第<b>&nbsp&nbsp" + (i + 1)
+								+ "行&nbsp&nbsp</b>请手动去修改该条信息！&nbsp&nbsp</br>";
+						continue;
+					}
+					importUser.setAccountName(accountName);
+					
+					String roleName = resultexcel[i][j + 2].trim();
+					if (Common.isEmpty(roleName)) {
+						error += "<span class='entypo-attention'></span>导入文件过程中出现角色名称为空，第<b>&nbsp&nbsp" + (i + 1)
+								+ "行</b>请手动去修改该条信息！&nbsp&nbsp</br>";
+						continue;
+					}
+					
+					//通过手机号查询用户是否存在不存在则添加，存在则提示
+					SysUser sysuer = this.findSysUserByAccountName(accountName, UserType.SCHOOL_USER);
+					if(Common.isNotEmpty(sysuer)) {
+						error += "<span class='entypo-attention'></span>导入文件过程中出现该账号已经存在！第<b>&nbsp&nbsp" + (i + 1)
+								+ "行&nbsp&nbsp</b>请手动去修改该条信息！&nbsp&nbsp</br>";
+						continue;
+					}else {
+						//通过角色名称获取角色信息
+						SysRole sysrole = this.sysRoleService.findSysRoleByName(roleName);
+						if(Common.isEmpty(sysrole)) {
+							error += "<span class='entypo-attention'></span>导入文件过程中没有找到角色["+roleName+"]！，第<b>&nbsp&nbsp" + (i + 1)
+									+ "行&nbsp&nbsp</b>请先创建该角色！&nbsp&nbsp</br>";
+							continue;
+						}
+						importUser.setRole(sysrole);
+						importUser.setSysSchool(sysrole.getSysSchool());
+						importUser.setUserType(UserType.SCHOOL_USER);
+						importUser.setCardType("身份证");
+						importUser.setCardId("000");
+						importUser.setPassWord("changeme");
+						this.insert(importUser);
+						
+					}
+					
+					
+				
+
+					// 捕捉批量导入过程中遇到的错误，记录错误行数继续执行下去
+				} catch (Exception e) {
+					log.debug("导入文件过程中出现错误第" + (i + 1) + "行出现错误" + e);
+					String aa = e.getLocalizedMessage();
+					String b = aa.substring(aa.indexOf(":") + 1, aa.length()).replaceAll("\"", "");
+					error += "<span class='entypo-attention'></span>导入文件过程中出现错误第<b>&nbsp&nbsp" + (i + 1)
+							+ "&nbsp&nbsp</b>行出现错误内容为<b>&nbsp&nbsp" + b + "&nbsp&nbsp</b></br>";
+					if ((i + 1) < rowLength) {
+						continue;
+					}
+
+				}
+			}
+			log.info(error);
+			return error;
+		}	
+		
+		
+		
+		
+		
+		
+		
 	
 }

@@ -113,11 +113,11 @@
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/it.sauronsoftware.cron4j/cron4j -->
 			<!-- 转码jar包 -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>it.sauronsoftware</groupId>
 				<artifactId>jave</artifactId>
 				<version>1.0.2</version>
-			</dependency>
+			</dependency> -->
 			<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>

@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * encode64 加密，解密。
- * @author aaron lau
  *
  */
 

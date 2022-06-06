@@ -64,7 +64,8 @@ public class SystemLogAspect {
 //        User user = (User) session.getAttribute(Contents.USER_SESSION);    
         SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
         //请求的IP    
-        String ip = request.getRemoteAddr();    
+        //String ip = request.getRemoteAddr(); 
+        String ip = Common.toIpAddr(request);
          try {    
             //*========控制台输出=========*//    
             System.out.println("=====前置通知开始=====");    
@@ -107,7 +108,8 @@ public class SystemLogAspect {
 //        User user = (User) session.getAttribute(Contents.USER_SESSION);
         SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
         //获取请求ip    
-        String ip = request.getRemoteAddr();    
+        //String ip = request.getRemoteAddr();  
+        String ip = Common.toIpAddr(request);
         //获取用户请求方法的参数并序列化为JSON格式字符串    
         String params = "";    
          if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {    

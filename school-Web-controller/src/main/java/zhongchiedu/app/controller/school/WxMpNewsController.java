@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.WxMpNews;
-import zhongchiedu.school.service.WxMpMaterialNewsGetService;
 import zhongchiedu.school.service.WxMpNewsService;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 
@@ -29,8 +28,8 @@ public class WxMpNewsController {
 	
 	@Autowired
 	private WxMpNewsService wxMpNewsService;
-	@Autowired
-	private WxMpMaterialNewsGetService wxMpMaterialNewsGetService;
+//	@Autowired
+//	private WxMpMaterialNewsGetService wxMpMaterialNewsGetService;
 	
 	
 	@GetMapping("wxMpNews")
@@ -70,8 +69,8 @@ public class WxMpNewsController {
 	@ResponseBody
 	public BasicDataResult tongbu() {
 		try {
-			this.wxMpMaterialNewsGetService.getWxMpMaterialNews();
-			this.wxMpNewsService.insertNews();	
+			//this.wxMpMaterialNewsGetService.getWxMpMaterialNews();
+			this.wxMpNewsService.insertNews(false);	
 		}catch (Exception e) {
 			e.printStackTrace();
 			return BasicDataResult.build(400, "同步失败", null);

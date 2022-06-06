@@ -119,7 +119,7 @@
 						<th:block th:each="news,newsStat:${session.remen}">
 						<p>
 							<a th:href="|@{/web/news/}${news.id}|"><b class="top3">[[${newsStat.count}]]</b><span
-								class="list_title yichu">[[${news.title}]]</span></a>
+								class="list_title yichu">[[${#strings.abbreviate(news?.title,16)}]]</span></a>
 						</p>
 						</th:block>
 						
@@ -157,6 +157,7 @@
 					<img
 						th:src="|@{/}${session.settings?.qRcode?.savePath}${session.settings?.qRcode?.generateName}|">
 				</th:block>
+				<script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='https://dcs.conac.cn/js/02/032/0000/60974254/CA020320000609742540002.js' type='text/javascript'%3E%3C/script%3E"));</script>
 				</div>
 			</div>
 		</div>

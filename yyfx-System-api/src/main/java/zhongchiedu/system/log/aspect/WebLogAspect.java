@@ -52,7 +52,8 @@ public class WebLogAspect {
     	ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         //请求的IP    
-        String ip = request.getRemoteAddr();    
+        //String ip = request.getRemoteAddr();    
+        String ip = Common.toIpAddr(request);
          try {    
             //*========控制台输出=========*//    
             System.out.println("=====前置通知开始=====");    
@@ -92,7 +93,8 @@ public class WebLogAspect {
         HttpSession session = request.getSession();    
         Gson gson = new Gson();
         //获取请求ip    
-        String ip = request.getRemoteAddr();    
+        //String ip = request.getRemoteAddr();    
+        String ip = Common.toIpAddr(request);
         //获取用户请求方法的参数并序列化为JSON格式字符串    
         String params = "";    
          if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {    

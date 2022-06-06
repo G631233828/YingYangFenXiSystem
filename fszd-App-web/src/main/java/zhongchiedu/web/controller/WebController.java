@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.Common;
 import zhongchiedu.commons.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
@@ -25,13 +26,13 @@ import zhongchiedu.school.service.IndexSettingService;
 import zhongchiedu.school.service.NewsService;
 import zhongchiedu.school.service.PhotoGalleryService;
 import zhongchiedu.school.service.WebMenuService;
-import zhongchiedu.school.service.WxMpMaterialNewsGetService;
 import zhongchiedu.school.service.WxMpNewsService;
 import zhongchiedu.system.log.annotation.WebControllerLog;
 import zhongchiedu.system.pojo.SysUser;
 
 @RequestMapping("/")
 @Controller
+@Slf4j
 public class WebController {
 
 	@Autowired
@@ -47,17 +48,18 @@ public class WebController {
 
 	@Autowired
 	private WxMpNewsService wxMpNewsService;
-	@Autowired
-	private WxMpMaterialNewsGetService wxMpMaterialNewsGetService;
+//	@Autowired
+//	private WxMpMaterialNewsGetService wxMpMaterialNewsGetService;
 
 	@GetMapping(value = "/")
 	@WebControllerLog(description = "请求网站首页")
 	public String index(Model model) {
+		log.info("请问求网站首页");
 		// this.wxMpNewsService.getWpNews();
 //		this.wxMpMaterialNewsGetService.getWxMpMaterialNews();
 ////		WxMpNews wx = this.wxMpNewsService.findBymediaId("");
 ////		System.out.println(wx);
-//		c
+//		
 
 		return "redirect:/web/index";
 	}

@@ -19,7 +19,7 @@
 //
 //@Service
 //@Slf4j
-//public class WxMpMaterialNewsGetServiceImpl extends GeneralServiceImpl<WxMpMaterialNewsGet>
+//public class WxMpMaterialNewsGetServiceImplback extends GeneralServiceImpl<WxMpMaterialNewsGet>
 //		implements WxMpMaterialNewsGetService {
 //
 //	@Autowired
@@ -33,9 +33,6 @@
 //			WxMpMaterialNewsGet wx = this.findWxMpMaterialNews();
 //			// 判断数量是否有变化，有变化则更新
 //			int count = this.wxMpService.getMaterialService().materialCount().getNewsCount();
-//			
-//			 
-//			
 //			WxMpMaterialNewsBatchGetResult getWxMpMaterialNewsBatchGetResult = new WxMpMaterialNewsBatchGetResult();
 //				System.out.println("通过微信api获取永久素材");
 //				getWxMpMaterialNewsBatchGetResult.setTotalCount(count);

@@ -5,11 +5,15 @@ package zhongchiedu.system.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.framework.service.GeneralService;
+import zhongchiedu.system.pojo.ProcessInfo;
 import zhongchiedu.system.pojo.SysResource;
 import zhongchiedu.system.pojo.SysUser;
 
@@ -45,4 +49,7 @@ public interface SysUserService extends GeneralService<SysUser>{
 	
 	SysUser findUserByUserNamePassword(String userName,String passWord);
 	
+	 ProcessInfo findproInfo(HttpServletRequest request);
+	 
+	  String upload(HttpServletRequest request, HttpSession session);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
+import zhongchiedu.commons.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.school.pojo.News;
 import zhongchiedu.school.pojo.PhotoGallery;
@@ -98,9 +99,12 @@ public class PhotoGalleryController {
 	
 	@RequiresPermissions(value = "photo:delete")
 	@SystemControllerLog(description = "删除相册")
-	@RequestMapping(value = "/photo/{id}/{imgids}")
-	public String delete(@PathVariable String id,@PathVariable String imgids) {
+	@RequestMapping(value = {"/photo/{id}","/photo/{id}/{imgids}"})
+	public String delete(@PathVariable String id,@PathVariable(value="imgids",required= false) String imgids) {
 		this.photoGalleryService.delete(id, imgids);
+		if (Common.isEmpty(imgids)) {
+			return "redirect:/school/photo";
+		}
 		 return "redirect:/school/photos/"+id;
 	}
 	

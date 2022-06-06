@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.chanjar.weixin.common.util.crypto.SHA1;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -38,7 +39,6 @@ public class WxPortalController {
 		if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
 			throw new IllegalArgumentException("请求参数非法，请核实!");
 		}
-
 		if (!this.wxService.switchover(appid)) {
 			throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
 		}

@@ -92,26 +92,35 @@ public class PhotoGalleryServiceImpl extends GeneralServiceImpl<PhotoGallery> im
 	public String delete(String id, String imgids) {
 		try {
 			lock.lock();
-			PhotoGallery de = this.findOneById(id, PhotoGallery.class);
-			List<MultiMedia> media = de.getImgs();
-			List<String> ids = Arrays.asList(imgids.split(","));
-			List<MultiMedia> delimg = new ArrayList<MultiMedia>();
-			for (MultiMedia imgs : media) {
-				for (String imgid : ids) {
-					if (imgs.getId().equals(imgid)) {
-						delimg.add(imgs);
+			
+			if(Common.isEmpty(imgids)) {
+				//删除相册
+				List<String> ids = Arrays.asList(id.split(","));
+				for (String edid : ids) {
+					PhotoGallery de = this.findOneById(edid,PhotoGallery.class);
+					de.setIsDelete(true);
+					this.save(de);
+				}
+			}else {
+				//删除图片
+				PhotoGallery de = this.findOneById(id, PhotoGallery.class);
+				List<MultiMedia> media = de.getImgs();
+				List<String> ids = Arrays.asList(imgids.split(","));
+				List<MultiMedia> delimg = new ArrayList<MultiMedia>();
+				for (MultiMedia imgs : media) {
+					for (String imgid : ids) {
+						if (imgs.getId().equals(imgid)) {
+							delimg.add(imgs);
+						}
 					}
 				}
+				media.removeAll(delimg);
+				de.setImgs(media);
+				this.save(de);
 			}
-			media.removeAll(delimg);
-			de.setImgs(media);
-			this.save(de);
+			
+			
 
-//			for (String edid : ids) {
-//				PhotoGallery de = this.findOneById(edid,PhotoGallery.class);
-//				de.setIsDelete(true);
-//				this.save(de);
-//			}
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();

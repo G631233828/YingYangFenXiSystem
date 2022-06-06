@@ -6,6 +6,7 @@ package zhongchiedu.app.controller.system;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,10 +25,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.commons.utils.BasicDataResult;
 import zhongchiedu.commons.utils.Contents;
+import zhongchiedu.commons.utils.FileOperateUtil;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.system.log.annotation.SystemControllerLog;
 import zhongchiedu.system.pojo.SysRole;
@@ -70,14 +74,15 @@ public class SysUserController {
 	@RequiresPermissions(value = "sysusers:list")
 	@SystemControllerLog(description = "查询所有用户")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
+			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session,
+			@ModelAttribute("errorImport") String errorImport) {
 
 		SysUser user = (SysUser) session.getAttribute(Contents.SYSUSER_SESSION);
 		// 分页查询数据
 		log.info("查询所有用户");
 		Pagination<SysUser> pagination = this.sysUserService.findPagination(user, pageNo, pageSize);
 		model.addAttribute("pageList", pagination);
-
+		model.addAttribute("errorImport", errorImport);
 		return "system/sysUser/list";
 	}
 
@@ -215,5 +220,68 @@ public class SysUserController {
 			@RequestParam(value = "password2", defaultValue = "") String password2) {
 		return this.sysUserService.editPassword(id, password2);
 	}
+	
+
+	/***
+	 * 文件上传
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sysuser/upload")
+	@SystemControllerLog(description = "批量导入系统用户")
+	//@RequiresPermissions(value = "sysuser:batch")
+	public String upload(HttpServletRequest request, HttpSession session, RedirectAttributes attr) {
+		log.info("开始上传文件");
+		
+		String error = this.sysUserService.upload(request, session);
+		
+		attr.addFlashAttribute("errorImport", error);
+		return "redirect:/admin/sysUsers";
+
+	}
+
+	/**
+	 * process 获取进度
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sysuser/uploadprocess")
+	@ResponseBody
+	public Object process(HttpServletRequest request) throws Exception {
+		return this.sysUserService.findproInfo(request);
+	}
+
+	
+	
+	/**
+	 * 模版下载
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sysuser/download")
+	@SystemControllerLog(description = "下载库存管理导入模版")
+	public ModelAndView download(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String storeName = "教师用户导入模板.xlsx";
+		String contentType = "application/octet-stream";
+		String UPLOAD = "Templates/";
+		FileOperateUtil.download(request, response, storeName, contentType, UPLOAD);
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
