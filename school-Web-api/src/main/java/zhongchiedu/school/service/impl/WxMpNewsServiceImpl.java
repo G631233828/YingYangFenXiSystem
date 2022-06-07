@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpFreePublishService;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.freepublish.WxMpFreePublishItem;
+import me.chanjar.weixin.mp.bean.freepublish.WxMpFreePublishList;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialNewsBatchGetResult;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialNewsBatchGetResult.WxMaterialNewsBatchGetNewsItem;
@@ -39,6 +42,8 @@ public class WxMpNewsServiceImpl extends GeneralServiceImpl<WxMpNews> implements
 	
 	@Autowired
 	private WxMpService wxMpService;
+	
+
 	/**
 	 * 将获取到的微信信息转换成一条条的新闻列表
 	 */
@@ -53,16 +58,33 @@ public class WxMpNewsServiceImpl extends GeneralServiceImpl<WxMpNews> implements
 //		
 //		List<WxMaterialNewsBatchGetNewsItem> items = re.getWxMpMaterialNewsBatchGetResult().getItems();
 		
+		System.out.println(this.wxMpService.getAccessToken());
+		
+		
+		
+		
+			WxMpFreePublishList publicationRecords = this.wxMpService.getFreePublishService().getPublicationRecords(0, 1);
+			System.out.println(this.wxMpService.getFreePublishService());
+			
+			List<WxMpFreePublishItem> items2 = publicationRecords.getItems();
+			System.out.println(items2);
 		//获取微信公众号上面的新闻数量
 		int count = this.wxMpService.getMaterialService().materialCount().getNewsCount();
+		int img = this.wxMpService.getMaterialService().materialCount().getImageCount();
+		int video = this.wxMpService.getMaterialService().materialCount().getVideoCount();
+		int voice = this.wxMpService.getMaterialService().materialCount().getVoiceCount();
+		
 		System.out.println("当前新闻数量："+count);
+		System.out.println("当前新闻数量："+img);
+		System.out.println("当前新闻数量："+ video);
+		System.out.println("当前新闻数量："+voice);
 		
 		List<WxMpNews> findWxNews = findWxNews();
-		if(count>findWxNews.size()) {
+		if(437>findWxNews.size()) {
 			System.out.println("更新微信新闻");
 			WxMpMaterialNewsBatchGetResult getWxMpMaterialNewsBatchGetResult = new WxMpMaterialNewsBatchGetResult();
 				System.out.println("通过微信api获取永久素材");
-				getWxMpMaterialNewsBatchGetResult.setTotalCount(count);
+				getWxMpMaterialNewsBatchGetResult.setTotalCount(437);
 				List<WxMaterialNewsBatchGetNewsItem> items = new ArrayList<WxMaterialNewsBatchGetNewsItem>();
 				int pageNum = this.getpageNum(20, count);
 				int nowpage = 0;

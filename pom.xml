@@ -181,12 +181,12 @@
 			<dependency>
 				<groupId>com.github.binarywang</groupId>
 				<artifactId>weixin-java-mp</artifactId>
-				<version>3.8.0</version>
+			<version>4.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.binarywang</groupId>
 				<artifactId>weixin-java-common</artifactId>
-				<version>3.8.0</version>
+				<version>4.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.json-lib</groupId>

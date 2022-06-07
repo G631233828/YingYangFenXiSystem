@@ -42,6 +42,7 @@ upload:
   imgpath: upload/images/
   kinderitor: upload/kinderitor/
   ueditor: upload/ueditor/
+  plugs: plugs/ueditor/
 #图片列表配置
   ueditordir: E:/upload
   

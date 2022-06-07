@@ -73,8 +73,8 @@
 							th:if="${news?.webMenu?.name eq '学校公告'}"
 							th:onclick="|window.open('@{/web/list/}${news?.webMenu?.id}')|">更多内容</span>
 					</div>
-					<!--<marquee direction="up" behavior="scroll" onmouseover="this.stop()"
-						onmouseout="this.start()" style="height: 275px">-->
+					<marquee direction="up" behavior="scroll" onmouseover="this.stop()"
+						onmouseout="this.start()" style="height: 275px">
 						<dl>
 							<dt th:each="news,newsStat:${newslist}"
 								th:if="${news?.webMenu?.name eq '学校公告'}">
@@ -85,7 +85,7 @@
 								</a>
 							</dt>
 						</dl>
-					<!--</marquee>-->
+					</marquee>
 				</div>
 				<!-- 校园新闻 -->
 				<div class="notice left">
@@ -537,19 +537,19 @@
 		$(".left_ban").remove();
 	});
 
-	//飘窗piaochuang
+	//飘窗
 	$(function() {
 		$.floatingAd({
 			delay : 30,
 			isLinkClosed : false,
 			ad : [ {
 				headFilter : 0.3,
-				'img' : '../assets/websites/fushanweb/images/zhaosheng.png',
-				'linkUrl' : 'http://fushanzd.pdedu.sh.cn/fszd/upload/ueditor/jsp/upload/file/20220603/1654237888323096387.pdf',
+				'img' : '../assets/websites/fushanweb/images/piaochuang.png',
+				'linkUrl' : '###',
 				'z-index' : 100,
 				'title' : '',
-				'imgHeight' : '300',
-				'imgWidth' : '300',
+				'imgHeight' : '',
+				'imgWidth' : '',
 				'closed-icon' : '../assets/websites/fushanweb/images/close.png'
 			}, ],
 			onClose : function(elem) {

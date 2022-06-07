@@ -113,7 +113,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 			public void addInterceptors(InterceptorRegistry registry) {
 				//registry.addInterceptor(sessionInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login");
 				//registry.addInterceptor(errorIpHandlerInterceptor()).addPathPatterns("/**");
-				registry.addInterceptor(loginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login","/web/**","/assets/**","/upload/**","/error/**");
+				registry.addInterceptor(loginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/user/login","/web/**","/assets/**","/plugs/**","/upload/**","/error/**");
 				//registry.addInterceptor(webHandlerInterceptor()).addPathPatterns("/web/**").excludePathPatterns("/assets/**");
 			}
 			
