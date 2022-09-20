@@ -1,6 +1,7 @@
 package zhongchiedu.web.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ import zhongchiedu.school.service.WebMenuService;
 import zhongchiedu.school.service.WxMpNewsService;
 import zhongchiedu.system.log.annotation.WebControllerLog;
 import zhongchiedu.system.pojo.SysUser;
+import zhongchiedu.web.config.Limit;
 
 @RequestMapping("/")
 @Controller
@@ -53,6 +55,7 @@ public class WebController {
 
 	@GetMapping(value = "/")
 	@WebControllerLog(description = "请求网站首页")
+    @Limit(key = "limit", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String index(Model model) {
 		log.info("请问求网站首页");
 		// this.wxMpNewsService.getWpNews();
@@ -67,6 +70,7 @@ public class WebController {
 //	@RequestMapping(value = "/index")
 	@GetMapping(value = "web/index")
 	@WebControllerLog(description = "请求网站首页")
+	@Limit(key = "limit2", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String toindex(Model model) {
 		List<IndexSetting> indexs = this.indexSettingService.findIndexSetting();
 		model.addAttribute("indexs", indexs);
@@ -110,6 +114,7 @@ public class WebController {
 
 	@RequestMapping(value = "web/list/{menuId}")
 	@WebControllerLog(description = "查看新闻列表")
+	@Limit(key = "limit3", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 			@PathVariable(value = "menuId", required = true) String menuId, HttpSession session) {
@@ -148,6 +153,7 @@ public class WebController {
 
 	@RequestMapping(value = "web/news/{newsId}")
 	@WebControllerLog(description = "查看新闻")
+	@Limit(key = "limit4", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String findNews(HttpSession session, HttpServletRequest request, Model model,
 			@PathVariable(value = "newsId", required = true) String newsId) {
 
@@ -183,6 +189,7 @@ public class WebController {
 	// 获取图片列表
 	@RequestMapping(value = "web/listImgs")
 	@WebControllerLog(description = "查看图片列表")
+	@Limit(key = "limit5", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String listImgs(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "12") Integer pageSize) {
 
@@ -195,6 +202,7 @@ public class WebController {
 
 	@RequestMapping(value = "web/imgs/{photoId}")
 	@WebControllerLog(description = "查看图片")
+	@Limit(key = "limit7", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,msg = "当前访问人数较多请等待...")
 	public String findImgs(HttpSession session, HttpServletRequest request,
 			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
